@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* active navlink */
+#sidebar_item a.active {
+  color: #0e91e9 !important;
+  /* display: none; */
+}

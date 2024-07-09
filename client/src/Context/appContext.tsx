@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import reducer from "./reducer";
 import customAxios from "../utils/authFecth";
+import { useNavigate } from "react-router-dom";
 export interface InitStateProps {
   user: any;
   cart: {};
@@ -19,6 +20,7 @@ const AppContext = createContext(initState);
 const AppProvider = ({ children }: any): React.JSX.Element => {
   const [state, dispatch] = useReducer(reducer, initState);
   const authFecth = customAxios();
+
   const logout = async () => {
     await authFecth.get("/auth/logout");
   };

@@ -2,15 +2,13 @@ import validator from "validator";
 import attachCookie from "../utils/attachCookie.js";
 import { BadRequestError, NotFoundError } from "../errors/index.js";
 import User from "../models/user.js";
+import { validateEmail, validateRequired } from "../utils/Validator.js";
 
 const Register = async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    throw new BadRequestError("email and password are required");
-  }
-  if (!validator.isEmail(email)) {
-    throw new BadRequestError("please provid a valid email");
-  }
+  //validate
+  validateRequired(email, password);
+  validateEmail(email);
   const newUser = await User.create({ email, password });
   //   if (!newUser) {
   //     throw new BadRequestError("something went wrong, please try again");
@@ -21,12 +19,9 @@ const Register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    throw new BadRequestError("Email and password are required");
-  }
-  if (!validator.isEmail(email)) {
-    throw new BadRequestError("Please provide a valid email");
-  }
+  //validate
+  validateRequired(email, password);
+  validateEmail(email);
   //login
   const user = await User.findOne({ email });
   if (!user) {

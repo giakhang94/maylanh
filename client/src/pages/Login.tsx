@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Logo } from "../components";
-import axios from "axios";
+import { LoadingForButton, Logo } from "../components";
+
 import { toast, ToastContainer } from "react-toastify";
 import customAxios from "../utils/authFecth";
+import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../Context/appContext";
 
 interface Props {}
 interface InputState {
@@ -10,6 +12,8 @@ interface InputState {
   password: string;
 }
 const Login = (props: Props): React.JSX.Element => {
+  const nav = useNavigate();
+  const { getCurrentUser } = useAppContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [input, setInput] = useState<InputState>({ email: "", password: "" });
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,8 +31,13 @@ const Login = (props: Props): React.JSX.Element => {
         email: input.email,
         password: input.password,
       });
-      toast.success(data.message);
+      toast.success(data.message + ", redirecting to dashboard...");
+      // toast.info("Redirecting to dashboard...");
       setIsLoading(false);
+      setTimeout(() => {
+        getCurrentUser();
+        nav("/admin");
+      }, 3000);
     } catch (error: any) {
       console.log(error.data);
       console.log(error.data.message);
@@ -50,7 +59,7 @@ const Login = (props: Props): React.JSX.Element => {
         draggable
         pauseOnHover
         theme="colored"
-        className="mt-[150px] mr-5"
+        className="mt-[150px] mr-5 text-xl"
       />
       <form className="-translate-y-[50%]">
         <Logo />
@@ -88,9 +97,19 @@ const Login = (props: Props): React.JSX.Element => {
           </div>
           <button
             onClick={handleSubmit}
-            className="w-full py-2 bg-sky-500 rounded-[sm] mt-3 text-white font-semibold tracking-[2px] hover:opacity-90"
+            disabled={isLoading}
+            className="w-full h-full py-2  bg-sky-500 rounded-[sm] mt-3 text-white font-semibold tracking-[2px] hover:opacity-90"
           >
-            Submit
+            {isLoading ? (
+              <div className="flex items-center justify-center space-x-2">
+                <LoadingForButton classname="" />
+                <span className="block text-white tracking-[2px]">
+                  Please wait
+                </span>
+              </div>
+            ) : (
+              "Submit"
+            )}
           </button>
         </div>
       </form>

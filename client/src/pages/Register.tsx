@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Logo } from "../components";
+import { LoadingForButton, Logo } from "../components";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -92,7 +92,14 @@ const Register = (props: Props): React.JSX.Element => {
             onClick={handleSubmit}
             className="w-full py-2 bg-sky-500 rounded-[sm] mt-3 text-white font-semibold tracking-[2px] hover:opacity-90"
           >
-            Submit
+            {isLoading ? (
+              <div className="flex items-center space-x-2">
+                <LoadingForButton classname="" />
+                <span>Please wait</span>
+              </div>
+            ) : (
+              "Submit"
+            )}
           </button>
         </div>
       </form>

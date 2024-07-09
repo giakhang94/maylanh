@@ -1,7 +1,16 @@
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Dashboard, Home, Login, Order, Register, ShareLayout } from "./pages";
+import {
+  AddService,
+  AllService,
+  Dashboard,
+  Home,
+  Login,
+  Order,
+  Register,
+  ShareLayout,
+} from "./pages";
 import ProtectedLayout from "./components/protectedLayout";
 function App() {
   return (
@@ -17,6 +26,8 @@ function App() {
         >
           <Route element={<Dashboard />} index />
           <Route element={<Order />} path="/admin/order" />
+          <Route element={<AllService />} path="/admin/all-services" />
+          <Route element={<AddService />} path="/admin/add-service" />
         </Route>
         <Route element={<Login />} path="/login" />
         <Route element={<Register />} path="/register" />

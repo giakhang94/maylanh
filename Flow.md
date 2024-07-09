@@ -257,3 +257,161 @@ const auth = (req, res, next) => {
 };
 export default auth;
 ```
+
+### Context API
+
+1. Tạo context bằng createContext. VD const AppContext = createContext(initState). TS bắt phải có tham số
+2. Tạo Provider là 1 Component, return <AppContext.Provider>
+3. Trong cái Provider này sẽ tạo thêm các function cần thiết
+
+- [state, dispatch] = useReducer(reducer, initstate)
+- các hàm như logout, getCurrentUser, cái nào cần thiết thì thêm vào
+
+4. Lưu ý cái GET CURRENT USER, vì nó load từ server nên lâu.
+   => Phải thêm isLoading user vào global luôn.
+   => xài bộ ba begin/success/error
+5. Cái nào cần thay đổi tác động state, thì dispatch nó để qua reducer xử lý.
+
+### Get current user
+
+1. Tạo 1 cái useEffect ở Provider
+2. useEffect này gọi thằng GetCurrentUser, để update prop user cho state.
+3. Có cái user này rồi thì mấy page khác mới thực hiện auth được
+
+```js
+import { createContext, useContext, useEffect, useReducer } from "react";
+import reducer from "./reducer";
+import customAxios from "../utils/authFecth";
+export interface InitStateProps {
+  user: any;
+  cart: {};
+  isLoadingUser: boolean;
+  getCurrentUser: () => void;
+  logout: () => void;
+}
+const initState: InitStateProps = {
+  user: null,
+  cart: {},
+  isLoadingUser: true,
+  getCurrentUser() {},
+  logout() {},
+};
+const AppContext = createContext(initState);
+const AppProvider = ({ children }: any): React.JSX.Element => {
+  const [state, dispatch] = useReducer(reducer, initState);
+  const authFecth = customAxios();
+  const logout = async () => {
+    await authFecth.get("/auth/logout");
+  };
+  const getCurrentUser = async () => {
+    dispatch({ type: "GET_CURRENT_USER_BEGIN", payload: {} });
+    try {
+      const { data } = await authFecth.get("auth/get-current-user");
+
+      dispatch({
+        type: "GET_CURRENT_USER_SUCCESS",
+        payload: data.user,
+      });
+    } catch (error) {
+      dispatch({ type: "GET_CURRENT_USER_ERROR", payload: {} });
+    }
+  };
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+  return (
+    <AppContext.Provider value={{ ...state, getCurrentUser, logout }}>
+      {children}
+    </AppContext.Provider>
+  );
+};
+const useAppContext = () => {
+  return useContext(AppContext);
+};
+export { AppProvider, useAppContext };`
+```
+
+### Tạo component ProtectedLayout (hoặc ProtectedRouter)
+
+1. là cái router nhận {children} làm prop
+2. nhận 2 biến global là user và isloadingUser
+3. Nếu isLoadingUser === true => đang get current user
+   => khoan hả render gì hết => return <Loading/>
+4. Nếu isLoadingUser === false => load ok hoặc fail rồi thì kiểm tra user (currentusser)
+5. nếu !user => naviage về homepage
+6. Nếu có user thì return `children`
+
+```js
+import { useAppContext } from "../Context/appContext";
+import { Navigate } from "react-router-dom";
+interface Props {}
+
+const ProtectedLayout = ({ children }: any) => {
+  const { user, isLoadingUser } = useAppContext();
+  console.log(isLoadingUser);
+  if (isLoadingUser) return <>loading...</>;
+  // loading này có thể mốt đổi thành 1 component <Loading />
+  if (!user) {
+    return <Navigate to="/" />;
+  }
+  return children;
+};
+export default ProtectedLayout;
+```
+
+### Lưu ý về login
+
+1. Login xong thì phải `getCurrentUser()` lại 1 cái
+   => để biến global `user` nó update
+   => mới xuyên qua thằng <ProtectedRouter/> được
+   => dùng useNavigate để navigate nó về dashboar
+2. Sau khi logout thì chỉ cần navigate nó về home là dc
+   => cũng dùng useNavigate luôn
+
+### xong rồi nhảy qua làm CRUD
+
+các bước chuẩn bị
+
+1. hoàn thiện cái sidebar trước
+
+- dùng NavLink để bao các sidebar item lại (dễ xài active)
+- Root router bị always active => bỏ prop end vô tất cả cá prop là ok
+- Tạo riêng component sidebar item như bên dưới, để qua sidebar render cho dễ
+
+```js
+import { IconType } from "react-icons";
+import { NavLink } from "react-router-dom";
+
+interface Props {
+  icon: IconType;
+  title: string;
+  path: string;
+}
+
+const BigSidebarItem = (props: Props) => {
+  const Icon = props.icon;
+  return (
+    <NavLink
+      end
+      to={`${props.path}`}
+      className={({ isActive, isPending, isTransitioning }) =>
+        [
+          isPending ? "pending" : "",
+          isActive ? "active" : "",
+          isTransitioning ? "transitioning" : "",
+          "flex justify-center items-center space-x-5",
+        ].join(" ")
+      }
+    >
+      <Icon size={25} />
+      <span className="">{props.title}</span>
+    </NavLink>
+  );
+};
+
+export default BigSidebarItem;
+```
+
+2. Tạo thêm các page cần thiết như Add-service, all-services...
+3. Bắt đầu tạo models => router => controller cho service
