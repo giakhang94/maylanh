@@ -4,4 +4,13 @@ import Navbar from "./Navbar";
 import ProtectedLayout from "./protectedLayout";
 import Loading from "./Loading";
 import LoadingForButton from "./LoadingForBtn";
-export { BigSidebar, Logo, Navbar, Loading, ProtectedLayout, LoadingForButton };
+import Input from "./Input";
+export {
+  BigSidebar,
+  Logo,
+  Navbar,
+  Loading,
+  ProtectedLayout,
+  LoadingForButton,
+  Input,
+};

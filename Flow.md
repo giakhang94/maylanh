@@ -414,4 +414,5 @@ export default BigSidebarItem;
 ```
 
 2. Tạo thêm các page cần thiết như Add-service, all-services...
-3. Bắt đầu tạo models => router => controller cho service
+3. bổ sung `user` models cho xong mấy cái phân quyền
+4. Bắt đầu tạo models => router => controller cho service

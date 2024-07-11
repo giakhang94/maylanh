@@ -8,7 +8,7 @@ const BigSideBar = (props: Props): React.JSX.Element => {
     <div className="w-[30%] max-w-[300px] flex flex-col justify-start items-start space-y-5 my-2 h-screen bg-white">
       <div
         id="sidebar_item"
-        className="flex flex-col justify-center items-start space-y-5 my-2  px-4 text-2xl"
+        className="flex flex-col justify-center items-start space-y-5 my-2  px-4 text-xl tracking-[1px]"
       >
         <div className="mb-5">
           <Logo />

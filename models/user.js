@@ -11,6 +11,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "please provide password"],
   },
+  role: {
+    type: String,
+    enum: ["admin", "mod"],
+    required: [true, "không chọn phân quyền là tới công chiện"],
+  },
 });
 
 UserSchema.pre("save", async function (next) {
@@ -27,9 +32,13 @@ UserSchema.methods.comparePassword = async function (clientPass) {
 
 UserSchema.methods.createJWT = function () {
   // console.log(this._id);
-  const token = jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_LIFETIME,
-  });
+  const token = jwt.sign(
+    { userId: this._id, role: this.role },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_LIFETIME,
+    }
+  );
   return token;
 };
 

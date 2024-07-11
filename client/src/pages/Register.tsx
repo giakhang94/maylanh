@@ -1,19 +1,29 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { LoadingForButton, Logo } from "../components";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
+import customAxios from "../utils/authFecth";
 
 interface Props {}
 interface InputState {
   email: string;
   password: string;
+  role: "mod" | "admin";
 }
 
 const Register = (props: Props): React.JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const [input, setInput] = useState<InputState>({ email: "", password: "" });
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const authFetch = customAxios();
+  const [input, setInput] = useState<InputState>({
+    email: "",
+    password: "",
+    role: "mod",
+  });
+  const handleInputChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -21,25 +31,27 @@ const Register = (props: Props): React.JSX.Element => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+    // console.log(input);
     setIsLoading(true);
     try {
-      const resp = await axios.post("http://localhost:5000/auth/register", {
+      const resp = await authFetch.post("http://localhost:5000/auth/register", {
         email: input.email,
         password: input.password,
+        role: input.role,
       });
       const data = resp.data;
       //data co dang {message:'...', user: {}}
       setIsLoading(false);
-      toast.success(data.message);
+      data && toast.success(data.message);
     } catch (error: any) {
       //error must be any type or unknown type
-      console.log(error.response.data.message);
+      console.log(error);
       setIsLoading(false);
-      error && toast.error(error.response.data.message);
+      toast.error(error.data.message);
     }
   };
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen mt-10">
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -74,7 +86,7 @@ const Register = (props: Props): React.JSX.Element => {
               />
             </div>
           </div>
-          <div>
+          <div className="mb-3">
             <label htmlFor="password">Password</label>
             <div>
               <input
@@ -87,6 +99,23 @@ const Register = (props: Props): React.JSX.Element => {
                 placeholder="enter your password"
               />
             </div>
+          </div>
+          <div className="flex flex-col mb-2">
+            <label htmlFor="role">Role (choose 1 below)</label>
+            <select
+              name="role"
+              id="role"
+              className="border-gray-500 border py-1 px-1 rounded-sm text-md block"
+              onChange={handleInputChange}
+              value={input.role}
+            >
+              <option className="" value={"admin"}>
+                Adminitrastor
+              </option>
+              <option selected={true} value="mod">
+                Moderator
+              </option>
+            </select>
           </div>
           <button
             onClick={handleSubmit}

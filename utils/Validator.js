@@ -8,10 +8,14 @@ const validateEmail = (email) => {
   }
 };
 
-const validateRequired = (email, password) => {
-  if (!email || !password) {
+const validateRequired = (email, password, role) => {
+  if (!email || !password || !role) {
     throw new BadRequestError("Email and password are required");
   }
 };
-
-export { validateEmail, validateRequired };
+const validateRequiredService = (name, price, description) => {
+  if (!name || !price || !description) {
+    throw new BadRequestError("Missing field(s)");
+  }
+};
+export { validateEmail, validateRequired, validateRequiredService };
