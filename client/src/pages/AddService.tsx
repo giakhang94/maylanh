@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Input } from "../components";
 import { ToastContainer, toast } from "react-toastify";
-import customAxios from "../utils/authFecth";
-import { stringify } from "querystring";
+import handleSubmit from "../utils/handleUploadImg";
 
 interface Props {}
-interface StateType {
+export interface StateType {
   name: string;
   description: string;
   price: number;
@@ -14,8 +13,6 @@ interface StateType {
   thumb?: File | null;
 }
 const AddService = (props: Props): React.JSX.Element => {
-  const authFetch = customAxios();
-  const formData = new FormData();
   const [input, setInput] = useState<StateType>({
     name: "",
     description: "",
@@ -34,25 +31,15 @@ const AddService = (props: Props): React.JSX.Element => {
       }));
     } else {
       if (!e.target.files) return;
-      const isImg = e.target.files[0].name.match(/\.(jpg|jpeg|png|gif)$/);
-      if (!isImg) {
+      if (!e.target.files[0].name.match(/\.(jpg|jpeg|png|gif)$/)) {
         return toast.warning("Please choose a valid image");
       }
       console.log(e.target.files[0]);
-      formData.append("thumb", e.target.files[0]);
+      const file = e.target.files[0];
+      setInput((prv) => ({ ...prv, thumb: file }));
     }
   };
-  // console.log(input);
-  const handleSubmit = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    formData.append("input", JSON.stringify(input));
-    const { data } = await authFetch.post("/service/add", formData, {
-      headers: { "content-type": "multipart/form-data" },
-    });
-    console.log(data);
-  };
+
   return (
     <>
       <ToastContainer
@@ -130,7 +117,10 @@ const AddService = (props: Props): React.JSX.Element => {
         <button
           className="w-full py-2 bg-sky-500 text-white font-semibold tracking-[1px] mt-2 rounde-sm"
           type="submit"
-          onClick={handleSubmit}
+          onClick={(e) => {
+            e.preventDefault();
+            handleSubmit(input);
+          }}
         >
           Submit
         </button>

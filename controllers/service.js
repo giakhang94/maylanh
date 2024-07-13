@@ -7,10 +7,19 @@ import {
 } from "../utils/Validator.js";
 
 const createService = async (req, res, next) => {
-  console.log(JSON.parse(req.body.input));
-  console.log("tao", req.file);
-  // const service = await Service.create({ ...data, image: req.file.buffer });
-  res.send(req.body);
+  const { name, description, price, promotion, promotionPrice } = JSON.parse(
+    req.body.input
+  );
+  const file = req.file.buffer;
+  const service = await Service.create({
+    name,
+    description,
+    price,
+    promotion,
+    promotionPrice,
+    image: file,
+  });
+  res.status(200).json({ message: "Đã tạo dịch vụ xong", service });
 };
 
 const updateService = async (req, res) => {

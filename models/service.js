@@ -5,8 +5,8 @@ const ServiceSchema = new mongoose.Schema({
     type: String,
     required: [true, "please provide service name"],
     unique: true,
-    minLength: 5,
-    maxLength: 25,
+    minLength: [5, "Tên dịch vụ cần phải dài hơn 5 ký tự"],
+    maxLength: [25, "Tên dịch vụ cần phải ngắn hơn 25 ký tự"],
     trim: true,
   },
   price: {
@@ -14,10 +14,10 @@ const ServiceSchema = new mongoose.Schema({
     required: [true, "please provide service number"],
   },
   description: {
-    type: Number,
+    type: String,
     required: [true, "Không mô tả ai hiểu gì mà đặt hả mày?"],
-    minLength: 10,
-    maxLength: 50,
+    minLength: [10, "Mô tả cần phải dài hơn 10 ký tự"],
+    maxLength: [100, "Mô tả phải ngắn hơn 100 ký tự"],
     trim: true,
   },
   image: {

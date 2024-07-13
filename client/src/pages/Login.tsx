@@ -27,7 +27,7 @@ const Login = (props: Props): React.JSX.Element => {
     setIsLoading(true);
     try {
       const authFect = customAxios();
-      const { data } = await authFect.post("http://localhost:5000/auth/login", {
+      const { data } = await authFect.post("/auth/login", {
         email: input.email,
         password: input.password,
       });
