@@ -21,6 +21,19 @@ const createService = async (req, res, next) => {
   });
   res.status(200).json({ message: "Đã tạo dịch vụ xong", service });
 };
+const getAllService = async (req, res) => {
+  const services = await Service.find();
+  if (!services) {
+    throw new NotFoundError("There no service to display");
+  }
+  res.status(200).json({ message: "get all services done", services });
+};
+const getThumb = async (req, res) => {
+  const id = req.params.id;
+  const service = await Service.findOne({ _id: id });
+  res.set("content-type", "image/png, image/jpg, image/jpeg");
+  res.send(service.image);
+};
 
 const updateService = async (req, res) => {
   const { name, price, description, promotion, promotionPrice } = req.body;
@@ -44,4 +57,4 @@ const updateService = async (req, res) => {
   res.status(201).json({ message: "update thành công!", updatedService });
 };
 
-export { createService, updateService };
+export { createService, updateService, getAllService, getThumb };
