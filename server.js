@@ -4,14 +4,17 @@ import express from "express";
 import connectDB from "./db/connectDB.js";
 import dotenv from "dotenv";
 import userRouter from "./routers/user.js";
+import serviceRouter from "./routers/service.js";
 import ErrorHandlerMiddleware from "./middleware/ErrorHandlerMiddleWare.js";
 import cookieParser from "cookie-parser";
+
 dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors({ credentials: true, origin: true }));
+app.use(cors());
 app.use(cookieParser());
+
 //add header to handle cors-issue
 // app.use((req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -25,7 +28,7 @@ app.use(cookieParser());
 // });
 //using router
 app.use("/auth", userRouter);
-
+app.use("/service", serviceRouter);
 app.use(ErrorHandlerMiddleware);
 const PORT = process.env.PORT || 5000;
 const start = () => {

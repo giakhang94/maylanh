@@ -1,16 +1,16 @@
-import { NotFoundError } from "../errors";
-import Service from "../models/service";
-import { adminPermision } from "../utils/adminPermison";
-import { validateRequired, validateRequiredService } from "../utils/Validator";
+import { NotFoundError } from "../errors/index.js";
+import Service from "../models/service.js";
+import { adminPermision } from "../utils/adminPermison.js";
+import {
+  validateRequired,
+  validateRequiredService,
+} from "../utils/Validator.js";
 
 const createService = async (req, res, next) => {
-  const data = req.body;
-  const requestRole = req.user.role;
-  adminPermision(requestRole);
-  validateRequired(data.name, data.price);
-  const service = await Service.create(data);
-  await service.save();
-  res.status(200).json({ message: "Đã tạo xong", service });
+  console.log(JSON.parse(req.body.input));
+  console.log("tao", req.file);
+  // const service = await Service.create({ ...data, image: req.file.buffer });
+  res.send(req.body);
 };
 
 const updateService = async (req, res) => {

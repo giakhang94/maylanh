@@ -416,3 +416,215 @@ export default BigSidebarItem;
 2. Tạo thêm các page cần thiết như Add-service, all-services...
 3. bổ sung `user` models cho xong mấy cái phân quyền
 4. Bắt đầu tạo models => router => controller cho service
+5. Hoàn thiện mấy cái phân quyền
+
+- tạo hàm riêng kiểm tra role của user
+- Role được đính kèm vào token khi createJWT.
+- Sau đó role dc bắng req.user.role để kiểm tra phân quyền
+
+6. Tạo component input riêng để tránh gõ lại 1 đống <div>
+
+```js
+interface Props {
+  type: string;
+  name: string;
+  placeholder?: string;
+  value: string | number;
+  label: string;
+  disabled?: boolean;
+  handleInputChange: (e: any) => void;
+}
+
+const Input = (props: Props): React.JSX.Element => {
+  return (
+    <div className="mb-3">
+      <label htmlFor="" className="font-semibold tracking-[1px]">
+        {props.label}
+      </label>
+      <div>
+        <input
+          type={props.type}
+          onChange={props.handleInputChange}
+          value={props.value}
+          id={props.name}
+          name={props.name}
+          placeholder={props.placeholder}
+          className="border border-gray-300 py-1 px-2 min-w-[300px] w-full rounded-md outline-none"
+          disabled={props.disabled}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default Input;
+```
+
+7. Tạo page addService, tạo input các kiểu, input type = file để chọn hình ảnh
+   7.1. validate file ở react => xài regex e.target.files[0].name.match(/\.(jpg | png | gif)/@) => kiểm tra ext có phải dạng image không?
+   7.2. input file onChange có 2 hướng làm:
+   -add file vào state của useState
+   -hoặc tạo formData = new FomrData() => formData.append('img', file)
+
+   7.3. xử lý gởi data qua BE
+
+### Cần lưu ý 2 chỗ xử lý data này, khi gởi file qua BE
+
+1. BE: Xài multer. Tạo multer config, filter...
+   => sau dó dùng làm middleware `router.post('/upload/,auth, multer({...}.single("tênfile")), controller)`
+   => ` tênfile` chính là `key` của thằng formdata
+   => ví dụ fomr.append("img", flie) => single("img")
+   => up file lên local disk thì xài destination. up binary lên cloud thì bỏ destination là được
+2. ở FE
+   => fetch data headers phải có `content-type: multipart/form-data`
+   => khi gởi kèm các field khác. Đã gọi là multipart rồi thì phải chia ra nhiều part
+   => mỗi lần chia vậy là append vào hết, lát coi code sẽ rõ.
+
+front-end
+(form vàn gửi data qua be)
+
+```js
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.name !== "thumb") {
+      setInput((prev) => ({
+        ...prev,
+        [e.target.name]:
+          e.target.name !== "promotion" ? e.target.value : e.target.checked,
+      }));
+    } else {
+      if (!e.target.files) return;
+      const isImg = e.target.files[0].name.match(/\.(jpg|jpeg|png|gif)$/); //validate
+      if (!isImg) {
+        return toast.warning("Please choose a valid image");
+      }
+      console.log(e.target.files[0]);
+      formData.append("thumb", e.target.files[0]); //tạo part đầu tiên key = "thumb", chứa file cần gởi
+    }
+  };
+  // console.log(input);
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    formData.append("input", JSON.stringify(input));// chia part (2 part, input và fileIMG)
+    const { data } = await authFetch.post("/service/add", formData, {
+      headers: { "content-type": "multipart/form-data" },
+    });
+    console.log(data);
+  };
+  return (
+    <>
+
+      <form
+        className="flex flex-col  mx-auto w-[350px]"
+        encType="multipart/form-data"
+        method="POST"
+        id="form"
+      >
+        <h2 className="mt-5 mb-3 text-center font-bold text-2xl">
+          Thêm Dịch Vụ
+        </h2>
+
+        <Input
+          handleInputChange={handleInputChange}
+          value={input.name}
+          type="text"
+          placeholder="Nhập tên dịch vụ (sửa máy lạnh...)"
+          name="name"
+          label="Tên dịch vụ"
+        />
+        <Input
+          handleInputChange={handleInputChange}
+          value={input.description}
+          type="text"
+          placeholder="Nhập mô tả dịch vụ sơ sơ"
+          name="description"
+          label="Mô tả DV"
+        />
+        <Input
+          handleInputChange={handleInputChange}
+          value={input.price}
+          type="number"
+          placeholder="vd: 100.000"
+          name="price"
+          label="Giá"
+        />
+
+        <div className="flex items-center space-x-3">
+          <label htmlFor="">Khuyến mãi</label>
+          <input
+            type="checkbox"
+            checked={input.promotion}
+            name="promotion"
+            className=""
+            onChange={handleInputChange}
+          />
+        </div>
+        <Input
+          handleInputChange={handleInputChange}
+          value={input.promotionPrice}
+          type="number"
+          placeholder="Giá khuyến mãi (vd: 20.000)"
+          name="promotionPrice"
+          label=""
+          disabled={!input.promotion}
+        />
+        {/* upload image */}
+        <div className="mb-3">
+          <label htmlFor="img">Hình minh họa</label>
+          <input type="file" name="thumb" onChange={handleInputChange} />
+        </div>
+        <button
+          className="w-full py-2 bg-sky-500 text-white font-semibold tracking-[1px] mt-2 rounde-sm"
+          type="submit"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
+      </form>
+    </>
+  );
+};
+
+export default AddService;
+
+```
+
+### file config multer
+
+```js
+import multer from "multer";
+
+import { BadRequestError } from "../errors/index.js";
+const MIME_TYPE_MAP = {
+  "image/png": "png",
+  "image/jpeg": "jpeg",
+  "image/jpg": "jpg",
+};
+
+const fileUpload = multer({
+  limit: 5000000,
+  //================khúc cmt ở dưới nếu khôi phục sẽ lưu vào uploads/images
+  //================bỏ đi sẽ tạo dạng buffer lưu lên cloud db
+  // storage: multer.diskStorage({
+  //   // destination: (req, file, cb) => {
+  //   //   cb(null, "uploads/images");
+  //   // },
+  //   filename: (req, file, cb) => {
+  //     const ext = MIME_TYPE_MAP[file.mimetype];
+  //     cb(null, uuid() + "." + ext);
+  //   },
+  // }),
+  fileFilter: (req, file, cb) => {
+    console.log("tao");
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return new BadRequestError("Chỉ upload hình ảnh");
+    }
+    const isValid = !!MIME_TYPE_MAP[file.mimetype];
+    let error = isValid ? null : new Error("invalid mime type");
+    cb(error, isValid);
+  },
+});
+
+export default fileUpload;
+```

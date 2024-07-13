@@ -5,6 +5,7 @@ const customAxios = () => {
     withCredentials: true,
     headers: {
       // Authorization: `Bearer ${token}`,
+      "content-type": "application/json",
     },
   });
   authFetch.interceptors.response.use(
