@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import customAxios from "../utils/authFecth";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import NumberFormat from "../utils/FormatNumber";
 import { FaRegEdit } from "react-icons/fa";
-import { FlexibleInput, PromotionService } from "../components";
+import { FlexibleInput } from "../components";
 import { IoSaveSharp } from "react-icons/io5";
-import { MdCancel } from "react-icons/md";
-
+import { MdCancel, MdDeleteForever } from "react-icons/md";
+import handleDeleteService from "../utils/deleteService";
+import updateServiceObj from "../utils/updateServiceObj";
 interface Props {}
 interface StateProps {
   _id: string;
@@ -27,6 +28,7 @@ const AllService = (props: Props): React.JSX.Element => {
   });
   const inputInitState = {
     promotion: true,
+    _id: "",
     promotionPrice: 0,
     name: "",
     description: "",
@@ -34,6 +36,7 @@ const AllService = (props: Props): React.JSX.Element => {
   };
   const [input, setInput] = useState<{
     promotion: boolean;
+    _id: string;
     promotionPrice: number;
     name: string;
     description: string;
@@ -60,141 +63,190 @@ const AllService = (props: Props): React.JSX.Element => {
     getAllService();
   }, []);
   if (isLoading) return <div>Loading...</div>;
+  //2ways-binding
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.name);
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-  console.log(input);
-  return (
-    <div className="grid grid-flow-col w-full mt-5 mx-5 ">
-      {services &&
-        services.map((service: StateProps, index: number) => {
-          return (
-            <div className="max-w-[320px] " key={index + "service-card"}>
-              <div className="h-[220px] w-[320px] rounded-md relative">
-                <img
-                  src={`http://localhost:5000/service/image/${service._id}`}
-                  className="h-full object-cover rounded-md w-full"
-                  alt=""
-                />
-                {/* giá khuyến mãi ở đây */}
-                <div>
-                  <span
-                    className=" cursor-pointer absolute z-10 top-0 right-0 py-1 px-2 bg-[#f15a16] text-white font-semibold rounded-md m-2"
-                    onClick={() => {
-                      setInput((p) => ({
-                        ...p,
-                        promotion: !service.promotion,
-                      }));
-                    }}
-                  >
-                    {isEditing.edit &&
-                    isEditing.id === service._id &&
-                    !service.promotion
-                      ? "Bật giảm giá"
-                      : "Tắt giảm giá"}
-                  </span>
+  //submit change service
+  const handleSubmit = async (serviceId: string) => {
+    try {
+      const updatedService = await customAxios().patch(
+        `/service/${serviceId}`,
+        {
+          ...input,
+        }
+      );
+      console.log(updatedService);
+      const tempServices = [...services!];
+      let thisService = tempServices.find((service) => {
+        return service._id === serviceId;
+      });
+      thisService = updateServiceObj(input, thisService!);
 
-                  {service.promotion && input.promotion && (
-                    <span className="absolute z-10 bottom-0 right-0 py-1 px-2 bg-[#f15a16] text-white font-semibold rounded-md m-2">
-                      Giá KM:{" "}
-                      {
-                        <NumberFormat
-                          number={
-                            input.promotionPrice || service.promotionPrice!
-                          }
+      setServices(tempServices);
+      setIsEditing((prev) => ({ ...prev, edit: false, id: "" }));
+    } catch (error: any) {
+      toast.warning(error.data.message);
+    }
+  };
+
+  return (
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        className="mt-[150px] mr-5 text-xl"
+      />
+      <h2 className="text-center font-bold tracking-[2px] text-2xl my-5">
+        Danh Sách Dịch Vụ
+      </h2>
+      <div className="flex flex-wrap justify-around  w-full mt-5 mx-5 ">
+        {services &&
+          services.map((service: StateProps, index: number) => {
+            return (
+              <div className="max-w-[320px] mx-10" key={index + "service-card"}>
+                <div className="h-[220px] w-[320px] rounded-md relative">
+                  <img
+                    src={`http://localhost:5000/service/image/${service._id}`}
+                    className="h-full object-cover rounded-md w-full"
+                    alt=""
+                  />
+                  {/* giá khuyến mãi ở đây */}
+                  <div>
+                    {service.promotion && (
+                      <span className="absolute top-5 right-0 text-white font-semibold block bg-[#f15a16]  py-1 px-2 rounded-md">
+                        Đang giảm giá
+                      </span>
+                    )}
+                    {service.promotion && (
+                      <span className="absolute bottom-1 right-1 text-white font-semibold block bg-[#f15a16]  py-1 px-2 rounded-md">
+                        <NumberFormat number={service.promotionPrice} /> đ
+                      </span>
+                    )}
+                    {isEditing.edit && isEditing.id === service._id && (
+                      <div className="absolute bottom-1 right-1 text-gray-300 font-semibold bg-[#f15a16]  py-1 px-2 rounded-md flex items-center space-x-2">
+                        <label htmlFor="">nhập giá KM</label>
+                        <input
+                          value={input.promotionPrice || service.promotionPrice}
+                          name="promotionPrice"
+                          onChange={handleChange}
+                          className="w-fit max-w-[85px] mr-2 inline-block"
                         />
-                      }{" "}
-                      đ
-                    </span>
-                  )}
+                      </div>
+                    )}
+                  </div>
+                  {/* xong phần khuyến mãi */}
                 </div>
-              </div>
-              <div className="w-full">
-                <div className="flex justify-between w-full max-w-[320px]">
-                  <p className="w-full  text-lg font-semibold tracking-[1px] flex items-center space-x-2">
+                <div className="w-full">
+                  <div className="flex justify-between w-full max-w-[320px]">
+                    <p className="w-full  text-lg font-semibold tracking-[1px] flex items-center space-x-2">
+                      <FlexibleInput
+                        value={input.name}
+                        onChange={handleChange}
+                        type="text"
+                        element="span"
+                        isEdit={isEditing}
+                        id={service._id}
+                        oldValue={service.name}
+                        name="name"
+                      />
+                    </p>
+
                     <FlexibleInput
-                      value={input.name}
+                      value={input.price}
                       onChange={handleChange}
-                      type="text"
+                      name="price"
                       element="span"
                       isEdit={isEditing}
                       id={service._id}
-                      oldValue={service.name}
-                      name="name"
-                    />
-                  </p>
-
-                  <FlexibleInput
-                    value={input.price}
-                    onChange={handleChange}
-                    name="price"
-                    element="span"
-                    isEdit={isEditing}
-                    id={service._id}
-                    oldValue={service.price}
-                    type="number"
-                    classname={`max-w-[100px] w-fit block
+                      oldValue={service.price}
+                      type="number"
+                      classname={`max-w-[100px] w-fit block
                         ${service.promotion ? "line-through opacity-75" : ""}
                       } py-1 px-2 text-[#f15a16] text-lg font-bold rounded-md m-2`}
-                  />
-                </div>
-                <FlexibleInput
-                  classname="block w-full break-normal italic text-md text-gray-500"
-                  oldValue={service.description}
-                  value={input.description}
-                  isEdit={isEditing}
-                  id={service._id}
-                  element="p"
-                  type="text"
-                  onChange={handleChange}
-                  name="description"
-                />
-                {!isEditing.edit ? (
-                  <FaRegEdit
-                    size={20}
-                    className="text-sky-500 cursor-pointer hover:scale-[120%]"
-                    onClick={(e) => {
-                      // console.log(e.target.name);
-
-                      setIsEditing((prev) => ({
-                        ...prev,
-                        id: service._id,
-                        edit: true,
-                      }));
-                      setInput(inputInitState);
-                    }}
-                  />
-                ) : isEditing.id === service._id ? (
-                  <div className="flex space-x-3 items-center mt-2">
-                    <IoSaveSharp size={20} className="text-green-500" />
-                    <MdCancel
-                      size={20}
-                      className="text-red-500 cursor-pointer"
-                      onClick={handleCloseEdit}
                     />
                   </div>
-                ) : (
-                  <FaRegEdit
-                    size={20}
-                    className="text-sky-500 cursor-pointer hover:scale-[120%]"
-                    onClick={(e) => {
-                      // console.log(e.target.name);
-
-                      setIsEditing((prev) => ({
-                        ...prev,
-                        id: service._id,
-                        edit: true,
-                      }));
-                      // setInput(inputInitState);
-                    }}
+                  <FlexibleInput
+                    classname="block w-full break-normal italic text-md text-gray-500"
+                    oldValue={service.description}
+                    value={input.description}
+                    isEdit={isEditing}
+                    id={service._id}
+                    element="p"
+                    type="text"
+                    onChange={handleChange}
+                    name="description"
                   />
-                )}
+                  {!isEditing.edit ? (
+                    <div className="flex justify-between items-center">
+                      <FaRegEdit
+                        size={20}
+                        className="text-sky-500 cursor-pointer hover:scale-[120%]"
+                        onClick={(e) => {
+                          // console.log(e.target.name);
+
+                          setIsEditing((prev) => ({
+                            ...prev,
+                            id: service._id,
+                            edit: true,
+                          }));
+                          setInput(inputInitState);
+                        }}
+                      />
+                      <MdDeleteForever
+                        size={25}
+                        className="text-red-500 cursor-pointer hover:scale-[120%]"
+                        onClick={() => {
+                          handleDeleteService(service._id);
+                        }}
+                      />
+                    </div>
+                  ) : isEditing.id === service._id ? (
+                    <div className="flex space-x-3 items-center mt-2">
+                      <IoSaveSharp
+                        size={20}
+                        className="text-green-500 cursor-pointer hover:scale-[120%]"
+                        onClick={() => {
+                          handleSubmit(service._id);
+                        }}
+                      />
+                      <MdCancel
+                        size={20}
+                        className="text-red-500 cursor-pointer"
+                        onClick={handleCloseEdit}
+                      />
+                    </div>
+                  ) : (
+                    <FaRegEdit
+                      size={20}
+                      className="text-sky-500 cursor-pointer hover:scale-[120%]"
+                      onClick={(e) => {
+                        // console.log(e.target.name);
+
+                        setIsEditing((prev) => ({
+                          ...prev,
+                          id: service._id,
+                          edit: true,
+                        }));
+                        // setInput(inputInitState);
+                      }}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
-    </div>
+            );
+          })}
+      </div>
+    </>
   );
 };
 

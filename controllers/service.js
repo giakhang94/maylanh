@@ -1,4 +1,4 @@
-import { NotFoundError } from "../errors/index.js";
+import { BadRequestError, NotFoundError } from "../errors/index.js";
 import Service from "../models/service.js";
 import { adminPermision } from "../utils/adminPermison.js";
 import {
@@ -36,25 +36,45 @@ const getThumb = async (req, res) => {
 };
 
 const updateService = async (req, res) => {
-  const { name, price, description, promotion, promotionPrice } = req.body;
+  let { name, price, description, promotion, promotionPrice } = req.body;
   const serviceId = req.params.id;
   adminPermision(req.user.role);
-  validateRequiredService(name, price, description);
 
-  const updateObj = {};
-  if (name) updateObj.name = name;
-  if (price) updateObj.price = price;
-  if (description) updateObj.description = description;
-  if (promotion) updateObj.promotion = promotion;
-  if (promotionPrice) updateObj.promotionPrice = promotionPrice;
+  const serviceToUpdate = await Service.findOne({ _id: serviceId });
 
-  const updatedService = await Service.findByIdAndUpdate(serviceId, updateObj, {
-    new: true,
-  });
-  if (!updatedService) {
+  if (!serviceToUpdate) {
     throw new NotFoundError("item not found");
   }
-  res.status(201).json({ message: "update thành công!", updatedService });
+
+  if (name) serviceToUpdate.name = name;
+  if (price) {
+    serviceToUpdate.price = price;
+  } else {
+    price = serviceToUpdate.price;
+  }
+  if (description) serviceToUpdate.description = description;
+  if (promotionPrice) serviceToUpdate.promotionPrice = promotionPrice;
+  if (promotionPrice > 0) {
+    serviceToUpdate.promotion = true;
+  } else {
+    serviceToUpdate.promotion = false;
+  }
+  if (promotionPrice >= price) {
+    throw new BadRequestError("Đặt giá khuyến mãi ngu vcl");
+  }
+
+  await serviceToUpdate.save();
+  res.status(201).json({ message: "update thành công!", serviceToUpdate });
 };
 
-export { createService, updateService, getAllService, getThumb };
+const deleteService = async () => {
+  const serviceId = req.params.id;
+  adminPermision(req.user.role);
+  const result = await Service.findByIdAndDelete({ _id: serviceId });
+  if (!result) {
+    throw BadRequestError("Xóa lại cái nữa đi nè ố dè");
+  }
+  res.status(201).json({ message: "Đã xóa xong" });
+};
+
+export { createService, updateService, getAllService, getThumb, deleteService };
