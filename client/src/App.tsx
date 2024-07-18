@@ -9,6 +9,7 @@ import {
   Login,
   Order,
   Register,
+  Services,
   ShareLayout,
 } from "./pages";
 import ProtectedLayout from "./components/protectedLayout";
@@ -32,6 +33,7 @@ function App() {
         <Route element={<Login />} path="/login" />
         <Route element={<Register />} path="/register" />
         <Route element={<Home />} path="/" />
+        <Route element={<Services />} path="/services" />
       </Routes>
     </BrowserRouter>
   );
