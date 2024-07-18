@@ -1,4 +1,4 @@
-import { NotFoundError } from "../errors/index.js";
+import { BadRequestError, NotFoundError } from "../errors/index.js";
 import Service from "../models/service.js";
 import { adminPermision } from "../utils/adminPermison.js";
 import {
@@ -21,27 +21,60 @@ const createService = async (req, res, next) => {
   });
   res.status(200).json({ message: "Đã tạo dịch vụ xong", service });
 };
-
-const updateService = async (req, res) => {
-  const { name, price, description, promotion, promotionPrice } = req.body;
-  const serviceId = req.params.id;
-  adminPermision(req.user.role);
-  validateRequiredService(name, price, description);
-
-  const updateObj = {};
-  if (name) updateObj.name = name;
-  if (price) updateObj.price = price;
-  if (description) updateObj.description = description;
-  if (promotion) updateObj.promotion = promotion;
-  if (promotionPrice) updateObj.promotionPrice = promotionPrice;
-
-  const updatedService = await Service.findByIdAndUpdate(serviceId, updateObj, {
-    new: true,
-  });
-  if (!updatedService) {
-    throw new NotFoundError("item not found");
+const getAllService = async (req, res) => {
+  const services = await Service.find();
+  if (!services) {
+    throw new NotFoundError("There no service to display");
   }
-  res.status(201).json({ message: "update thành công!", updatedService });
+  res.status(200).json({ message: "get all services done", services });
+};
+const getThumb = async (req, res) => {
+  const id = req.params.id;
+  const service = await Service.findOne({ _id: id });
+  res.set("content-type", "image/png, image/jpg, image/jpeg");
+  res.send(service.image);
 };
 
-export { createService, updateService };
+const updateService = async (req, res) => {
+  let { name, price, description, promotion, promotionPrice } = req.body;
+  const serviceId = req.params.id;
+  adminPermision(req.user.role);
+
+  const serviceToUpdate = await Service.findOne({ _id: serviceId });
+
+  if (!serviceToUpdate) {
+    throw new NotFoundError("item not found");
+  }
+
+  if (name) serviceToUpdate.name = name;
+  if (price) {
+    serviceToUpdate.price = price;
+  } else {
+    price = serviceToUpdate.price;
+  }
+  if (description) serviceToUpdate.description = description;
+  if (promotionPrice) serviceToUpdate.promotionPrice = promotionPrice;
+  if (promotionPrice > 0) {
+    serviceToUpdate.promotion = true;
+  } else {
+    serviceToUpdate.promotion = false;
+  }
+  if (promotionPrice >= price) {
+    throw new BadRequestError("Đặt giá khuyến mãi ngu vcl");
+  }
+
+  await serviceToUpdate.save();
+  res.status(201).json({ message: "update thành công!", serviceToUpdate });
+};
+
+const deleteService = async () => {
+  const serviceId = req.params.id;
+  adminPermision(req.user.role);
+  const result = await Service.findByIdAndDelete({ _id: serviceId });
+  if (!result) {
+    throw BadRequestError("Xóa lại cái nữa đi nè ố dè");
+  }
+  res.status(201).json({ message: "Đã xóa xong" });
+};
+
+export { createService, updateService, getAllService, getThumb, deleteService };

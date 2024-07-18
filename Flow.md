@@ -628,3 +628,48 @@ const fileUpload = multer({
 
 export default fileUpload;
 ```
+
+### Refactor upload imag => sửa lại chõ formData.append()
+
+=> xài useState để set value cho file và input
+=> chạy vô hàm handleSubmit tạo formData = new FormData(). Khong tạo ở top level, sẽ bị ghị dồn lại.
+=> gom hết vào hàm handleSubmit => append vào formData cả file và input 1 lần 1 trong hàm handleSubmit
+=> nếu mà làm rải rác thì mỗi lần bị lỗi, mà nhấn submit lại là nó đồn thêm data và formData
+
+### Display image
+
+1. Đầu tiên get dc service trước. Lấy service.\_id
+2. gọi http://localhost:5000/serivce/image/service.\_id
+3. qua controller
+   3.1. tạo thằng get Image
+   - res.set('content-type', 'image/png, image/jpg, image/jpeg')
+   - res.send(service.thumb)
+     3.2. qua router tạo thêm router
+   - router.get('/image/:id) => với id là id của thằng service chứa image cần tải
+
+service/controller.js
+
+```js
+const getThumb = async (req, res) => {
+  const id = req.params.id;
+  const service = await Service.findOne({ _id: id });
+  res.set("content-type", "image/png, image/jpg, image/jpeg");
+  res.send(service.image);
+};
+```
+
+getimage như sau:
+
+```js
+<div className="h-40">
+  tao
+  <img
+    src={`http://localhost:5000/service/image/${
+      services && services[0]._id?.toString() //test tượng trưng coi chạy hay không nên lấy index [0]
+      //services fetch api lấy ra all services nên đang ở dạng array chứa các object {}[]
+    }`}
+    alt=""
+    className="h-full"
+  />
+</div>
+```
