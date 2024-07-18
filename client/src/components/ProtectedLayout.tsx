@@ -1,16 +1,19 @@
-import { useAppContext } from "../Context/appContext";
-import { Navigate } from "react-router-dom";
-import Loading from "./Loading";
-interface Props {}
+import { PropsWithChildren } from "react";
 
-const ProtectedLayout = ({ children }: any) => {
+import { Navigate } from "react-router-dom";
+
+import { useAppContext } from "../Context/appContext";
+import Loading from "./Loading";
+
+const ProtectedLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const { user, isLoadingUser } = useAppContext();
-  // console.log(isLoadingUser);
-  // let isLoadingFake = true;
+
   if (isLoadingUser) return <Loading classname="h-screen" />;
   if (!user) {
     return <Navigate to="/" />;
   }
-  return children;
+
+  return <>{children}</>;
 };
+
 export default ProtectedLayout;

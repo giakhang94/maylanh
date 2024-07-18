@@ -11,7 +11,7 @@ import {
   Register,
   ShareLayout,
 } from "./pages";
-import ProtectedLayout from "./components/protectedLayout";
+import ProtectedLayout from "./components/ProtectedLayout";
 function App() {
   return (
     <BrowserRouter>
