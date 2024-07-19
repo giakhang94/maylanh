@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "target": "ESNext",
+    "paths": {
+      "@/*": ["src/*"],
+    },
     "lib": [
       "dom",
       "dom.iterable",

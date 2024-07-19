@@ -10,7 +10,7 @@ import {
   Order,
   Register,
   ShareLayout,
-} from "./pages";
+} from "@/pages";
 import ProtectedLayout from "./components/protectedLayout";
 function App() {
   return (
