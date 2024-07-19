@@ -12,7 +12,35 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
+
+const corsConfig = {
+  // Configures the Access-Control-Allow-Origin
+  origin: "http://localhost:3000",
+
+  // Configures the Access-Control-Allow-Methods
+  methods: "GET, POST, OPTIONS, PUT, PATCH, DELETE",
+
+  //Configures the Access-Control-Allow-Headers
+  allowedHeaders:
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Authorization",
+
+  // Configures the Access-Control-Allow-Credentials
+  credentials: true,
+
+  //Configures the Access-Control-Expose-Headers
+  exposedHeaders: "Content-Range,X-Content-Range,Authorization",
+
+  // Provides a status code to use for successful OPTIONS requests
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsConfig));
 app.use(cookieParser());
 
 //add header to handle cors-issue

@@ -1,7 +1,7 @@
 import axios from "axios";
 const customAxios = () => {
   const authFetch = axios.create({
-    baseURL: "/",
+    baseURL: "http://localhost:5000",
     withCredentials: true,
     headers: {
       // Authorization: `Bearer ${token}`,
