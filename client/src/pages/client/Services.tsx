@@ -84,14 +84,14 @@ const Services = (props: Props): React.JSX.Element => {
         </PurchaseModal>
       )}
       <div
-        className={`flex w-full space-x-10 p-10 flex-wrap relative ${
+        className={`grid grid-cols-3 w-full space-x-10 p-10 relative ${
           showModal ? "blur-sm" : ""
         }`}
       >
         {services.map((service: StateProps, index: number) => {
           return (
             <div
-              className="group w-1/4 max-w-[350px] min-w-[320px] rounded-md shadow-md pb-3 hover:scale-105 transition-all cursor-pointer relative"
+              className="group w-1/4 max-w-[360px] min-w-[320px] rounded-md shadow-md pb-3 hover:scale-105 transition-all cursor-pointer relative"
               key={index + "service-card-client"}
             >
               <div
@@ -124,8 +124,8 @@ const Services = (props: Props): React.JSX.Element => {
                 )}
               </div>
               <div className="px-1">
-                <div className="flex text-xl items-center justify-between">
-                  <p className=" tracking-[1px] font-semibold ">
+                <div className="flex items-center justify-between">
+                  <p className=" tracking-[1px] font-semibold truncate hover:text-clip text-lg ">
                     {service.name}
                   </p>
                   <p

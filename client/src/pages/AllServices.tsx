@@ -109,11 +109,14 @@ const AllService = (props: Props): React.JSX.Element => {
       <h2 className="text-center font-bold tracking-[2px] text-2xl my-5">
         Danh Sách Dịch Vụ
       </h2>
-      <div className="flex flex-wrap justify-around  w-full mt-5 mx-5 ">
+      <div className="grid grid-cols-3 w-full mt-5 mx-2 pl-3 ml-2 ">
         {services &&
           services.map((service: StateProps, index: number) => {
             return (
-              <div className="max-w-[320px] mx-10" key={index + "service-card"}>
+              <div
+                className="max-w-[320px] min-h-[250px] shadow-sm shadow-gray-300 "
+                key={index + "service-card"}
+              >
                 <div className="h-[220px] w-[320px] rounded-md relative">
                   <img
                     src={`http://localhost:5000/service/image/${service._id}`}
@@ -176,7 +179,7 @@ const AllService = (props: Props): React.JSX.Element => {
                     />
                   </div>
                   <FlexibleInput
-                    classname="block w-full break-normal italic text-md text-gray-500"
+                    classname="block w-full break-normal italic text-md text-gray-500 truncate hover:text-wrap"
                     oldValue={service.description}
                     value={input.description}
                     isEdit={isEditing}
@@ -187,7 +190,7 @@ const AllService = (props: Props): React.JSX.Element => {
                     name="description"
                   />
                   {!isEditing.edit ? (
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center self-end">
                       <FaRegEdit
                         size={20}
                         className="text-sky-500 cursor-pointer hover:scale-[120%]"
