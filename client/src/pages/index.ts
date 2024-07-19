@@ -6,8 +6,9 @@ import Register from "./Register";
 import Home from "./Home";
 import AddService from "./AddService";
 import AllService from "./AllServices";
-
+import Services from "./client/Services";
 export {
+  Services,
   Login,
   Order,
   Dashboard,

@@ -7,7 +7,11 @@ import LoadingForButton from "./LoadingForBtn";
 import Input from "./Input";
 import FlexibleInput from "./FlexibleInput";
 import PromotionService from "./PromotionService";
+import PurchaseModal from "./PurchaseModal";
+import PurchaseForm from "./PurchaseForm";
 export {
+  PurchaseForm,
+  PurchaseModal,
   PromotionService,
   FlexibleInput,
   BigSidebar,
