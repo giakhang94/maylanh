@@ -14,8 +14,10 @@ interface Props {
   ) => void;
   value: InputType;
   handleCloseModal: () => void;
+  handleSubmit: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 const PurchaseForm = ({
+  handleSubmit,
   handleChange,
   value,
   handleCloseModal,
@@ -75,7 +77,10 @@ const PurchaseForm = ({
           id=""
         ></textarea>
       </div>
-      <button className="mt-5  rounded-sm py-1 px-2 w-full bg-sky-500 text-white font-semibold tracking-[1px]">
+      <button
+        className="mt-5  rounded-sm py-1 px-2 w-full bg-sky-500 text-white font-semibold tracking-[1px]"
+        onClick={handleSubmit}
+      >
         Đặt hẹn
       </button>
     </form>

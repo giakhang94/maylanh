@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import customAxios from "../../utils/authFecth";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import NumberFormat from "../../utils/FormatNumber";
 import { PurchaseForm, PurchaseModal } from "../../components";
+import submitPurchaseForm from "@/utils/sumitPurchaseForm";
 
 interface Props {}
 interface StateProps {
@@ -13,7 +14,7 @@ interface StateProps {
   promotion: boolean;
   promotionPrice: number;
 }
-interface InputType {
+export interface InputType {
   name: string;
   sdt: string;
   address: string;
@@ -60,8 +61,15 @@ const Services = (props: Props): React.JSX.Element => {
   ) => {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
+
+  //submit form
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    submitPurchaseForm(input);
+  };
+
   document.addEventListener("keydown", (e) => {
-    console.log(e.key);
+    // console.log(e.key);
     if (e.key === "Escape") {
       handleCloseModal();
     }
@@ -74,9 +82,23 @@ const Services = (props: Props): React.JSX.Element => {
     );
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        className="mt-[150px] mr-5 text-xl"
+      />
       {showModal && (
         <PurchaseModal handleCloseModal={handleCloseModal}>
           <PurchaseForm
+            handleSubmit={handleSubmit}
             handleChange={handleChangeForm}
             value={input}
             handleCloseModal={handleCloseModal}
