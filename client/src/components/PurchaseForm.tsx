@@ -1,13 +1,8 @@
 import { MdClose } from "react-icons/md";
 import Input from "./Input";
 import Logo from "./Logo";
-interface InputType {
-  name: string;
-  sdt: string;
-  address: string;
-  note?: string;
-  service: string;
-}
+import { InputType } from "@/pages/client/Services";
+
 interface Props {
   handleChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -15,16 +10,18 @@ interface Props {
   value: InputType;
   handleCloseModal: () => void;
   handleSubmit: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  handleChangeCheckbox: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const PurchaseForm = ({
   handleSubmit,
   handleChange,
   value,
   handleCloseModal,
+  handleChangeCheckbox,
 }: Props): React.JSX.Element => {
   return (
     <form
-      className=" flex flex-col justify-center w-[350px] mx-auto mt-10 bg-white px-5 py-10 rounded-md shadow-md text-md relative"
+      className=" flex flex-col justify-center w-[350px] mx-auto my-10 bg-white px-5 py-10 rounded-md shadow-md text-md relative transition-all"
       id="purchase-form"
     >
       <MdClose
@@ -61,7 +58,7 @@ const PurchaseForm = ({
         handleInputChange={handleChange}
         placeholder="Địa chỉ cần vệ sinh/sửa chữa"
         value={value.address}
-        label="Số điện thoại"
+        label="Địa chỉ"
         classname="text-black"
       />
       <div>
@@ -77,6 +74,31 @@ const PurchaseForm = ({
           id=""
         ></textarea>
       </div>
+      <div className="flex items-center space-x-3 my-3">
+        <input
+          type="checkbox"
+          checked={value.isRegister}
+          onChange={handleChangeCheckbox}
+          name="isRegister"
+        />
+        <label>
+          <span className="block">mở tài khoản bằng SDT ở trên</span>
+          <span className="italic -mt-1 block">
+            Để có thể xem lại, thay đổi, hủy hẹn
+          </span>
+        </label>
+      </div>
+      {value.isRegister && (
+        <Input
+          name="password"
+          type="password"
+          handleInputChange={handleChange}
+          placeholder="Nhập mật khẩu cho tài khoản"
+          value={value.password}
+          label="Mật khẩu"
+          classname="text-black"
+        />
+      )}
       <button
         className="mt-5  rounded-sm py-1 px-2 w-full bg-sky-500 text-white font-semibold tracking-[1px]"
         onClick={handleSubmit}

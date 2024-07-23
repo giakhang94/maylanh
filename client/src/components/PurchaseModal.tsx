@@ -9,7 +9,7 @@ const PurchaseModal = ({
 }: Props): React.JSX.Element => {
   return (
     <div
-      className="absolute inset-0 w-screen h-screen  z-50 bg-[#00000038]"
+      className="fixed overflow-auto inset-0 w-screen min-h-screen h-full  z-50 bg-[#00000038]"
       id="purchase-modal"
       onClick={(e: any) => {
         if (e.target.id === "purchase-modal") {

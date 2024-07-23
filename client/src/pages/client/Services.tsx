@@ -6,6 +6,7 @@ import { PurchaseForm, PurchaseModal } from "../../components";
 import submitPurchaseForm from "@/utils/sumitPurchaseForm";
 
 interface Props {}
+
 interface StateProps {
   name: string;
   _id: string;
@@ -19,7 +20,9 @@ export interface InputType {
   sdt: string;
   address: string;
   note: string;
+  password: string;
   service: string;
+  isRegister: boolean;
 }
 const Services = (props: Props): React.JSX.Element => {
   const initialInput: InputType = {
@@ -28,6 +31,8 @@ const Services = (props: Props): React.JSX.Element => {
     address: "",
     note: "",
     service: "",
+    isRegister: false,
+    password: "",
   };
   const [isLoading, setIsLoading] = useState(false);
   const [services, setServices] = useState<StateProps[]>([]);
@@ -60,6 +65,10 @@ const Services = (props: Props): React.JSX.Element => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleChangeCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput((prev) => ({ ...prev, [e.target.name]: e.target.checked }));
   };
 
   //submit form
@@ -100,13 +109,14 @@ const Services = (props: Props): React.JSX.Element => {
           <PurchaseForm
             handleSubmit={handleSubmit}
             handleChange={handleChangeForm}
+            handleChangeCheckbox={handleChangeCheckbox}
             value={input}
             handleCloseModal={handleCloseModal}
           />
         </PurchaseModal>
       )}
       <div
-        className={`grid grid-cols-3 w-full space-x-10 p-10 relative ${
+        className={`grid grid-cols-3 w-full h-full space-x-10 p-10 relative ${
           showModal ? "blur-sm" : ""
         }`}
       >

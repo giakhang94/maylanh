@@ -8,6 +8,11 @@ const submitPurchaseForm = async (input: InputPurchaseForm) => {
     // // });
     // console.log(data);
     // toast.success(data.message);
+    const regex = /(0[3|5|7|8|9])+([0-9]{8})\b/g;
+    if (!input.sdt.match(regex)) {
+      return toast.error("xin nhập đúng SĐT");
+    }
+
     console.log(input);
     toast.success("info");
   } catch (error: any) {

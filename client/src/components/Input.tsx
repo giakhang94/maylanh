@@ -11,7 +11,7 @@ interface Props {
 
 const Input = (props: Props): React.JSX.Element => {
   return (
-    <div className="mb-3">
+    <div className="mb-3 ">
       <label htmlFor="" className="font-semibold tracking-[1px]">
         {props.label}
       </label>
