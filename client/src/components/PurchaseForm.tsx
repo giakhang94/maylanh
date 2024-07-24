@@ -10,14 +10,12 @@ interface Props {
   value: InputType;
   handleCloseModal: () => void;
   handleSubmit: (e: React.MouseEvent<HTMLButtonElement>) => void;
-  handleChangeCheckbox: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const PurchaseForm = ({
   handleSubmit,
   handleChange,
   value,
   handleCloseModal,
-  handleChangeCheckbox,
 }: Props): React.JSX.Element => {
   return (
     <form
@@ -78,7 +76,7 @@ const PurchaseForm = ({
         <input
           type="checkbox"
           checked={value.isRegister}
-          onChange={handleChangeCheckbox}
+          onChange={handleChange}
           name="isRegister"
         />
         <label>

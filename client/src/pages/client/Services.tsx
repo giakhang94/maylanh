@@ -64,11 +64,13 @@ const Services = (props: Props): React.JSX.Element => {
   const handleChangeForm = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleChangeCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput((prev) => ({ ...prev, [e.target.name]: e.target.checked }));
+    setInput((prev) => ({
+      ...prev,
+      [e.target.name]:
+        e.target.type === "checkbox"
+          ? (e.target as HTMLInputElement).checked
+          : e.target.value,
+    }));
   };
 
   //submit form
@@ -109,7 +111,6 @@ const Services = (props: Props): React.JSX.Element => {
           <PurchaseForm
             handleSubmit={handleSubmit}
             handleChange={handleChangeForm}
-            handleChangeCheckbox={handleChangeCheckbox}
             value={input}
             handleCloseModal={handleCloseModal}
           />
