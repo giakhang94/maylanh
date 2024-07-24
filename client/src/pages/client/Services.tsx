@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import NumberFormat from "../../utils/FormatNumber";
 import { PurchaseForm, PurchaseModal } from "../../components";
 import submitPurchaseForm from "@/utils/sumitPurchaseForm";
+import useForm from "@/hooks/useForm";
 
 interface Props {}
 
@@ -37,7 +38,8 @@ const Services = (props: Props): React.JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
   const [services, setServices] = useState<StateProps[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [input, setInput] = useState(initialInput);
+  // const [input, setInput] = useState(initialInput);
+  const { input, handleChange, changeInput } = useForm(initialInput);
   useEffect(() => {
     const getService = async () => {
       try {
@@ -58,19 +60,8 @@ const Services = (props: Props): React.JSX.Element => {
     setShowModal(true);
   };
   const handleCloseModal = () => {
-    setInput(initialInput);
+    changeInput(initialInput);
     setShowModal(false);
-  };
-  const handleChangeForm = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setInput((prev) => ({
-      ...prev,
-      [e.target.name]:
-        e.target.type === "checkbox"
-          ? (e.target as HTMLInputElement).checked
-          : e.target.value,
-    }));
   };
 
   //submit form
@@ -110,7 +101,9 @@ const Services = (props: Props): React.JSX.Element => {
         <PurchaseModal handleCloseModal={handleCloseModal}>
           <PurchaseForm
             handleSubmit={handleSubmit}
-            handleChange={handleChangeForm}
+            handleChange={(e) => {
+              handleChange(e);
+            }}
             value={input}
             handleCloseModal={handleCloseModal}
           />
@@ -130,7 +123,7 @@ const Services = (props: Props): React.JSX.Element => {
               <div
                 className="absolute hidden z-10 inset-0 bg-[#16edf11b] group-hover:flex justify-center items-center"
                 onClick={() => {
-                  setInput((prev) => ({ ...prev, service: service.name }));
+                  changeInput({ ...input, service: service.name });
                   handleShowModal();
                 }}
               >

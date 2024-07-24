@@ -673,3 +673,126 @@ getimage như sau:
   />
 </div>
 ```
+
+### Lưu ý về formInputHandler
+
+- thông thường sẽ dùng
+
+```js
+  setInput((prev) => [e.target.name]: e.target.value)
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  //trường hợp trên là có 2 loại input và text area
+  //xảy ra 1 cái nữa là trong textArea thì có value nên k có checked (của checkbox)
+  ==> Khi xài checkbox ts sẽ báo lỗi
+  ==> sửa như sau
+  (e.target as HTMLInputElement).checked //là hết lỗi
+```
+
+### create flexible component can switch between input and <p>, <span>
+
+- tips: to display absolute input on the thumbnail
+- => must use that input in the root component which contains the rendered thumbnail
+
+```js
+import NumberFormat from "../utils/FormatNumber";
+
+interface Props {
+  isEdit: { id: string, edit: boolean };
+  id: string;
+  value: string | number;
+  oldValue: string | number;
+  element: "span" | "input" | "p";
+  type: "text" | "number" | "checkbox";
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  classname?: string;
+  name: string;
+}
+
+const FlexibleInput = (props: Props): React.JSX.Element => {
+  if (props.id === props.isEdit.id) {
+    return (
+      <div className="p-1 text-gray-500 rounded-md w-fit max-w-[200px]">
+        <input
+          type={props.type}
+          value={props.value || props.oldValue}
+          onChange={props.onChange}
+          name={props.name}
+          className="w-full"
+        />
+      </div>
+    );
+  } else {
+    const Element = props.element;
+    const isPrice = props.name === "price" || props.name === "promotionPrice";
+    if (isPrice) {
+      return (
+        <Element className={props.classname && props.classname + "relative"}>
+          {props.id === props.isEdit.id ? (
+            <NumberFormat number={props.value} />
+          ) : (
+            <NumberFormat number={props.oldValue} />
+          )}
+          <span className="">đ</span>
+        </Element>
+      );
+    }
+    return (
+      <Element className={props.classname && props.classname}>
+        {props.id === props.isEdit.id ? props.value : props.oldValue}{" "}
+      </Element>
+    );
+  }
+};
+
+export default FlexibleInput;
+```
+
+### Custom hooks
+
+## Form hook
+
+-> create custom-hooks/useForm.ts
+in useForm.ts
+
+- create a function accept 1 param : formInput
+- in this functiion => call useState hook
+- in this function create a handleChange function
+  ---- accept e: Event param
+  ---- usse handlechange logic for this function (setinput ...)
+- create changeInput function for invidually change state like (setInput(initInput))
+  ---> return {input, handleChange, changeINput}
+
+## in the root component (needs the hook)
+
+- call {input, handleChange, changInput} = useForm(initInput)
+
+```js
+import { InputType } from "@/pages/client/Services";
+import { useState } from "react";
+
+const useForm = (formInput: InputType) => {
+  const [input, setInput] = useState(formInput);
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (event.target.type === "checkbox") {
+      setInput((prev) => ({
+        ...prev,
+        [event.target.name]: (event.target as HTMLInputElement).checked,
+      }));
+    } else {
+      setInput((prev) => ({
+        ...prev,
+        [event.target.name]: event.target.value,
+      }));
+    }
+  };
+  const changeInput = (input: InputType) => {
+    setInput(input);
+  };
+  return { input, handleChange, changeInput };
+};
+
+export default useForm;
+
+```
