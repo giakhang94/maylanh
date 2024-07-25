@@ -796,3 +796,10 @@ const useForm = (formInput: InputType) => {
 export default useForm;
 
 ```
+
+### validate vietnam phone number format using Regex
+
+```js
+const regex = /(0[3|5|7|8|9]) + ([0-9]{8})\b/g; //tao vieets
+const regex = /(0[3|5|7|8|9]) + ([0-9]{8})\b/g; //copy
+```

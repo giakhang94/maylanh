@@ -1,4 +1,4 @@
-import { InputType as InputPurchaseForm } from "@/pages/client/Services";
+import { InputType as InputPurchaseForm } from "@/types";
 import customAxios from "./authFecth";
 import { toast } from "react-toastify";
 const submitPurchaseForm = async (input: InputPurchaseForm) => {
@@ -8,6 +8,9 @@ const submitPurchaseForm = async (input: InputPurchaseForm) => {
     // // });
     // console.log(data);
     // toast.success(data.message);
+    if (!input.sdt) {
+      return toast.error("Xin hãy nhập SĐT");
+    }
     const regex = /(0[3|5|7|8|9])+([0-9]{8})\b/g;
     if (!input.sdt.match(regex)) {
       return toast.error("xin nhập đúng SĐT");

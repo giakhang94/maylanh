@@ -1,22 +1,33 @@
 import { MdClose } from "react-icons/md";
 import Input from "./Input";
 import Logo from "./Logo";
-import { InputType } from "@/pages/client/Services";
+import { InputType } from "@/types";
+import useForm from "@/hooks/useForm";
+import submitPurchaseForm from "@/utils/sumitPurchaseForm";
 
 interface Props {
-  handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  value: InputType;
   handleCloseModal: () => void;
-  handleSubmit: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  selectedService: string;
 }
 const PurchaseForm = ({
-  handleSubmit,
-  handleChange,
-  value,
   handleCloseModal,
+  selectedService,
 }: Props): React.JSX.Element => {
+  const initialInput: InputType = {
+    sdt: "",
+    name: "",
+    address: "",
+    note: "",
+    service: "",
+    isRegister: false,
+    password: "",
+  };
+  const { input, handleChange } = useForm(initialInput);
+  //submit form
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    submitPurchaseForm(input);
+  };
   return (
     <form
       className=" flex flex-col justify-center w-[350px] mx-auto my-10 bg-white px-5 py-10 rounded-md shadow-md text-md relative transition-all"
@@ -30,14 +41,14 @@ const PurchaseForm = ({
       <Logo />
       <h2 className="pb-1 text-center font-semibold">Điền thông tin đặt hẹn</h2>
       <span className="pb-3 text-lg text-center italic text-[#f15a16] font-bold">
-        Dịch vụ: {value.service}
+        Dịch vụ: {selectedService}
       </span>
       <Input
         name="sdt"
         type="text"
         handleInputChange={handleChange}
         placeholder="vd: 0903282828"
-        value={value.sdt}
+        value={input.sdt}
         label="Số điện thoại"
         classname="text-black"
       />
@@ -46,7 +57,7 @@ const PurchaseForm = ({
         type="text"
         handleInputChange={handleChange}
         placeholder="vd: Anh Tân Q12"
-        value={value.name}
+        value={input.name}
         label="Tên liên lạc"
         classname="text-black"
       />
@@ -55,7 +66,7 @@ const PurchaseForm = ({
         type="text"
         handleInputChange={handleChange}
         placeholder="Địa chỉ cần vệ sinh/sửa chữa"
-        value={value.address}
+        value={input.address}
         label="Địa chỉ"
         classname="text-black"
       />
@@ -68,14 +79,14 @@ const PurchaseForm = ({
           placeholder="Mô tả tình trạng nếu có"
           name="note"
           onChange={handleChange}
-          value={value.note}
+          value={input.note}
           id=""
         ></textarea>
       </div>
       <div className="flex items-center space-x-3 my-3">
         <input
           type="checkbox"
-          checked={value.isRegister}
+          checked={input.isRegister}
           onChange={handleChange}
           name="isRegister"
         />
@@ -86,13 +97,13 @@ const PurchaseForm = ({
           </span>
         </label>
       </div>
-      {value.isRegister && (
+      {input.isRegister && (
         <Input
           name="password"
           type="password"
           handleInputChange={handleChange}
           placeholder="Nhập mật khẩu cho tài khoản"
-          value={value.password}
+          value={input.password}
           label="Mật khẩu"
           classname="text-black"
         />

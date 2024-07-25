@@ -3,8 +3,6 @@ import customAxios from "../../utils/authFecth";
 import { toast, ToastContainer } from "react-toastify";
 import NumberFormat from "../../utils/FormatNumber";
 import { PurchaseForm, PurchaseModal } from "../../components";
-import submitPurchaseForm from "@/utils/sumitPurchaseForm";
-import useForm from "@/hooks/useForm";
 
 interface Props {}
 
@@ -16,30 +14,12 @@ interface StateProps {
   promotion: boolean;
   promotionPrice: number;
 }
-export interface InputType {
-  name: string;
-  sdt: string;
-  address: string;
-  note: string;
-  password: string;
-  service: string;
-  isRegister: boolean;
-}
+
 const Services = (props: Props): React.JSX.Element => {
-  const initialInput: InputType = {
-    sdt: "",
-    name: "",
-    address: "",
-    note: "",
-    service: "",
-    isRegister: false,
-    password: "",
-  };
   const [isLoading, setIsLoading] = useState(false);
   const [services, setServices] = useState<StateProps[]>([]);
-  const [showModal, setShowModal] = useState(false);
-  // const [input, setInput] = useState(initialInput);
-  const { input, handleChange, changeInput } = useForm(initialInput);
+  const [selectedService, setSelectedService] = useState("");
+
   useEffect(() => {
     const getService = async () => {
       try {
@@ -56,18 +36,12 @@ const Services = (props: Props): React.JSX.Element => {
     getService();
   }, []);
   // console.log(services);
-  const handleShowModal = () => {
-    setShowModal(true);
+  const handleShowModal = (serviceName: string) => {
+    setSelectedService(serviceName);
   };
   const handleCloseModal = () => {
-    changeInput(initialInput);
-    setShowModal(false);
-  };
-
-  //submit form
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    submitPurchaseForm(input);
+    // setValues(initialInput);
+    setSelectedService("");
   };
 
   document.addEventListener("keydown", (e) => {
@@ -97,21 +71,17 @@ const Services = (props: Props): React.JSX.Element => {
         theme="colored"
         className="mt-[150px] mr-5 text-xl"
       />
-      {showModal && (
+      {!!selectedService && (
         <PurchaseModal handleCloseModal={handleCloseModal}>
           <PurchaseForm
-            handleSubmit={handleSubmit}
-            handleChange={(e) => {
-              handleChange(e);
-            }}
-            value={input}
             handleCloseModal={handleCloseModal}
+            selectedService={selectedService}
           />
         </PurchaseModal>
       )}
       <div
         className={`grid grid-cols-3 w-full h-full space-x-10 p-10 relative ${
-          showModal ? "blur-sm" : ""
+          selectedService ? "blur-sm" : ""
         }`}
       >
         {services.map((service: StateProps, index: number) => {
@@ -123,8 +93,7 @@ const Services = (props: Props): React.JSX.Element => {
               <div
                 className="absolute hidden z-10 inset-0 bg-[#16edf11b] group-hover:flex justify-center items-center"
                 onClick={() => {
-                  changeInput({ ...input, service: service.name });
-                  handleShowModal();
+                  handleShowModal(service.name);
                 }}
               >
                 <span className="cursor-pointer bg-sky-600 text-white text-2xl font-semibold tracking-[1px] py-1 px-3 block rounded-sm -translate-y-[36px]">

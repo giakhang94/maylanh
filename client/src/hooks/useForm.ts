@@ -1,8 +1,8 @@
-import { InputType } from "@/pages/client/Services";
+import { InputType } from "@/types";
 import { useState } from "react";
 
-const useForm = (formInput: InputType) => {
-  const [input, setInput] = useState(formInput);
+const useForm = (initialValues: InputType) => {
+  const [input, setInput] = useState(initialValues);
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -18,10 +18,10 @@ const useForm = (formInput: InputType) => {
       }));
     }
   };
-  const changeInput = (input: InputType) => {
+  const setValues = (input: InputType) => {
     setInput(input);
   };
-  return { input, handleChange, changeInput };
+  return { input, handleChange, setValues };
 };
 
 export default useForm;
