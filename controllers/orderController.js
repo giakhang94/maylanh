@@ -15,7 +15,7 @@ const createOrder = async (req, res) => {
     validateClientPassword(password);
     newAccount = await createClientAccount(sdt, password);
   }
-  const createdBy = newAccount._id ? newAccount._id : undefined;
+  const createdBy = newAccount && newAccount._id ? newAccount._id : undefined;
   const order = await Order.create({
     createdBy,
     phone: sdt,
@@ -35,7 +35,7 @@ const createOrder = async (req, res) => {
   }
 
   res.status(201).json({
-    message: `${isRegister && "Tạo tài khoản và"} Đặt hẹn thàh công`,
+    message: `${isRegister ? "Tạo tài khoản và" : ""} Đặt hẹn thàh công`,
     order,
   });
 };

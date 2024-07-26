@@ -811,3 +811,21 @@ const regex = /(0[3|5|7|8|9])+([0-9]{8})\b/g; //copy
 2. hook nào của form thì gọi ở form, không gọi ở component cha
    => ví dụ useForm hook thì gọi trong PurchaseForm component luôn
 3. Gom lại làm sao cho hạn chế sửa dụng useState hook. Sử dụng càng ít càng tốt.
+
+### sử dụng transaction (session) để tạo các thao tác cùng lúc
+
+1. khi các thao tác phải ok hết thì mới lưu
+2. nếu 1 trong các thao tác failed thì phải bỏ hết không được lưu gì hết
+
+```js
+try {
+  const sess = await mongoose.startSession();
+  sess.startTransaction();
+  order.save({ session: sess });
+  isRegister && newAccount.save({ session: sess });
+  sess.commitTransaction();
+} catch (error) {
+  console.log(error);
+  throw new BadRequestError("Xin hãy thử lại");
+}
+```
