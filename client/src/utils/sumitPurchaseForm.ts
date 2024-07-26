@@ -3,11 +3,6 @@ import customAxios from "./authFecth";
 import { toast } from "react-toastify";
 const submitPurchaseForm = async (input: InputPurchaseForm) => {
   try {
-    // const { data } = await customAxios().post("/service/purchase", {
-    // //   ...input,
-    // // });
-    // console.log(data);
-    // toast.success(data.message);
     if (!input.sdt) {
       return toast.error("Xin hãy nhập SĐT");
     }
@@ -15,8 +10,15 @@ const submitPurchaseForm = async (input: InputPurchaseForm) => {
     if (!input.sdt.match(regex)) {
       return toast.error("xin nhập đúng SĐT");
     }
-
+    if (input.isRegister && !input.password) {
+      return toast.error("Bạn chưa điền mật khẩu");
+    }
     console.log(input);
+    const { data } = await customAxios().post("/order", {
+      ...input,
+    });
+    console.log("resp data", data);
+    toast.success(data.message);
     toast.success("info");
   } catch (error: any) {
     console.log(error);

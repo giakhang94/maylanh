@@ -800,6 +800,14 @@ export default useForm;
 ### validate vietnam phone number format using Regex
 
 ```js
-const regex = /(0[3|5|7|8|9]) + ([0-9]{8})\b/g; //tao vieets
-const regex = /(0[3|5|7|8|9]) + ([0-9]{8})\b/g; //copy
+const regex = /(0[3|5|7|8|9])+([0-9]{8})\b/g; //tao vieets
+const regex = /(0[3|5|7|8|9])+([0-9]{8})\b/g; //copy
 ```
+
+### lưu ý về props drilling
+
+1. State của form thì để bên component của form (không để ở component cha)
+   => như vậy, khi mount unmount sẽ không phụ thuộc vô state (state sẽ reset theo mount/unmount)
+2. hook nào của form thì gọi ở form, không gọi ở component cha
+   => ví dụ useForm hook thì gọi trong PurchaseForm component luôn
+3. Gom lại làm sao cho hạn chế sửa dụng useState hook. Sử dụng càng ít càng tốt.

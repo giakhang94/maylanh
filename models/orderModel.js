@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const OrderSchema = new mongoose.Schema({
   createdBy: {
     type: mongoose.Types.ObjectId,
-    required: true,
   },
   name: {
     type: String,
@@ -20,3 +19,7 @@ const OrderSchema = new mongoose.Schema({
     type: String,
   },
 });
+
+const OrderModel = mongoose.model("Orders", OrderSchema);
+
+export default OrderModel;
