@@ -27,7 +27,7 @@ const createOrder = async (req, res) => {
     const sess = await mongoose.startSession();
     sess.startTransaction();
     order.save({ session: sess });
-    newAccount.save({ session: sess });
+    isRegister && newAccount.save({ session: sess });
     sess.commitTransaction();
   } catch (error) {
     console.log(error);
