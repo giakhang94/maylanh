@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import customAxios from "../utils/authFecth";
+import customAxios from "@/utils/authFecth";
 import { toast, ToastContainer } from "react-toastify";
-import NumberFormat from "../utils/FormatNumber";
+import NumberFormat from "@/utils/FormatNumber";
 import { FaRegEdit } from "react-icons/fa";
-import { FlexibleInput } from "../components";
+import { FlexibleInput } from "@/components";
 import { IoSaveSharp } from "react-icons/io5";
 import { MdCancel, MdDeleteForever } from "react-icons/md";
-import handleDeleteService from "../utils/deleteService";
-import updateServiceObj from "../utils/updateServiceObj";
+import handleDeleteService from "@/utils/deleteService";
+import updateServiceObj from "@/utils/updateServiceObj";
 interface Props {}
 interface StateProps {
   _id: string;

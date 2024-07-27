@@ -1,4 +1,4 @@
-import { useAppContext } from "../Context/appContext";
+import { useAppContext } from "@/Context/appContext";
 
 interface Props {}
 

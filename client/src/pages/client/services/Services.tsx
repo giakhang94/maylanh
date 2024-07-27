@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import customAxios from "../../utils/authFecth";
+import customAxios from "@/utils/authFecth";
 import { toast, ToastContainer } from "react-toastify";
-import NumberFormat from "../../utils/FormatNumber";
-import { PurchaseForm, PurchaseModal } from "../../components";
+import NumberFormat from "@/utils/FormatNumber";
+import { CommonModal } from "@/components";
+import PurchaseForm from "./PurchaseForm";
 
 interface Props {}
 
@@ -18,7 +19,11 @@ interface StateProps {
 const Services = (props: Props): React.JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
   const [services, setServices] = useState<StateProps[]>([]);
-  const [selectedService, setSelectedService] = useState("");
+  const [selectedService, setSelectedService] = useState({
+    name: "",
+    id: "",
+    selected: false,
+  });
 
   useEffect(() => {
     const getService = async () => {
@@ -36,12 +41,17 @@ const Services = (props: Props): React.JSX.Element => {
     getService();
   }, []);
   // console.log(services);
-  const handleShowModal = (serviceName: string) => {
-    setSelectedService(serviceName);
+  const handleShowModal = (serviceName: string, serviceId: string) => {
+    setSelectedService((prev) => ({
+      ...prev,
+      name: serviceName,
+      id: serviceId,
+      selected: true,
+    }));
   };
   const handleCloseModal = () => {
     // setValues(initialInput);
-    setSelectedService("");
+    setSelectedService({ name: "", id: "", selected: false });
   };
 
   document.addEventListener("keydown", (e) => {
@@ -71,17 +81,17 @@ const Services = (props: Props): React.JSX.Element => {
         theme="colored"
         className="mt-[150px] mr-5 text-xl"
       />
-      {!!selectedService && (
-        <PurchaseModal handleCloseModal={handleCloseModal}>
+      {selectedService.selected && (
+        <CommonModal handleCloseModal={handleCloseModal}>
           <PurchaseForm
             handleCloseModal={handleCloseModal}
             selectedService={selectedService}
           />
-        </PurchaseModal>
+        </CommonModal>
       )}
       <div
         className={`grid grid-cols-3 w-full h-full space-x-10 p-10 relative ${
-          selectedService ? "blur-sm" : ""
+          selectedService.selected ? "blur-sm" : ""
         }`}
       >
         {services.map((service: StateProps, index: number) => {
@@ -93,7 +103,7 @@ const Services = (props: Props): React.JSX.Element => {
               <div
                 className="absolute hidden z-10 inset-0 bg-[#16edf11b] group-hover:flex justify-center items-center"
                 onClick={() => {
-                  handleShowModal(service.name);
+                  handleShowModal(service.name, service._id);
                 }}
               >
                 <span className="cursor-pointer bg-sky-600 text-white text-2xl font-semibold tracking-[1px] py-1 px-3 block rounded-sm -translate-y-[36px]">

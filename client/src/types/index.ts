@@ -1,6 +1,6 @@
 export interface InputType {
   name: string;
-  sdt: string;
+  phone: string;
   address: string;
   note: string;
   password: string;

@@ -6,33 +6,47 @@ import {
 } from "../utils/Validator.js";
 import createClientAccount from "./clientController.js";
 import BadRequestError from "../errors/BadRequestError.js";
+import ClientModel from "../models/clientModel.js";
 
 const createOrder = async (req, res) => {
-  const { sdt, name, address, isRegister, password, note } = req.body;
-  validatePhoneNumber(sdt);
+  const { phone, name, address, isRegister, password, note, serviceId } =
+    req.body;
+  validatePhoneNumber(phone);
   let newAccount = null;
-  if (isRegister) {
-    validateClientPassword(password);
-    newAccount = await createClientAccount(sdt, password);
-  }
-  const createdBy = newAccount && newAccount._id ? newAccount._id : undefined;
-  const order = await Order.create({
-    createdBy,
-    phone: sdt,
-    name,
-    address,
-    note,
+  let order = null;
+  //transaction session
+  const sess = await mongoose.startSession();
+  await sess.withTransaction(async () => {
+    try {
+      if (isRegister) {
+        validateClientPassword(password);
+        //newAccount = await createClientAccout(phone, name, sess)
+        newAccount = await ClientModel.create(
+          { phone, name },
+          { session: sess }
+        );
+      }
+      const createdBy =
+        newAccount && newAccount._id ? newAccount._id : undefined;
+      order = await Order.create(
+        {
+          createdBy,
+          phone,
+          name,
+          address,
+          note,
+          // serviceId,
+        },
+        { session: sess }
+      );
+      await order.save();
+      // isRegister && (await newAccount.save({ session: sess }));
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestError("Xin hãy thử lại");
+    }
   });
-  try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    order.save({ session: sess });
-    isRegister && newAccount.save({ session: sess });
-    sess.commitTransaction();
-  } catch (error) {
-    console.log(error);
-    throw new BadRequestError("Xin hãy thử lại");
-  }
+  sess.endSession();
 
   res.status(201).json({
     message: `${isRegister ? "Tạo tài khoản và" : ""} Đặt hẹn thàh công`,

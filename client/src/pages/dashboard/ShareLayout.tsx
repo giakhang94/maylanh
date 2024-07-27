@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { BigSidebar, Navbar } from "../components";
+import { BigSidebar, Navbar } from "@/components";
 
 interface Props {}
 const ShareLayout = (props: Props): React.JSX.Element => {

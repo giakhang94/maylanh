@@ -6,13 +6,11 @@ import Loading from "./Loading";
 import LoadingForButton from "./LoadingForBtn";
 import Input from "./Input";
 import FlexibleInput from "./FlexibleInput";
-import PromotionService from "./PromotionService";
-import PurchaseModal from "./PurchaseModal";
-import PurchaseForm from "./PurchaseForm";
+
+import CommonModal from "./CommonModal";
+
 export {
-  PurchaseForm,
-  PurchaseModal,
-  PromotionService,
+  CommonModal,
   FlexibleInput,
   BigSidebar,
   Logo,

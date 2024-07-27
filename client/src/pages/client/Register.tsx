@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { LoadingForButton, Logo } from "../components";
+import { LoadingForButton, Logo } from "@/components";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import customAxios from "../utils/authFecth";
+import customAxios from "@/utils/authFecth";
 
 interface Props {}
 interface InputState {

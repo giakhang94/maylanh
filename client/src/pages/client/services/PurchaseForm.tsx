@@ -1,20 +1,20 @@
 import { MdClose } from "react-icons/md";
-import Input from "./Input";
-import Logo from "./Logo";
+import Input from "@/components/Input";
+import Logo from "@/components/Logo";
 import { InputType } from "@/types";
 import useForm from "@/hooks/useForm";
 import submitPurchaseForm from "@/utils/sumitPurchaseForm";
 
 interface Props {
   handleCloseModal: () => void;
-  selectedService: string;
+  selectedService: { name: string; id: string };
 }
 const PurchaseForm = ({
   handleCloseModal,
   selectedService,
 }: Props): React.JSX.Element => {
   const initialInput: InputType = {
-    sdt: "",
+    phone: "",
     name: "",
     address: "",
     note: "",
@@ -26,7 +26,7 @@ const PurchaseForm = ({
   //submit form
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    submitPurchaseForm(input);
+    submitPurchaseForm(input, selectedService.id);
   };
   return (
     <form
@@ -41,14 +41,14 @@ const PurchaseForm = ({
       <Logo />
       <h2 className="pb-1 text-center font-semibold">Điền thông tin đặt hẹn</h2>
       <span className="pb-3 text-lg text-center italic text-[#f15a16] font-bold">
-        Dịch vụ: {selectedService}
+        Dịch vụ: {selectedService.name}
       </span>
       <Input
-        name="sdt"
+        name="phone"
         type="text"
         handleInputChange={handleChange}
         placeholder="vd: 0903282828"
-        value={input.sdt}
+        value={input.phone}
         label="Số điện thoại"
         classname="text-black"
       />

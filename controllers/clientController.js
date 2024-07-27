@@ -1,8 +1,7 @@
 import Client from "../models/clientModel.js";
 
 const createClientAccount = async (phone, password, session) => {
-  console.log(password);
-  const newAccount = await Client.create({ phone, password });
+  const newAccount = await Client.create({ phone, password }, { session });
   return newAccount;
 };
 

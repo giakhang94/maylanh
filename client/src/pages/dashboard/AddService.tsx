@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Input } from "../components";
+import { Input } from "@/components";
 import { ToastContainer, toast } from "react-toastify";
-import handleSubmit from "../utils/handleUploadImg";
+import handleSubmit from "@/utils/handleUploadImg";
 
 interface Props {}
 export interface StateType {
