@@ -20,12 +20,13 @@ const createOrder = async (req, res) => {
     try {
       if (isRegister) {
         validateClientPassword(password);
-        //newAccount = await createClientAccout(phone, name, sess)
+        // newAccount = await createClientAccount(phone, name, sess); cái này gọi ngang hàng k được (lưu cho nhớ)
         newAccount = await ClientModel.create(
-          { phone, name },
+          { phone, password },
           { session: sess }
         );
       }
+      await newAccount.save();
       const createdBy =
         newAccount && newAccount._id ? newAccount._id : undefined;
       order = await Order.create(
@@ -40,7 +41,6 @@ const createOrder = async (req, res) => {
         { session: sess }
       );
       await order.save();
-      // isRegister && (await newAccount.save({ session: sess }));
     } catch (error) {
       console.log(error);
       throw new BadRequestError("Xin hãy thử lại");
