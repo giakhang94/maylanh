@@ -9,6 +9,7 @@ const OrderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    serviceName: String,
     name: {
       type: String,
       required: [true, "xin mời nhập tên"],

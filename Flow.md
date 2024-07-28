@@ -829,3 +829,22 @@ try {
   throw new BadRequestError("Xin hãy thử lại");
 }
 ```
+
+### Lưu ý về transaction
+
+1. xài như code trên là được rồi
+   nhưng nó không chạy với model.create({})
+2. nếu xài model.create rồi thì instance.save() là vô nghĩa
+   Nên là tạo create ở ngoài, rồi `try catch` transaction cũng không được
+   => nên giải pháp là tạo instace theo cách này
+
+```js
+const order = new OrderModel({...});
+await order.save({ session: session });
+const client = new ClientModel({...})
+await client.save({session: session})
+```
+
+3. bỏ đoạn code trên trong try-catch của transaction là ok
+
+4. tạo session, transactionStart(), commitTransaction() là bỏ trong `try{}` hết
