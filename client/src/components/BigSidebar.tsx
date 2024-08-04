@@ -1,5 +1,5 @@
 import { IconType } from "react-icons";
-import { sidebarItemList } from "./Constant";
+import { sidebarItemList } from "@/Constants/Constant";
 import Logo from "./Logo";
 import BigSidebarItem from "./BigSidebarItem";
 interface Props {}

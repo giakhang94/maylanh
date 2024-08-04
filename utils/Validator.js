@@ -18,4 +18,25 @@ const validateRequiredService = (name, price, description) => {
     throw new BadRequestError("Missing field(s)");
   }
 };
-export { validateEmail, validateRequired, validateRequiredService };
+const validatePhoneNumber = (phone) => {
+  const regex = /(0[3|5|7|8|9])+([0-9]{8})\b/g;
+
+  if (!phone) {
+    throw new BadRequestError("Bạn quên nhập SDT kìa");
+  }
+  if (!phone.match(regex)) {
+    throw new BadRequestError("SDT không đúng định dạng");
+  }
+};
+const validateClientPassword = (password) => {
+  if (!password) {
+    throw new BadRequestError("Xin vui lòng nhập password");
+  }
+};
+export {
+  validateEmail,
+  validateRequired,
+  validateRequiredService,
+  validatePhoneNumber,
+  validateClientPassword,
+};

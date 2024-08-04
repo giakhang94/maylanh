@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import customAxios from "../../utils/authFecth";
-import { toast } from "react-toastify";
-import NumberFormat from "../../utils/FormatNumber";
-import { PurchaseForm, PurchaseModal } from "../../components";
+import customAxios from "@/utils/authFecth";
+import { toast, ToastContainer } from "react-toastify";
+import NumberFormat from "@/utils/FormatNumber";
+import { CommonModal } from "@/components";
+import PurchaseForm from "./PurchaseForm";
 
 interface Props {}
+
 interface StateProps {
   name: string;
   _id: string;
@@ -13,25 +15,16 @@ interface StateProps {
   promotion: boolean;
   promotionPrice: number;
 }
-interface InputType {
-  name: string;
-  sdt: string;
-  address: string;
-  note: string;
-  service: string;
-}
+
 const Services = (props: Props): React.JSX.Element => {
-  const initialInput: InputType = {
-    sdt: "",
-    name: "",
-    address: "",
-    note: "",
-    service: "",
-  };
   const [isLoading, setIsLoading] = useState(false);
   const [services, setServices] = useState<StateProps[]>([]);
-  const [showModal, setShowModal] = useState(false);
-  const [input, setInput] = useState(initialInput);
+  const [selectedService, setSelectedService] = useState({
+    name: "",
+    id: "",
+    selected: false,
+  });
+
   useEffect(() => {
     const getService = async () => {
       try {
@@ -48,20 +41,21 @@ const Services = (props: Props): React.JSX.Element => {
     getService();
   }, []);
   // console.log(services);
-  const handleShowModal = () => {
-    setShowModal(true);
+  const handleShowModal = (serviceName: string, serviceId: string) => {
+    setSelectedService((prev) => ({
+      ...prev,
+      name: serviceName,
+      id: serviceId,
+      selected: true,
+    }));
   };
   const handleCloseModal = () => {
-    setInput(initialInput);
-    setShowModal(false);
+    // setValues(initialInput);
+    setSelectedService({ name: "", id: "", selected: false });
   };
-  const handleChangeForm = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+
   document.addEventListener("keydown", (e) => {
-    console.log(e.key);
+    // console.log(e.key);
     if (e.key === "Escape") {
       handleCloseModal();
     }
@@ -74,18 +68,30 @@ const Services = (props: Props): React.JSX.Element => {
     );
   return (
     <>
-      {showModal && (
-        <PurchaseModal handleCloseModal={handleCloseModal}>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        className="mt-[150px] mr-5 text-xl"
+      />
+      {selectedService.selected && (
+        <CommonModal handleCloseModal={handleCloseModal}>
           <PurchaseForm
-            handleChange={handleChangeForm}
-            value={input}
             handleCloseModal={handleCloseModal}
+            selectedService={selectedService}
           />
-        </PurchaseModal>
+        </CommonModal>
       )}
       <div
-        className={`grid grid-cols-3 w-full space-x-10 p-10 relative ${
-          showModal ? "blur-sm" : ""
+        className={`grid grid-cols-3 w-full h-full space-x-10 p-10 relative ${
+          selectedService.selected ? "blur-sm" : ""
         }`}
       >
         {services.map((service: StateProps, index: number) => {
@@ -97,8 +103,7 @@ const Services = (props: Props): React.JSX.Element => {
               <div
                 className="absolute hidden z-10 inset-0 bg-[#16edf11b] group-hover:flex justify-center items-center"
                 onClick={() => {
-                  setInput((prev) => ({ ...prev, service: service.name }));
-                  handleShowModal();
+                  handleShowModal(service.name, service._id);
                 }}
               >
                 <span className="cursor-pointer bg-sky-600 text-white text-2xl font-semibold tracking-[1px] py-1 px-3 block rounded-sm -translate-y-[36px]">

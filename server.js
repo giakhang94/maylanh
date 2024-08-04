@@ -5,6 +5,7 @@ import connectDB from "./db/connectDB.js";
 import dotenv from "dotenv";
 import userRouter from "./routers/user.js";
 import serviceRouter from "./routers/service.js";
+import orderRouter from "./routers/orderRouter.js";
 import ErrorHandlerMiddleware from "./middleware/ErrorHandlerMiddleWare.js";
 import cookieParser from "cookie-parser";
 
@@ -57,6 +58,7 @@ app.use(cookieParser());
 //using router
 app.use("/auth", userRouter);
 app.use("/service", serviceRouter);
+app.use("/order", orderRouter);
 app.use(ErrorHandlerMiddleware);
 const PORT = process.env.PORT || 5000;
 const start = () => {
