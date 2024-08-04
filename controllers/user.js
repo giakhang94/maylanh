@@ -37,7 +37,7 @@ const login = async (req, res) => {
   }
   const token = await user.createJWT();
   user.password = undefined;
-  attachCookie(res, token);
+  attachCookie(res, "token", token);
   res.status(200).json({ message: "Login Successfully", user });
 };
 

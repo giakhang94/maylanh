@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-
+import jwt from "jsonwebtoken";
 const ClientSchema = new mongoose.Schema(
   {
     phone: {
@@ -19,12 +19,22 @@ const ClientSchema = new mongoose.Schema(
 );
 
 ClientSchema.pre("save", async function (next) {
-  this.password = await bcrypt.hash(this.password, 8);
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 8);
+  } else {
+    return;
+  }
 });
 ClientSchema.methods.comparePassword = async function (candidate) {
-  const isMatch = await bcrypt.compare(candidate, this.passowrd);
-
+  const isMatch = await bcrypt.compare(candidate, this.password);
   return isMatch;
+};
+
+ClientSchema.methods.createJWT = async function () {
+  const token = jwt.sign({ clientPhone: this.phone }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_LIFETIME,
+  });
+  return token;
 };
 
 const ClientModel = mongoose.model("Client", ClientSchema);

@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
   AddService,
   AllService,
+  CustomerLogin,
   Dashboard,
   Home,
   Login,
@@ -34,6 +35,7 @@ function App() {
         <Route element={<Register />} path="/register" />
         <Route element={<Home />} path="/" />
         <Route element={<Services />} path="/services" />
+        <Route element={<CustomerLogin />} path="/customer/login" />
       </Routes>
     </BrowserRouter>
   );
