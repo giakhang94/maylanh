@@ -1,5 +1,6 @@
 import BadRequestError from "../errors/BadRequestError.js";
 import NotFoundError from "../errors/NotFoundError.js";
+import UnAuthorizationError from "../errors/UnAuthorizationError.js";
 import Client from "../models/clientModel.js";
 import attachCookie from "../utils/attachCookie.js";
 import { validatePhoneNumber } from "../utils/Validator.js";
@@ -24,4 +25,13 @@ const clientLogin = async (req, res) => {
   res.status(201).json({ message: "Đăng nhập thành công" });
 };
 
-export { clientLogin };
+const getCurrentClient = async (req, res) => {
+  const client = req.client;
+  const currentClient = await Client.findById({ _id: client.id });
+  if (!currentClient) {
+    throw new UnAuthorizationError("not found account");
+  }
+  currentClient.password = undefined;
+  res.status(200).json({ currentClient });
+};
+export { clientLogin, getCurrentClient };

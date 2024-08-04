@@ -9,11 +9,13 @@ import {
   Home,
   Login,
   Order,
+  OrderByClient,
   Register,
   Services,
   ShareLayout,
 } from "@/pages";
 import ProtectedLayout from "./components/protectedLayout";
+import ProtectedRoute from "./pages/client/customer/ProtectedRoute";
 function App() {
   return (
     <BrowserRouter>
@@ -35,6 +37,9 @@ function App() {
         <Route element={<Register />} path="/register" />
         <Route element={<Home />} path="/" />
         <Route element={<Services />} path="/services" />
+        <Route element={<ProtectedRoute />} path="/customer">
+          <Route element={<OrderByClient />} path="/customer/order" />
+        </Route>
         <Route element={<CustomerLogin />} path="/customer/login" />
       </Routes>
     </BrowserRouter>

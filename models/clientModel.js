@@ -31,9 +31,13 @@ ClientSchema.methods.comparePassword = async function (candidate) {
 };
 
 ClientSchema.methods.createJWT = async function () {
-  const token = jwt.sign({ clientPhone: this.phone }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_LIFETIME,
-  });
+  const token = jwt.sign(
+    { phone: this.phone, id: this._id },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_LIFETIME,
+    }
+  );
   return token;
 };
 
