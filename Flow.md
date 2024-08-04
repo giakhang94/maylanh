@@ -197,7 +197,7 @@ const customAxios = (token: string) => {
     baseURL: "/",
     withCredentials: true,
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`, //cai nay khong co cung OK
     },
   });
   authFetch.interceptors.response.use(
@@ -848,3 +848,38 @@ await client.save({session: session})
 3. bỏ đoạn code trên trong try-catch của transaction là ok
 
 4. tạo session, transactionStart(), commitTransaction() là bỏ trong `try{}` hết
+5. CODE sẽ như vầy, the final codes will look like this
+
+```js
+let newAccount = null;
+let order = null;
+//transaction session
+try {
+  const sess = await mongoose.startSession();
+  sess.startTransaction();
+  if (isRegister) {
+    validateClientPassword(password);
+    // newAccount = await createClientAccount(phone, name, sess); cái này gọi ngang hàng k được (lưu cho nhớ)
+    newAccount = new ClientModel({
+      phone,
+      password,
+    });
+    await newAccount.save({ session: sess });
+  }
+  // await newAccount.save();
+  const createdBy = newAccount && newAccount._id ? newAccount._id : undefined;
+  order = new Order({
+    serviceId,
+    createdBy,
+    name,
+    phone,
+    address,
+    note,
+  });
+  await order.save({ session: sess });
+  await sess.commitTransaction();
+} catch (error) {
+  console.log(error);
+  throw new BadRequestError("Xin hãy thử lại");
+}
+```

@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import userRouter from "./routers/user.js";
 import serviceRouter from "./routers/service.js";
 import orderRouter from "./routers/orderRouter.js";
+import clientRouter from "./routers/clientRouter.js";
 import ErrorHandlerMiddleware from "./middleware/ErrorHandlerMiddleWare.js";
 import cookieParser from "cookie-parser";
 
@@ -59,6 +60,7 @@ app.use(cookieParser());
 app.use("/auth", userRouter);
 app.use("/service", serviceRouter);
 app.use("/order", orderRouter);
+app.use("/client", clientRouter);
 app.use(ErrorHandlerMiddleware);
 const PORT = process.env.PORT || 5000;
 const start = () => {

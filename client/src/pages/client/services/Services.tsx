@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import NumberFormat from "@/utils/FormatNumber";
 import { CommonModal } from "@/components";
 import PurchaseForm from "./PurchaseForm";
+import ClientNavbar from "./ClientNavbar";
 
 interface Props {}
 
@@ -68,6 +69,7 @@ const Services = (props: Props): React.JSX.Element => {
     );
   return (
     <>
+      <ClientNavbar />
       <ToastContainer
         position="top-right"
         autoClose={5000}

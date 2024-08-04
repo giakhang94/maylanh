@@ -7,7 +7,9 @@ import Home from "./client/Home";
 import AddService from "./dashboard/AddService";
 import AllService from "./dashboard/AllServices";
 import Services from "./client/services/Services";
+import CustomerLogin from "./client/customer/login";
 export {
+  CustomerLogin,
   Services,
   Login,
   Order,
