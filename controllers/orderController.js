@@ -6,6 +6,7 @@ import {
 } from "../utils/Validator.js";
 import BadRequestError from "../errors/BadRequestError.js";
 import ClientModel from "../models/clientModel.js";
+import UnAuthorizationError from "../errors/UnAuthorizationError.js";
 
 const createOrder = async (req, res) => {
   const { phone, name, address, isRegister, password, note, serviceId } =
@@ -49,4 +50,21 @@ const createOrder = async (req, res) => {
   });
 };
 
-export { createOrder };
+const getAllOrders = async (req, res) => {
+  const user = req.user;
+  if (!user) {
+    throw new UnAuthorizationError("Login first");
+  }
+  const orders = await Order.find().sort({ createdAt: 1 });
+  res.status(200).json({ orders });
+};
+
+const getOrdersByClient = async (req, res) => {
+  const client = req.client;
+  if (!client) throw new UnAuthorizationError("Đăng nhập để tiếp tục");
+  const id = client.id;
+  const orders = await Order.find({ createdBy: id }).sort({ createdAt: 1 });
+  res.status(200).json({ orders });
+};
+
+export { createOrder, getAllOrders, getOrdersByClient };
