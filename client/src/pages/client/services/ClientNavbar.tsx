@@ -6,10 +6,7 @@ interface Props {}
 const ClientNavbar = (props: Props): React.JSX.Element => {
   const nav = useNavigate();
   const [showLogout, setShowLogout] = useState<boolean>(false);
-  const { client } = useAppContext();
-  // let { email } = user && user;
-  // const indexofAtsite = email.indexOf("@");
-  // email = email.slice(0, indexofAtsite);
+  const { client, logoutClient } = useAppContext();
   return (
     <div className="w-[100%] flex justify-center p-5 h-[20] bg-white ">
       <div className="flex items-center justify-center space-x-1 relative">
@@ -29,7 +26,7 @@ const ClientNavbar = (props: Props): React.JSX.Element => {
           <div className=" absolute top-[100%] mt-1 right-0 flex flex-col z-30 bg-white w-[170px]  shadow-sm shadow-gray-300">
             <button
               onClick={() => {
-                // logout();
+                logoutClient();
                 nav("/");
               }}
               className=" text-red-500  hover:bg-sky-200 hover:py-1 font-semibold tracking-[1px] py-1 px-2 rounded-sm w-full text-left"

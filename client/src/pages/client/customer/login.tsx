@@ -1,4 +1,5 @@
 import { Logo } from "@/components";
+import { useAppContext } from "@/Context/appContext";
 import submitCustomerLogin from "@/utils/submitCustomerLogin";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +9,7 @@ interface Props {}
 
 const CustomerLogin = (props: Props): React.JSX.Element => {
   const navigate = useNavigate();
+  const { getCurrentClient } = useAppContext();
   const [input, setInput] = useState({ phone: "", password: "" });
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -57,10 +59,12 @@ const CustomerLogin = (props: Props): React.JSX.Element => {
           onClick={async (e) => {
             e.preventDefault();
             const result = await submitCustomerLogin(input);
-            result &&
+            if (result) {
+              getCurrentClient();
               setTimeout(() => {
                 navigate("/customer/order");
               }, 3000);
+            }
           }}
         >
           Đăng nhập

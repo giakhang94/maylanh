@@ -11,6 +11,7 @@ export interface InitStateProps {
   getCurrentUser: () => void;
   logout: () => void;
   getCurrentClient: () => void;
+  logoutClient: () => void;
 }
 const initState: InitStateProps = {
   user: null,
@@ -21,6 +22,7 @@ const initState: InitStateProps = {
   getCurrentUser() {},
   logout() {},
   getCurrentClient() {},
+  logoutClient() {},
 };
 const AppContext = createContext(initState);
 const AppProvider = ({ children }: any): React.JSX.Element => {
@@ -30,6 +32,11 @@ const AppProvider = ({ children }: any): React.JSX.Element => {
   const logout = async () => {
     await authFetch.get("/auth/logout");
   };
+
+  const logoutClient = async () => {
+    await authFetch.get("/client/logout");
+  };
+
   const getCurrentUser = async () => {
     dispatch({ type: "GET_CURRENT_USER_BEGIN", payload: {} });
     try {
@@ -64,7 +71,13 @@ const AppProvider = ({ children }: any): React.JSX.Element => {
   }, []);
   return (
     <AppContext.Provider
-      value={{ ...state, getCurrentUser, logout, getCurrentClient }}
+      value={{
+        ...state,
+        getCurrentUser,
+        logout,
+        getCurrentClient,
+        logoutClient,
+      }}
     >
       {children}
     </AppContext.Provider>
