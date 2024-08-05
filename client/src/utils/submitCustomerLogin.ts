@@ -21,8 +21,10 @@ const submitCustomerLogin = async (input: Input) => {
   try {
     const { data } = await customAxios().post("/client/login", { ...input });
     toast.success(data.message);
+    return true;
   } catch (error: any) {
     toast.error(error.data.message);
+    return false;
   }
 };
 export default submitCustomerLogin;

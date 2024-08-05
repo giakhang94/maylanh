@@ -9,7 +9,9 @@ import AllService from "./dashboard/AllServices";
 import Services from "./client/services/Services";
 import CustomerLogin from "./client/customer/login";
 import OrderByClient from "./client/customer/orders";
+import ShareClientLayout from "./client/customer/ShareLayout";
 export {
+  ShareClientLayout,
   OrderByClient,
   CustomerLogin,
   Services,

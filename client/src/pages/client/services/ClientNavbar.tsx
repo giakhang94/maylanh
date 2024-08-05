@@ -6,7 +6,7 @@ interface Props {}
 const ClientNavbar = (props: Props): React.JSX.Element => {
   const nav = useNavigate();
   const [showLogout, setShowLogout] = useState<boolean>(false);
-  const { user, logout } = useAppContext();
+  const { client } = useAppContext();
   // let { email } = user && user;
   // const indexofAtsite = email.indexOf("@");
   // email = email.slice(0, indexofAtsite);
@@ -20,14 +20,16 @@ const ClientNavbar = (props: Props): React.JSX.Element => {
             setShowLogout(!showLogout);
           }}
         >
-          <span className="font-semibold italic tracking-[1px] ">Guess</span>
+          <span className="font-semibold italic tracking-[1px] ">
+            {client.phone}
+          </span>
           <FaCircleChevronDown size={19} />
         </div>
         {showLogout && (
           <div className=" absolute top-[100%] mt-1 right-0 flex flex-col z-30 bg-white w-[170px]  shadow-sm shadow-gray-300">
             <button
               onClick={() => {
-                logout();
+                // logout();
                 nav("/");
               }}
               className=" text-red-500  hover:bg-sky-200 hover:py-1 font-semibold tracking-[1px] py-1 px-2 rounded-sm w-full text-left"

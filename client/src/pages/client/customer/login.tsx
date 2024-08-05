@@ -1,11 +1,13 @@
 import { Logo } from "@/components";
 import submitCustomerLogin from "@/utils/submitCustomerLogin";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 interface Props {}
 
 const CustomerLogin = (props: Props): React.JSX.Element => {
+  const navigate = useNavigate();
   const [input, setInput] = useState({ phone: "", password: "" });
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -52,9 +54,13 @@ const CustomerLogin = (props: Props): React.JSX.Element => {
         <button
           className="w-full bg-sky-500 text-white font-semibold tracking-[1px] text-sm py-2 rounded-sm"
           type="submit"
-          onClick={(e) => {
+          onClick={async (e) => {
             e.preventDefault();
-            submitCustomerLogin(input);
+            const result = await submitCustomerLogin(input);
+            result &&
+              setTimeout(() => {
+                navigate("/customer/order");
+              }, 3000);
           }}
         >
           Đăng nhập
