@@ -4,12 +4,16 @@ const OrderSchema = new mongoose.Schema(
   {
     createdBy: {
       type: mongoose.Types.ObjectId,
+      ref: "Client",
     },
     serviceId: {
       type: String,
       required: true,
     },
-    serviceName: String,
+    serviceName: {
+      type: String,
+      requried: [true, "có serviceName mới biết sửa cái gì chứ hả"],
+    },
     name: {
       type: String,
       required: [true, "xin mời nhập tên"],
@@ -23,6 +27,12 @@ const OrderSchema = new mongoose.Schema(
     },
     note: {
       type: String,
+    },
+    done: {
+      type: Boolean,
+    },
+    cancel: {
+      type: Boolean,
     },
   },
   { timestamps: true }

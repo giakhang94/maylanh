@@ -883,3 +883,5 @@ try {
   throw new BadRequestError("Xin hãy thử lại");
 }
 ```
+
+### Lưu ý về useNavigate hoặc

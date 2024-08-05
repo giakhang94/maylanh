@@ -26,7 +26,7 @@ const PurchaseForm = ({
   //submit form
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    submitPurchaseForm(input, selectedService.id);
+    submitPurchaseForm(input, selectedService.id, selectedService.name);
   };
   return (
     <form

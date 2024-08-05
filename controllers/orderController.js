@@ -9,11 +9,20 @@ import ClientModel from "../models/clientModel.js";
 import UnAuthorizationError from "../errors/UnAuthorizationError.js";
 
 const createOrder = async (req, res) => {
-  const { phone, name, address, isRegister, password, note, serviceId } =
-    req.body;
+  const {
+    phone,
+    name,
+    address,
+    isRegister,
+    password,
+    note,
+    serviceId,
+    serviceName,
+  } = req.body;
   validatePhoneNumber(phone);
   let newAccount = null;
   let order = null;
+  let createdBy = null;
   //transaction session
   try {
     const sess = await mongoose.startSession();
@@ -21,14 +30,29 @@ const createOrder = async (req, res) => {
     if (isRegister) {
       validateClientPassword(password);
       // newAccount = await createClientAccount(phone, name, sess); cái này gọi ngang hàng k được (lưu cho nhớ)
-      newAccount = new ClientModel({
-        phone,
-        password,
-      });
-      await newAccount.save({ session: sess });
+      //check if this phone number has already registerd
+      const existedClient = await ClientModel.findOne({ phone: phone });
+      if (existedClient) {
+        createdBy = existedClient._id;
+      } else {
+        newAccount = new ClientModel({
+          phone,
+          password,
+        });
+        await newAccount.save({ session: sess });
+        createdBy = newAccount && newAccount._id ? newAccount._id : undefined;
+      }
+    } else {
+      // newAccount = await createClientAccount(phone, name, sess); cái này gọi ngang hàng k được (lưu cho nhớ)
+      //check if this phone number has already registerd
+      const existedClient = await ClientModel.findOne({ phone: phone });
+      if (existedClient) {
+        createdBy = existedClient._id;
+      } else {
+        createdBy = undefined;
+      }
     }
     // await newAccount.save();
-    const createdBy = newAccount && newAccount._id ? newAccount._id : undefined;
     order = new Order({
       serviceId,
       createdBy,
@@ -36,6 +60,7 @@ const createOrder = async (req, res) => {
       phone,
       address,
       note,
+      serviceName,
     });
     await order.save({ session: sess });
     await sess.commitTransaction();
@@ -55,7 +80,11 @@ const getAllOrders = async (req, res) => {
   if (!user) {
     throw new UnAuthorizationError("Login first");
   }
-  const orders = await Order.find().sort({ createdAt: 1 });
+  const orders = await Order.find()
+    .sort({ createdAt: -1 })
+    .populate("createdBy")
+    .exec();
+
   res.status(200).json({ orders });
 };
 
@@ -63,7 +92,11 @@ const getOrdersByClient = async (req, res) => {
   const client = req.client;
   if (!client) throw new UnAuthorizationError("Đăng nhập để tiếp tục");
   const id = client.id;
-  const orders = await Order.find({ createdBy: id }).sort({ createdAt: 1 });
+  const orders = await Order.find({ createdBy: id })
+    .sort({ createdAt: 1 })
+    .populate("createdBy")
+    .exec();
+  console.log(orders);
   res.status(200).json({ orders });
 };
 

@@ -18,7 +18,7 @@ const ClientNavbar = (props: Props): React.JSX.Element => {
           }}
         >
           <span className="font-semibold italic tracking-[1px] ">
-            {client.phone}
+            {client && client.phone ? client.phone : "Bạn mới"}
           </span>
           <FaCircleChevronDown size={19} />
         </div>
