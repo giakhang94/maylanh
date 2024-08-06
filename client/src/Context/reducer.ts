@@ -24,6 +24,13 @@ const reducer = (state: InitStateProps, action: Action) => {
   if (action.type === "GET_CURRENT_CLIENT_ERROR") {
     return { ...state, isLoadingClient: false };
   }
+  if (action.type === "CHANGE_READ") {
+    return {
+      ...state,
+      isChangeRead: !state.isChangeRead,
+      unread: action.payload.unread,
+    };
+  }
   return state;
   //khởi tạo phải có return, hông thôi bên appContext sẽ báo lỗi chỗ thằng useReducer
 };

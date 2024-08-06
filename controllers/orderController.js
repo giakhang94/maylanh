@@ -97,7 +97,7 @@ const getOrdersByClient = async (req, res) => {
     .sort({ createdAt: 1 })
     .populate("createdBy")
     .exec();
-  console.log(orders);
+  // console.log(orders);
   res.status(200).json({ orders });
 };
 
@@ -110,18 +110,25 @@ const setFlagOrder = async (req, res) => {
     throw new BadRequestError("hãy chọn cancel hay done");
   }
   const order = await Order.findById(orderId);
-  console.log(type);
+  // console.log(type);
   if (type === "cancel") {
     if (order.cancel === false) {
       order.cancel = true;
     } else {
       if (order.cancel === true) order.cancel = false;
     }
-  } else {
+  } else if (type === "done") {
     if (order.done === false) {
       order.done = true;
     } else {
       if (order.done === true) order.done = false;
+    }
+  } else {
+    if (type === "read") {
+      order.isRead = true;
+    }
+    if (type === "unRead") {
+      order.isRead = false;
     }
   }
 
@@ -129,4 +136,15 @@ const setFlagOrder = async (req, res) => {
   res.status(201).json({ message: "Cập nhật thành công" });
 };
 
-export { createOrder, getAllOrders, getOrdersByClient, setFlagOrder };
+const countUnReadOrders = async (req, res) => {
+  const count = await Order.countDocuments({ isRead: false });
+  res.status(200).json({ unread: count });
+};
+
+export {
+  createOrder,
+  getAllOrders,
+  getOrdersByClient,
+  setFlagOrder,
+  countUnReadOrders,
+};

@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  countUnReadOrders,
   createOrder,
   getAllOrders,
   getOrdersByClient,
@@ -13,6 +14,7 @@ const router = express.Router();
 router.post("/", createOrder);
 router.get("/", auth, getAllOrders);
 router.get("/order-by-client", clientAuth, getOrdersByClient);
+router.get("/unread", countUnReadOrders);
 router.patch("/set-flag/:id", auth, setFlagOrder);
 
 export default router;

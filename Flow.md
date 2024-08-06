@@ -884,4 +884,27 @@ try {
 }
 ```
 
-### Lưu ý về useNavigate hoặc
+### Lưu ý về useNavigate hoặc navigat from 'react-router-dom'
+
+1. cái useNavigate chỉ gọi trong custom hook hoặc component đc. Xài cho mấy hàm trong 1 component
+2. còn cái nào kiểu protected điều kiện nếu a thì show trang, nếu b thì force về page nào đó
+   thì xài return <Navigate to ="" />. Vì bản thân <Navigate to="" /> là 1 component
+
+### Lưu ý về Hover, group hover trong tailwindcss
+
+1. class cha đặt className có chữ "group"
+2. class con nào cần hover thì className = "group-hover:block"...
+
+```js
+<button
+  className="group"
+  onClick={() => {
+    setFlag((prev) => ({ ...prev, isRead: true }));
+  }}
+>
+  <div className="w-2 h-2 bg-white rounded-full absolute bottom-1 right-1"></div>
+  <span className="text-sm absolute right-0 bottom-0  w-[120px] hidden group-hover:block">
+    Mark as read
+  </span>
+</button>
+```
