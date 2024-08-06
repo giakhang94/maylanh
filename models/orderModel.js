@@ -30,9 +30,11 @@ const OrderSchema = new mongoose.Schema(
     },
     done: {
       type: Boolean,
+      default: false,
     },
     cancel: {
       type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

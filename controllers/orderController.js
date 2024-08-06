@@ -7,6 +7,7 @@ import {
 import BadRequestError from "../errors/BadRequestError.js";
 import ClientModel from "../models/clientModel.js";
 import UnAuthorizationError from "../errors/UnAuthorizationError.js";
+import { adminPermision } from "../utils/adminPermison.js";
 
 const createOrder = async (req, res) => {
   const {
@@ -100,4 +101,32 @@ const getOrdersByClient = async (req, res) => {
   res.status(200).json({ orders });
 };
 
-export { createOrder, getAllOrders, getOrdersByClient };
+const setFlagOrder = async (req, res) => {
+  const { type } = req.body;
+  const user = req.user;
+  const orderId = req.params.id;
+  adminPermision(user.role);
+  if (!type) {
+    throw new BadRequestError("hãy chọn cancel hay done");
+  }
+  const order = await Order.findById(orderId);
+  console.log(type);
+  if (type === "cancel") {
+    if (order.cancel === false) {
+      order.cancel = true;
+    } else {
+      if (order.cancel === true) order.cancel = false;
+    }
+  } else {
+    if (order.done === false) {
+      order.done = true;
+    } else {
+      if (order.done === true) order.done = false;
+    }
+  }
+
+  await order.save();
+  res.status(201).json({ message: "Cập nhật thành công" });
+};
+
+export { createOrder, getAllOrders, getOrdersByClient, setFlagOrder };
