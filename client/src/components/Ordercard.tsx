@@ -49,6 +49,7 @@ const OrderCard = ({ index, order, color }: Props): React.JSX.Element => {
             } `}
             onClick={() => {
               handleSetFlagOrder({ type: "cancel", id: order._id });
+              handleSetFlagOrder({ type: "read", id: order._id });
 
               if (flag.cancel === true) {
                 setFlag((prev) => ({ ...prev, cancel: false }));
@@ -72,6 +73,8 @@ const OrderCard = ({ index, order, color }: Props): React.JSX.Element => {
             className="absolute top-2 right-2"
             onClick={() => {
               handleSetFlagOrder({ type: "done", id: order._id });
+              handleSetFlagOrder({ type: "read", id: order._id });
+
               if (flag.done === true) {
                 setFlag((prev) => ({ ...prev, done: false }));
               } else {
@@ -111,9 +114,7 @@ const OrderCard = ({ index, order, color }: Props): React.JSX.Element => {
         </p>
         {flag.done && (
           <span
-            onClick={() => {
-              setFlag((prev) => ({ ...prev, done: false }));
-            }}
+            onClick={() => {}}
             className="absolute top-5 right-10 text-green-500 font-bold text-lg tracking-[2px] block w-fit py-[1px] -rotate-12 px-1 border-[3px] border-green-500 cursor-pointer hover:opacity-85 hover:scale-110"
           >
             DONE
@@ -121,15 +122,13 @@ const OrderCard = ({ index, order, color }: Props): React.JSX.Element => {
         )}
         {flag.cancel && (
           <span
-            onClick={() => {
-              setFlag((prev) => ({ ...prev, cancel: false }));
-            }}
+            onClick={() => {}}
             className="absolute top-5 right-10 text-red-500 font-bold text-lg tracking-[2px] block w-fit py-[1px] -rotate-12 px-1 border-[3px] border-red-500 cursor-pointer hover:opacity-85 hover:scale-110"
           >
             Canceled
           </span>
         )}
-        {!flag.isRead && (
+        {!flag.isRead && !flag.done && !flag.cancel && (
           <span
             onClick={() => {
               getUnread();
