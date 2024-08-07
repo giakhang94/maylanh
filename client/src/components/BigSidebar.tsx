@@ -8,8 +8,8 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useAppContext } from "@/Context/appContext";
 interface Props {}
 const BigSideBar = (props: Props): React.JSX.Element => {
-  const { isChangeRead, unread } = useAppContext();
-
+  const { unread } = useAppContext();
+  //0: dashobard; 1: all service;  2: order;  3: Add service;   4: User
   sidebarItemList[2].unRead = unread;
   return (
     <div className="w-[30%] max-w-[300px] flex flex-col justify-start items-start space-y-5 my-2 h-screen bg-white">
