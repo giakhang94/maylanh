@@ -11,6 +11,10 @@ export interface InitStateProps {
   getCurrentUser: () => void;
   logout: () => void;
   getCurrentClient: () => void;
+  logoutClient: () => void;
+  isChangeRead: boolean;
+  getUnread: () => void;
+  unread: number;
 }
 const initState: InitStateProps = {
   user: null,
@@ -21,6 +25,10 @@ const initState: InitStateProps = {
   getCurrentUser() {},
   logout() {},
   getCurrentClient() {},
+  logoutClient() {},
+  isChangeRead: false,
+  getUnread() {},
+  unread: 0,
 };
 const AppContext = createContext(initState);
 const AppProvider = ({ children }: any): React.JSX.Element => {
@@ -30,6 +38,11 @@ const AppProvider = ({ children }: any): React.JSX.Element => {
   const logout = async () => {
     await authFetch.get("/auth/logout");
   };
+
+  const logoutClient = async () => {
+    await authFetch.get("/client/logout");
+  };
+
   const getCurrentUser = async () => {
     dispatch({ type: "GET_CURRENT_USER_BEGIN", payload: {} });
     try {
@@ -57,14 +70,33 @@ const AppProvider = ({ children }: any): React.JSX.Element => {
       dispatch({ type: "GET_CURRENT_CLIENT_ERROR", payload: {} });
     }
   };
+  const getUnread = async () => {
+    try {
+      const { data } = await authFetch.get("/order/unread");
+      dispatch({ type: "CHANGE_READ", payload: { unread: data.unread } });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     getCurrentUser();
     getCurrentClient();
+    getUnread();
   }, []);
+  useEffect(() => {
+    getUnread();
+  }, [state.isChangeRead]);
   return (
     <AppContext.Provider
-      value={{ ...state, getCurrentUser, logout, getCurrentClient }}
+      value={{
+        ...state,
+        getCurrentUser,
+        logout,
+        getCurrentClient,
+        logoutClient,
+        getUnread,
+      }}
     >
       {children}
     </AppContext.Provider>

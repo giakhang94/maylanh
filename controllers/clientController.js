@@ -34,4 +34,9 @@ const getCurrentClient = async (req, res) => {
   currentClient.password = undefined;
   res.status(200).json({ currentClient });
 };
-export { clientLogin, getCurrentClient };
+
+const logoutClient = async (req, res) => {
+  attachCookie(res, "clientToken", "");
+  res.status(200).json({ message: "Đã đăng xuất" });
+};
+export { clientLogin, getCurrentClient, logoutClient };

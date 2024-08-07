@@ -3,7 +3,8 @@ import customAxios from "./authFecth";
 import { toast } from "react-toastify";
 const submitPurchaseForm = async (
   input: InputPurchaseForm,
-  serviceId: string
+  serviceId: string,
+  serviceName: string
 ) => {
   try {
     if (!input.phone) {
@@ -20,6 +21,7 @@ const submitPurchaseForm = async (
     const { data } = await customAxios().post("/order", {
       ...input,
       serviceId,
+      serviceName,
     });
     console.log("resp data", data);
     toast.success(data.message);
