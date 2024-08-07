@@ -940,3 +940,10 @@ const countUnread = await OrderModel.countDocuments({isRead: false})
 ```
 
 2. Lưu ý: dùng `context API` để cập nhật như cập nhật giỏ hàng
+
+### Để biết đang ở địa chỉ nào (path nào location nào)
+
+1. import useLocation from 'react-router-dom'
+2. const location = useLocation()
+3. console.log locatioin.pathname
+   result// => '/services'...

@@ -1,17 +1,34 @@
 import { useState } from "react";
 import { useAppContext } from "@/Context/appContext";
 import { FaCircleChevronDown } from "react-icons/fa6";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "@/components";
 interface Props {}
 const ClientNavbar = (props: Props): React.JSX.Element => {
   const nav = useNavigate();
+  const location = useLocation();
+  const isServices = location.pathname === "/services";
+  console.log(location.pathname);
   const [showLogout, setShowLogout] = useState<boolean>(false);
   const { client, logoutClient } = useAppContext();
   return (
-    <div className="w-[100%] flex justify-between px-20 p-5 h-[20] bg-white ">
-      <div>
+    <div className="w-[100%] flex justify-between px-20 p-5 h-[20] bg-white items-center">
+      <div
+        className="cursor-pointer"
+        onClick={() => {
+          nav("/");
+        }}
+      >
         <Logo />
+      </div>
+      <div
+        onClick={() => {
+          nav(`${isServices ? "/customer/order" : "/services"}`);
+        }}
+      >
+        <span className="hover:text-sky-500 text-lg font-semibold tracking-[1px] cursor-pointer">
+          {isServices ? "Xem Lịch Sử Đặt Hẹn" : "Đến Trang Đặt Hẹn"}
+        </span>
       </div>
       <div className="flex items-center justify-center space-x-1 relative">
         <span className="italic font-semibold">Welcome, </span>

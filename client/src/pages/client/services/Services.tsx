@@ -63,13 +63,16 @@ const Services = (props: Props): React.JSX.Element => {
   });
   if (isLoading)
     return (
-      <div className="h-screen flex items-center, justify-center font-semibold text-2xl tracking-[1px] ">
+      <div className="h-screen flex items-center justify-center font-semibold text-2xl tracking-[1px] ">
         loading...
       </div>
     );
   return (
-    <>
+    <div>
       <ClientNavbar />
+      <div className="ml-10 text-2xl mb-3 mt-2 block w-fit text-sky-500">
+        Trang đặt hẹn sửa chữa/vệ sinh
+      </div>
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -151,7 +154,7 @@ const Services = (props: Props): React.JSX.Element => {
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 

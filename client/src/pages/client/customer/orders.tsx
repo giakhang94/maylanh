@@ -23,7 +23,10 @@ const OrderByClient = (props: Props): React.JSX.Element => {
   }, []);
   if (isLoadingClient) return <Loading classname="" />;
   return (
-    <>
+    <div className="w-full">
+      <div className="ml-20 text-2xl mb-5 mt-1 block w-full text-sky-500">
+        Lịch Sử Đặt Hẹn
+      </div>
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -52,7 +55,7 @@ const OrderByClient = (props: Props): React.JSX.Element => {
             );
           })}
       </div>
-    </>
+    </div>
   );
 };
 
