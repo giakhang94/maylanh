@@ -8,6 +8,7 @@ import BadRequestError from "../errors/BadRequestError.js";
 import ClientModel from "../models/clientModel.js";
 import UnAuthorizationError from "../errors/UnAuthorizationError.js";
 import { adminPermision } from "../utils/adminPermison.js";
+import NotFoundError from "../errors/NotFoundError.js";
 
 const createOrder = async (req, res) => {
   const {
@@ -131,9 +132,25 @@ const setFlagOrder = async (req, res) => {
       order.isRead = false;
     }
   }
+  //client cancel
 
   await order.save();
   res.status(201).json({ message: "Cập nhật thành công" });
+};
+const clientCancel = async (req, res) => {
+  const client = req.client;
+  const id = req.params.id;
+  const order = await Order.findById(id);
+  if (!order) {
+    throw new NotFoundError("Không tìm thấy đơn này");
+  }
+  if (order.createdBy.toString() !== client.id) {
+    throw new UnAuthorizationError("Bạn không thể hủy đơn này");
+  }
+  order.clientCancel = true;
+
+  await order.save();
+  res.status(201).json({ message: "Đã hủy hẹn" });
 };
 
 const countUnReadOrders = async (req, res) => {
@@ -147,4 +164,5 @@ export {
   getOrdersByClient,
   setFlagOrder,
   countUnReadOrders,
+  clientCancel,
 };

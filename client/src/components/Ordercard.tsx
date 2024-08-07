@@ -9,6 +9,7 @@ interface Props {
   index: number;
   order: OrderType;
   color: string;
+  forWho: "client" | "admin";
 }
 
 interface Flag {
@@ -17,7 +18,12 @@ interface Flag {
   isRead: boolean;
 }
 
-const OrderCard = ({ index, order, color }: Props): React.JSX.Element => {
+const OrderCard = ({
+  index,
+  order,
+  color,
+  forWho,
+}: Props): React.JSX.Element => {
   const { getUnread } = useAppContext();
   const [flag, setFlag] = useState<Flag>({
     cancel: false,
@@ -35,60 +41,78 @@ const OrderCard = ({ index, order, color }: Props): React.JSX.Element => {
   return (
     <div
       key={index + "orderAdmin"}
-      className="flex items-center space-x-3 h-full mb-8 "
+      className={`${
+        order.clientCancel ? "opacity-60" : ""
+      } flex items-center space-x-3 h-full mb-8`}
     >
       <div
         className={`relative w-[150px] h-[130px] ${color} text-white rounded-md font-semibold text-xl p-5 text-center flex justify-center items-center`}
       >
         {order.serviceName}
-        <button disabled={flag.done}>
+
+        <button disabled={flag.done || order.clientCancel} className="group">
           <MdCancel
             size={20}
-            className={`absolute top-2 left-2 ${
-              flag.done ? "opacity-50" : ""
+            className={`hover:scale-110 absolute top-2 left-2 ${
+              flag.done || order.clientCancel ? "opacity-50" : ""
             } `}
             onClick={() => {
-              handleSetFlagOrder({ type: "cancel", id: order._id });
-              handleSetFlagOrder({ type: "read", id: order._id });
+              if (forWho === "admin") {
+                handleSetFlagOrder({ type: "cancel", id: order._id });
+                handleSetFlagOrder({ type: "read", id: order._id });
 
-              if (flag.cancel === true) {
-                setFlag((prev) => ({ ...prev, cancel: false }));
+                if (flag.cancel === true) {
+                  setFlag((prev) => ({ ...prev, cancel: false }));
+                } else {
+                  setFlag((prev) => ({
+                    ...prev,
+                    cancel: true,
+                    done: false,
+                    isRead: true,
+                  }));
+                }
               } else {
-                setFlag((prev) => ({
-                  ...prev,
-                  cancel: true,
-                  done: false,
-                  isRead: true,
-                }));
+                handleSetFlagOrder({ type: "client_cancel", id: order._id });
+                setFlag((prev) => ({ ...prev, cancel: true }));
               }
             }}
           />
+          <span className="text-sm color-white font-bold absolute top-2 left-8 hidden group-hover:block">
+            {order.clientCancel ? "Đơn đã hủy" : "Hủy đặt hẹn"}
+          </span>
         </button>
-        <button
-          className={`${flag.cancel ? "opacity-50" : ""}`}
-          disabled={flag.cancel || order.cancel}
-        >
-          <MdDone
-            size={20}
-            className="absolute top-2 right-2"
-            onClick={() => {
-              handleSetFlagOrder({ type: "done", id: order._id });
-              handleSetFlagOrder({ type: "read", id: order._id });
 
-              if (flag.done === true) {
-                setFlag((prev) => ({ ...prev, done: false }));
-              } else {
-                setFlag((prev) => ({
-                  ...prev,
-                  done: true,
-                  cancel: false,
-                  isRead: true,
-                }));
-              }
-            }}
-          />
-        </button>
-        {flag.isRead && (
+        {forWho === "admin" && (
+          <button
+            className={`${
+              flag.cancel || order.clientCancel ? "opacity-50" : ""
+            }`}
+            disabled={flag.cancel || order.cancel}
+          >
+            <MdDone
+              size={20}
+              className="absolute top-2 right-2"
+              onClick={() => {
+                if (forWho === "admin") {
+                  handleSetFlagOrder({ type: "done", id: order._id });
+                  handleSetFlagOrder({ type: "read", id: order._id });
+
+                  if (flag.done === true) {
+                    setFlag((prev) => ({ ...prev, done: false }));
+                  } else {
+                    setFlag((prev) => ({
+                      ...prev,
+                      done: true,
+                      cancel: false,
+                      isRead: true,
+                    }));
+                  }
+                }
+              }}
+            />
+          </button>
+        )}
+        {flag.isRead && forWho === "admin" && (
           <button
             className="group"
             onClick={() => {
@@ -128,7 +152,15 @@ const OrderCard = ({ index, order, color }: Props): React.JSX.Element => {
             Canceled
           </span>
         )}
-        {!flag.isRead && !flag.done && !flag.cancel && (
+        {order.clientCancel && (
+          <span
+            onClick={() => {}}
+            className="absolute top-10 right-10 text-red-500 font-bold text-lg tracking-[2px] block w-fit py-[1px] -rotate-12 px-1 border-[3px] border-red-500 hover:opacity-85 hover:scale-110"
+          >
+            Client Canceled
+          </span>
+        )}
+        {!flag.isRead && !flag.done && !flag.cancel && forWho === "admin" && (
           <span
             onClick={() => {
               getUnread();

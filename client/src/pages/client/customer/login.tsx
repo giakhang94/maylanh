@@ -62,7 +62,7 @@ const CustomerLogin = (props: Props): React.JSX.Element => {
             if (result) {
               getCurrentClient();
               setTimeout(() => {
-                navigate("/customer/order");
+                navigate("/services");
               }, 3000);
             }
           }}

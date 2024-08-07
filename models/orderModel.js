@@ -36,6 +36,10 @@ const OrderSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    clientCancel: {
+      type: Boolean,
+      default: false,
+    },
     isRead: {
       type: Boolean,
       default: false,

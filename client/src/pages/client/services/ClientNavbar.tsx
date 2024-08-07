@@ -26,14 +26,25 @@ const ClientNavbar = (props: Props): React.JSX.Element => {
           <div className=" absolute top-[100%] mt-1 right-0 flex flex-col z-30 bg-white w-[170px]  shadow-sm shadow-gray-300">
             <button
               onClick={() => {
-                logoutClient();
-                nav("/");
+                if (client) {
+                  logoutClient();
+                  nav("/");
+                } else {
+                  nav("/customer/login");
+                }
               }}
-              className=" text-red-500  hover:bg-sky-200 hover:py-1 font-semibold tracking-[1px] py-1 px-2 rounded-sm w-full text-left"
+              className={`text-${
+                client ? "red-500" : "sky-500"
+              } hover:bg-sky-200 hover:py-1 font-semibold tracking-[1px] py-1 px-2 rounded-sm w-full text-left`}
             >
-              Logout
+              {client ? "logout" : "login"}
             </button>
-            <button className=" text-sky-500 hover:bg-sky-200 hover:py-1 font-semibold tracking-[1px] py-1 px-2 w-full text-left">
+            <button
+              onClick={() => {
+                nav("/customer/order");
+              }}
+              className=" text-sky-500 hover:bg-sky-200 hover:py-1 font-semibold tracking-[1px] py-1 px-2 w-full text-left"
+            >
               Lịch sử đặt hẹn
             </button>
           </div>

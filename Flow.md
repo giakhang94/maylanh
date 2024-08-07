@@ -887,6 +887,13 @@ try {
 ### Lưu ý về useNavigate hoặc navigat from 'react-router-dom'
 
 1. cái useNavigate chỉ gọi trong custom hook hoặc component đc. Xài cho mấy hàm trong 1 component
+   => Ví dụ:
+   ```js
+   //in a component
+   const nav = useNavigate()
+   //some codes
+   onClick = {() => {nav('/login')}}
+   ```
 2. còn cái nào kiểu protected điều kiện nếu a thì show trang, nếu b thì force về page nào đó
    thì xài return <Navigate to ="" />. Vì bản thân <Navigate to="" /> là 1 component
 
@@ -908,3 +915,28 @@ try {
   </span>
 </button>
 ```
+
+### state của component nào thì để trong comoponent đó
+
+1. Tao hay bị lỗi state của comp con mà quăng vô comp parent
+   => nên khi state thay đổi, thì tất cả các thằng con đều chịu ảnh hưởng
+   ví dụ setActive. setActive của thằng cha thay đổi => nhấn 1 card, mà tất cả card đều active
+   => Khắc phục phải tạo thêm array chứa id rất mất công
+2. state active, setActive đó cứ bỏ vô <CardComponet> (comp con) thì mọi chuyện giải quyết êm đẹp
+3. Nếu cần phài truyền setState => dùng custom hook
+
+### để tạo unRead orders (notification) => Hỏi chat GPT
+
+1. tạo thêm 1 field nữa là
+
+```js
+  isRead: {
+    type: Boolean;
+    default: false
+  }
+//sau đó đọc số documents có isRead === false là được
+const countUnread = await OrderModel.countDocuments({isRead: false})
+
+```
+
+2. Lưu ý: dùng `context API` để cập nhật như cập nhật giỏ hàng
