@@ -79,10 +79,24 @@ const createOrder = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
   const user = req.user;
+  const { services, from, to, search } = req.query;
   if (!user) {
     throw new UnAuthorizationError("Login first");
   }
-  const orders = await Order.find()
+  const queryObj = {};
+  if (services) {
+    queryObj.serviceName = services;
+  }
+  if (search) {
+    queryObj.$or = [
+      { name: { $regex: search, $options: "i" } },
+      { address: { $regex: search, $options: "i" } },
+      { phone: { $regex: search, $options: "i" } },
+      { note: { $regex: search, $options: "i" } },
+    ];
+  }
+  console.log(queryObj);
+  const orders = await Order.find({ ...queryObj })
     .sort({ createdAt: -1 })
     .populate("createdBy")
     .exec();

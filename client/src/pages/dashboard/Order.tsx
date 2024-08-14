@@ -3,6 +3,7 @@ import customAxios from "@/utils/authFecth";
 import getOrderCardColor from "@/utils/getOrderCardColor";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import Filter, { QueryState } from "./Component/Filter";
 
 interface Props {}
 export interface OrderType {
@@ -23,18 +24,21 @@ export interface OrderType {
 
 const Order = (props: Props): React.JSX.Element => {
   const [orders, setOrders] = useState<OrderType[]>();
-  console.log(orders);
+  const [query, setQuery] = useState<string>("");
+  const getQuery = (queryInput: string) => {
+    setQuery(queryInput);
+  };
   useEffect(() => {
     const getOrders = async () => {
       try {
-        const { data } = await customAxios().get("/order");
+        const { data } = await customAxios().get(`/order?${query}`);
         setOrders(data.orders);
       } catch (error) {
         console.log(error);
       }
     };
     getOrders();
-  }, []);
+  }, [query]);
   return (
     <>
       <ToastContainer
@@ -50,6 +54,9 @@ const Order = (props: Props): React.JSX.Element => {
         theme="colored"
         className="mt-[150px] mr-5 text-xl"
       />
+      <div>
+        <Filter handleSubmit={getQuery} />
+      </div>
       <div className="p-5 grid grid-cols-2">
         {orders &&
           orders.map((order: OrderType, index: number) => {

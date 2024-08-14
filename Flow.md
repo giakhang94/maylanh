@@ -947,3 +947,110 @@ const countUnread = await OrderModel.countDocuments({isRead: false})
 2. const location = useLocation()
 3. console.log locatioin.pathname
    result// => '/services'...
+
+### Date time: Chọn ngày from A - to B.
+
+1. để disable các ngày trước ngày A (bên input B)
+   => dùng `min` property
+2.
+
+```js
+<input type = "date" min = {input.a}>
+```
+
+3. `input.a` là value của input A đã chọn trước đó
+
+### lỗi render xài key-value objects
+
+ví dụ object query = {...}
+
+```js
+let key = 'tao'
+const q = query[key] //typescript will complain warning
+![alt text](image-1.png)
+"No index signature with a parameter of type 'string' was found on type..."
+//to fix that
+const q = (query as andy)[key]
+```
+
+### string.prototype.slice(indexStart, indexEnd)
+
+              indexStart        indexEnd
+                  ↓               ↓
+
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+| T | h | e | x | m | i | r | r | o | r |
+
+                  m   i   r   r
+                 _______________
+                      ↑
+                    Result
+
+=> Như vậy, `slice` không lấy `indexEnd`, mà chỉ lấy từ `indexStar`t tới `indexEnd-1`
+
+### use query
+
+1. https://domain:port/submain?query1=value1&query2=value2...
+2. in backend
+
+```js
+const query = req.query;
+```
+
+3. chú ý `$regex`, `$options: 'i', 'm', 'u', 'x', 's'`
+4. chú ý `$or`
+   để search 1 cái mà ra mọi thứ có dính tới cái mình search, thì xài or
+
+```js
+db.inventory.find({ $or: [{ quantity: { $lt: 20 } }, { price: 10 }] });
+```
+
+code mẫu:
+
+```js
+if (search) {
+  queryObj.$or = [
+    { name: { $regex: search, $options: "i" } },
+    { address: { $regex: search, $options: "i" } },
+    { phone: { $regex: search, $options: "i" } },
+    { note: { $regex: search, $options: "i" } },
+  ];
+}
+```
+
+5. example for getAllOders controller with query
+
+```js
+const getAllOrders = async (req, res) => {
+  const user = req.user;
+  const { services, from, to, search } = req.query;
+  if (!user) {
+    throw new UnAuthorizationError("Login first");
+  }
+  const queryObj = {};
+  if (services) {
+    queryObj.serviceName = services;
+  }
+  if (search) {
+    queryObj.$or = [
+      { name: { $regex: search, $options: "i" } },
+      { address: { $regex: search, $options: "i" } },
+      { phone: { $regex: search, $options: "i" } },
+      { note: { $regex: search, $options: "i" } },
+    ];
+  }
+  console.log(queryObj);
+  const orders = await Order.find({ ...queryObj })
+    .sort({ createdAt: -1 })
+    .populate("createdBy")
+    .exec();
+
+  res.status(200).json({ orders });
+};
+```
+
+### Debounce
+
+```
+
+```
