@@ -60,9 +60,9 @@ const Login = (props: Props): React.JSX.Element => {
         theme="colored"
         className="mt-[150px] mr-5 text-xl"
       />
-      <form className="-translate-y-[50%]">
+      <form className="-translate-y-[50%] Psmallmobile:w-[250px] Pmobile:w-[350px] Plaptop:w-[450px] Ptablet:[w-350px] Pdesktop:w-[450px]">
         <Logo />
-        <div className="mt-5">
+        <div className="mt-5 w-full">
           <h1 className="text-center font-semibold text-xl tracking-[2px] ">
             Login
           </h1>
@@ -76,7 +76,7 @@ const Login = (props: Props): React.JSX.Element => {
                 id="email"
                 name="email"
                 placeholder="example@email.com"
-                className="border border-gray-300 py-1 px-2 min-w-[300px] w-full rounded-sm outline-none"
+                className="border border-gray-300 py-1 px-2  w-full rounded-sm outline-none"
               />
             </div>
           </div>
@@ -89,7 +89,7 @@ const Login = (props: Props): React.JSX.Element => {
                 onChange={handleInputChange}
                 value={input.password}
                 name="password"
-                className="border border-gray-300 py-1 px-2 min-w-[300px] w-full rounded-sm outline-none"
+                className="border border-gray-300 py-1 px-2 w-full rounded-sm outline-none"
                 placeholder="enter your password"
               />
             </div>
@@ -97,7 +97,7 @@ const Login = (props: Props): React.JSX.Element => {
           <button
             onClick={handleSubmit}
             disabled={isLoading}
-            className="w-full h-full py-2  bg-sky-500 rounded-[sm] mt-3 text-white font-semibold tracking-[2px] hover:opacity-90"
+            className="w-full h-full py-2 block  bg-sky-500 rounded-[sm] mt-3 text-white font-semibold tracking-[2px] hover:opacity-90"
           >
             {isLoading ? (
               <div className="flex items-center justify-center space-x-2">

@@ -7,3 +7,8 @@
   color: #0e91e9 !important;
   /* display: none; */
 }
+
+/* transition for all */
+* {
+  transition: all linear 0.5s;
+}
