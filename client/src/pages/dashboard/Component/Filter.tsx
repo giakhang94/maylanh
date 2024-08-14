@@ -92,12 +92,17 @@ const Filter = ({ handleSubmit }: Props) => {
           </select>
           <select
             value={filterInput.renew}
+            disabled={filterInput.from !== "" || filterInput.to !== ""}
             onChange={(e) => {
               handleChange(e);
               setFilterInput((prev) => ({ ...prev, from: "", to: "" }));
             }}
             name="renew"
-            className="block w-1/2 border px-2 py-2 rounded-md"
+            className={`block w-1/2 border px-2 py-2 rounded-md ${
+              filterInput.from !== "" || filterInput.to !== ""
+                ? "text-gray-300"
+                : ""
+            }`}
           >
             <option value={0}>Đơn cách đây</option>
             {RENEW.map((month: number, index: number) => {
@@ -116,7 +121,10 @@ const Filter = ({ handleSubmit }: Props) => {
             placeholder="from"
             name="from"
             value={filterInput.from}
-            onChange={handleChange}
+            onChange={(e) => {
+              setFilterInput((prev) => ({ ...prev, renew: 0 }));
+              handleChange(e);
+            }}
             className={`w-1/2 outline-none ${
               filterInput.renew > 0 ? "text-gray-300" : ""
             }`}
@@ -128,7 +136,10 @@ const Filter = ({ handleSubmit }: Props) => {
             placeholder="to"
             name="to"
             value={filterInput.to}
-            onChange={handleChange}
+            onChange={(e) => {
+              setFilterInput((prev) => ({ ...prev, renew: 0 }));
+              handleChange(e);
+            }}
             className={`w-1/2 outline-none ${
               filterInput.renew > 0 ? "text-gray-300" : ""
             }`}
