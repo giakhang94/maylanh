@@ -114,9 +114,8 @@ const getAllOrders = async (req, res) => {
   let filterRenew = null;
   if (renew > 0) {
     filterRenew = orders.filter((order) => {
-      console.log(new Date().getMonth() - new Date(order.createdAt).getMonth());
       return (
-        new Date().getMonth() - new Date(order.createdAt).getMonth() == renew
+        new Date().getMonth() - new Date(order.updatedAt).getMonth() == renew
       );
     });
   }
