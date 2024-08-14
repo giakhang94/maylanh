@@ -60,7 +60,7 @@ const Login = (props: Props): React.JSX.Element => {
         theme="colored"
         className="mt-[150px] mr-5 text-xl"
       />
-      <form className="-translate-y-[50%] Psmallmobile:w-[250px] Pmobile:w-[350px] Plaptop:w-[450px] Ptablet:[w-350px] Pdesktop:w-[450px]">
+      <form className="-translate-y-[50%] Psmallmobile:w-[250px] Pmobile:w-[300px] Plaptop:w-[300px] Ptablet:[w-350px] Pdesktop:w-[350px]">
         <Logo />
         <div className="mt-5 w-full">
           <h1 className="text-center font-semibold text-xl tracking-[2px] ">
