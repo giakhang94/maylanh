@@ -57,6 +57,12 @@ const Order = (props: Props): React.JSX.Element => {
       <div>
         <Filter handleSubmit={getQuery} />
       </div>
+      <p className="block mx-5 mt-5">
+        Có tổng cộng{" "}
+        <span className="font-bold text-sky-800">
+          {orders && orders.length} kết quả
+        </span>
+      </p>
       <div className="p-5 grid grid-cols-2">
         {orders &&
           orders.map((order: OrderType, index: number) => {

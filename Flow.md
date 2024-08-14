@@ -1049,8 +1049,39 @@ const getAllOrders = async (req, res) => {
 };
 ```
 
+### git branch
+
+1. to check which branch is active in your task: `git branch`
+2. to exit git branch => press `q` key
+3. use arrow key to move up/move down
+
+### chú ý các toán tử (operators) $ của mongodb $lte $gte, $or,...
+
+1. link here: https://www.mongodb.com/docs/manual/reference/operator/query/gte/
+2. các loại vừa mới xài:
+
+- $or
+- $lte, $gte
+- $regex, $options
+- còn nữa: Phân theo nhóm: So sánh, logical, element: $exists $type, ...
+
+3. Hoặc search mongodb operators
+
 ### Debounce
 
-```
+1. dùng useEffce bắt giá trị value (input) thay đổi
+2. mỗi lần thay đổi sẽ render/fetch dữ liệu 1 lần.
+3. sẽ delay 500-825ms tùy mình đặt, bằng setTimout
+4. Sau đó sẽ cleanup bằng cách return clearTimout
+5. Cleanup phải bỏ trong function: `js return () => {clearTimeout(timeout)}`
 
+```js
+useEffect(() => {
+  const timeout = setTimeout(() => {
+    callSubmitFilter({ filterInput, handleSubmit });
+  }, 825);
+  return () => {
+    clearTimeout(timeout);
+  };
+}, [filterInput.search]);
 ```

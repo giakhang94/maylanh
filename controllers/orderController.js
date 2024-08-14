@@ -95,7 +95,16 @@ const getAllOrders = async (req, res) => {
       { note: { $regex: search, $options: "i" } },
     ];
   }
-  console.log(queryObj);
+  if (from && !to) {
+    queryObj.createdAt = { $gte: new Date(from) };
+  }
+  if (!from && to) {
+    queryObj.createdAt = { $lte: new Date(to) };
+  }
+  if (from && to) {
+    queryObj.createdAt = { $gte: new Date(from), $lte: new Date(to) };
+  }
+  // console.log(queryObj);
   const orders = await Order.find({ ...queryObj })
     .sort({ createdAt: -1 })
     .populate("createdBy")

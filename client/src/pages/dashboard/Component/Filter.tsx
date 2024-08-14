@@ -1,4 +1,6 @@
-import { useState } from "react";
+import useDebounce from "@/hooks/useDebounce";
+import callSubmitFilter from "@/utils/callSubmitFilter";
+import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import { MdClose } from "react-icons/md";
 
@@ -27,19 +29,24 @@ const Filter = ({ handleSubmit }: Props) => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    setFilterInput((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    const queryKey = Object.keys(filterInput);
-    let queryString = "";
-    queryKey.map((key) => {
-      queryString = queryString + `${key}=${(filterInput as any)[key]}&`;
-    });
-    queryString = queryString.slice(0, queryString.length - 1);
-    handleSubmit(queryString);
+    setFilterInput((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    callSubmitFilter({ filterInput, handleSubmit });
+  };
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      callSubmitFilter({ filterInput, handleSubmit });
+    }, 825);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [filterInput.search]);
   return (
     <form className="flex flex-col justify-around mx-5 bg-white mt-5 border border-gray-300 rounded-md p-5 space-y-3">
       <div className="flex items-center border p-3">
