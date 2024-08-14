@@ -109,15 +109,15 @@ const AllService = (props: Props): React.JSX.Element => {
       <h2 className="text-center font-bold tracking-[2px] text-2xl my-5">
         Danh Sách Dịch Vụ
       </h2>
-      <div className="grid grid-cols-3 w-full mt-5 mx-2 pl-3 ml-2 ">
+      <div className="grid Pdesktop:grid-cols-3 gap-y-10 Plaptop:grid-cols-3 Ptablet:grid-cols-2 Pmobile:grid-cols-1 Psmallmobile:grid-cols-1 w-full mt-5 mx-2 pl-3 ml-2 ">
         {services &&
           services.map((service: StateProps, index: number) => {
             return (
               <div
-                className="max-w-[320px] min-h-[250px] shadow-sm shadow-gray-300 "
+                className="max-w-[320px] Psmallmobile:w-[250px] Pmobile:w-[250px] Ptablet:w-[250px] Plaptop:w-[300px] Pdesktop:w-[320px] min-h-[250px] shadow-sm shadow-gray-300 "
                 key={index + "service-card"}
               >
-                <div className="h-[220px] w-[320px] rounded-md relative">
+                <div className="h-[220px] w-full rounded-md relative">
                   <img
                     src={`http://localhost:5000/service/image/${service._id}`}
                     className="h-full object-cover rounded-md w-full"

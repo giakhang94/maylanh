@@ -46,7 +46,7 @@ const OrderCard = ({
       } flex items-center space-x-3 h-full mb-8`}
     >
       <div
-        className={`relative w-[150px] h-[130px] ${color} text-white rounded-md font-semibold text-xl p-5 text-center flex justify-center items-center`}
+        className={`relative Ptablet:w-[150px] PbigTablet:w-[150px] Plaptop:w-[150px] Pdesktop:w-[150px] Pmobile:w-[100px] Psmallmobile:w-[80px] Ptablet:h-[150px] PbigTablet:h-[120px] Plaptop:h-[150px] Pdesktop:h-[150px] Pmobile:h-[110px] Psmallmobile:h-[120px] ${color} text-white rounded-md font-semibold Ptablet:text-xl PbigTablet:text-xl Plaptop:text-xl Pdesktop:text-xl Pmobile:text-sm Psmallmobile:text-sm p-5 text-center flex justify-center items-center`}
       >
         {order.serviceName}
 
@@ -128,7 +128,7 @@ const OrderCard = ({
           </button>
         )}
       </div>
-      <div className="relative w-[300px]">
+      <div className="relative Ptablet:w-[300px] PbigTablet:w-[300px] Plaptop:w-[300px] Pdesktop:w-[300px] Pmobile:w-[200px] Psmallmobile:w-[180px] Ptablet:text-xl PbigTablet:text-xl Plaptop:text-xl Pdesktop:text-xl Pmobile:text-sm Psmallmobile:text-sm">
         <p className="font-bold">Khách hàng: {order.name}</p>
         <p>{order.phone}</p>
         <p>{order.address}</p>

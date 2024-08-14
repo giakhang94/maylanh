@@ -28,7 +28,8 @@ module.exports = {
 
       Ptablet: "768px",
       // => @media (min-width: 640px) { ... }
-
+      PbigTablet: "1024",
+      //=> @media (min-width: 1024px) { ... }
       Plaptop: "1168px",
       // => @media (min-width: 1024px) { ... }
 

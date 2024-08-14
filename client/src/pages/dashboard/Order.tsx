@@ -64,7 +64,7 @@ const Order = (props: Props): React.JSX.Element => {
           {orders && orders.length} kết quả
         </span>
       </p>
-      <div className="p-5 grid grid-cols-2">
+      <div className="p-5 grid Plaptop:grid-cols-2 Pdesktop:grid-cols-2 PbigTablet:grid-cols-2 Ptablet:grid-cols-1 Pmobile:grid-cols-1 Psmallmobile:grid-cols-1">
         {orders &&
           orders.map((order: OrderType, index: number) => {
             const color = getOrderCardColor(order);

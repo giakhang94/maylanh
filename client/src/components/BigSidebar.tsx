@@ -13,7 +13,7 @@ const BigSideBar = (props: Props): React.JSX.Element => {
   sidebarItemList[2].unRead = unread;
   return (
     <div
-      className={`w-[30%] max-w-[300px] flex flex-col justify-start items-start space-y-5 my-2 h-screen bg-white ${props.classname}`}
+      className={`w-[30%] Pmobile:max-w-[250px] Psmallmobile:max-w[200px] Ptablet:max-w-[210px] Plaptop:max-w-[300px] Pdesktop:max-w-[300px] flex flex-col justify-start items-start space-y-5 my-2 h-screen bg-white ${props.classname}`}
     >
       <div
         id="sidebar_item"
