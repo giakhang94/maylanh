@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  clientCancel,
   countUnReadOrders,
   createOrder,
   getAllOrders,
@@ -16,5 +17,6 @@ router.get("/", auth, getAllOrders);
 router.get("/order-by-client", clientAuth, getOrdersByClient);
 router.get("/unread", countUnReadOrders);
 router.patch("/set-flag/:id", auth, setFlagOrder);
+router.patch("/client-cancel/:id", clientAuth, clientCancel);
 
 export default router;

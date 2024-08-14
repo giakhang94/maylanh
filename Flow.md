@@ -887,6 +887,13 @@ try {
 ### Lưu ý về useNavigate hoặc navigat from 'react-router-dom'
 
 1. cái useNavigate chỉ gọi trong custom hook hoặc component đc. Xài cho mấy hàm trong 1 component
+   => Ví dụ:
+   ```js
+   //in a component
+   const nav = useNavigate()
+   //some codes
+   onClick = {() => {nav('/login')}}
+   ```
 2. còn cái nào kiểu protected điều kiện nếu a thì show trang, nếu b thì force về page nào đó
    thì xài return <Navigate to ="" />. Vì bản thân <Navigate to="" /> là 1 component
 
@@ -907,4 +914,174 @@ try {
     Mark as read
   </span>
 </button>
+```
+
+### state của component nào thì để trong comoponent đó
+
+1. Tao hay bị lỗi state của comp con mà quăng vô comp parent
+   => nên khi state thay đổi, thì tất cả các thằng con đều chịu ảnh hưởng
+   ví dụ setActive. setActive của thằng cha thay đổi => nhấn 1 card, mà tất cả card đều active
+   => Khắc phục phải tạo thêm array chứa id rất mất công
+2. state active, setActive đó cứ bỏ vô <CardComponet> (comp con) thì mọi chuyện giải quyết êm đẹp
+3. Nếu cần phài truyền setState => dùng custom hook
+
+### để tạo unRead orders (notification) => Hỏi chat GPT
+
+1. tạo thêm 1 field nữa là
+
+```js
+  isRead: {
+    type: Boolean;
+    default: false
+  }
+//sau đó đọc số documents có isRead === false là được
+const countUnread = await OrderModel.countDocuments({isRead: false})
+
+```
+
+2. Lưu ý: dùng `context API` để cập nhật như cập nhật giỏ hàng
+
+### Để biết đang ở địa chỉ nào (path nào location nào)
+
+1. import useLocation from 'react-router-dom'
+2. const location = useLocation()
+3. console.log locatioin.pathname
+   result// => '/services'...
+
+### Date time: Chọn ngày from A - to B.
+
+1. để disable các ngày trước ngày A (bên input B)
+   => dùng `min` property
+2.
+
+```js
+<input type = "date" min = {input.a}>
+```
+
+3. `input.a` là value của input A đã chọn trước đó
+
+### lỗi render xài key-value objects
+
+ví dụ object query = {...}
+
+```js
+let key = 'tao'
+const q = query[key] //typescript will complain warning
+![alt text](image-1.png)
+"No index signature with a parameter of type 'string' was found on type..."
+//to fix that
+const q = (query as andy)[key]
+```
+
+### string.prototype.slice(indexStart, indexEnd)
+
+              indexStart        indexEnd
+                  ↓               ↓
+
+| 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+| T | h | e | x | m | i | r | r | o | r |
+
+                  m   i   r   r
+                 _______________
+                      ↑
+                    Result
+
+=> Như vậy, `slice` không lấy `indexEnd`, mà chỉ lấy từ `indexStar`t tới `indexEnd-1`
+
+### use query
+
+1. https://domain:port/submain?query1=value1&query2=value2...
+2. in backend
+
+```js
+const query = req.query;
+```
+
+3. chú ý `$regex`, `$options: 'i', 'm', 'u', 'x', 's'`
+4. chú ý `$or`
+   để search 1 cái mà ra mọi thứ có dính tới cái mình search, thì xài or
+
+```js
+db.inventory.find({ $or: [{ quantity: { $lt: 20 } }, { price: 10 }] });
+```
+
+code mẫu:
+
+```js
+if (search) {
+  queryObj.$or = [
+    { name: { $regex: search, $options: "i" } },
+    { address: { $regex: search, $options: "i" } },
+    { phone: { $regex: search, $options: "i" } },
+    { note: { $regex: search, $options: "i" } },
+  ];
+}
+```
+
+5. example for getAllOders controller with query
+
+```js
+const getAllOrders = async (req, res) => {
+  const user = req.user;
+  const { services, from, to, search } = req.query;
+  if (!user) {
+    throw new UnAuthorizationError("Login first");
+  }
+  const queryObj = {};
+  if (services) {
+    queryObj.serviceName = services;
+  }
+  if (search) {
+    queryObj.$or = [
+      { name: { $regex: search, $options: "i" } },
+      { address: { $regex: search, $options: "i" } },
+      { phone: { $regex: search, $options: "i" } },
+      { note: { $regex: search, $options: "i" } },
+    ];
+  }
+  console.log(queryObj);
+  const orders = await Order.find({ ...queryObj })
+    .sort({ createdAt: -1 })
+    .populate("createdBy")
+    .exec();
+
+  res.status(200).json({ orders });
+};
+```
+
+### git branch
+
+1. to check which branch is active in your task: `git branch`
+2. to exit git branch => press `q` key
+3. use arrow key to move up/move down
+
+### chú ý các toán tử (operators) $ của mongodb $lte $gte, $or,...
+
+1. link here: https://www.mongodb.com/docs/manual/reference/operator/query/gte/
+2. các loại vừa mới xài:
+
+- $or
+- $lte, $gte
+- $regex, $options
+- còn nữa: Phân theo nhóm: So sánh, logical, element: $exists $type, ...
+
+3. Hoặc search mongodb operators
+
+### Debounce
+
+1. dùng useEffce bắt giá trị value (input) thay đổi
+2. mỗi lần thay đổi sẽ render/fetch dữ liệu 1 lần.
+3. sẽ delay 500-825ms tùy mình đặt, bằng setTimout
+4. Sau đó sẽ cleanup bằng cách return clearTimout
+5. Cleanup phải bỏ trong function: `js return () => {clearTimeout(timeout)}`
+
+```js
+useEffect(() => {
+  const timeout = setTimeout(() => {
+    callSubmitFilter({ filterInput, handleSubmit });
+  }, 825);
+  return () => {
+    clearTimeout(timeout);
+  };
+}, [filterInput.search]);
 ```

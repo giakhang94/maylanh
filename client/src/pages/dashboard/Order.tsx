@@ -1,7 +1,9 @@
 import { OrderCard } from "@/components";
 import customAxios from "@/utils/authFecth";
+import getOrderCardColor from "@/utils/getOrderCardColor";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
+import Filter, { QueryState } from "./Component/Filter";
 
 interface Props {}
 export interface OrderType {
@@ -17,22 +19,26 @@ export interface OrderType {
   cancel: boolean;
   done: boolean;
   isRead: boolean;
+  clientCancel: boolean;
 }
 
 const Order = (props: Props): React.JSX.Element => {
   const [orders, setOrders] = useState<OrderType[]>();
-  console.log(orders);
+  const [query, setQuery] = useState<string>("");
+  const getQuery = (queryInput: string) => {
+    setQuery(queryInput);
+  };
   useEffect(() => {
     const getOrders = async () => {
       try {
-        const { data } = await customAxios().get("/order");
+        const { data } = await customAxios().get(`/order?${query}`);
         setOrders(data.orders);
       } catch (error) {
         console.log(error);
       }
     };
     getOrders();
-  }, []);
+  }, [query]);
   return (
     <>
       <ToastContainer
@@ -48,21 +54,22 @@ const Order = (props: Props): React.JSX.Element => {
         theme="colored"
         className="mt-[150px] mr-5 text-xl"
       />
+      <div>
+        <Filter handleSubmit={getQuery} />
+      </div>
+      <p className="block mx-5 mt-5">
+        Có tổng cộng{" "}
+        <span className="font-bold text-sky-800">
+          {orders && orders.length} kết quả
+        </span>
+      </p>
       <div className="p-5 grid grid-cols-2">
         {orders &&
           orders.map((order: OrderType, index: number) => {
-            let color = "";
-            if (order.serviceName === "Bơm dầu bạc hà") {
-              color = "bg-green-500";
-            }
-            if (order.serviceName === "Lông vịt dép đứt mủ bể") {
-              color = "bg-violet-400";
-            }
-            if (order.serviceName === "Bơm gas hột quẹt") {
-              color = "bg-red-500";
-            }
+            const color = getOrderCardColor(order);
             return (
               <OrderCard
+                forWho="admin"
                 order={order}
                 color={color}
                 index={index}
