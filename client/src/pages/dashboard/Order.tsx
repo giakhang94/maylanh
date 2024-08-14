@@ -32,6 +32,7 @@ const Order = (props: Props): React.JSX.Element => {
     const getOrders = async () => {
       try {
         const { data } = await customAxios().get(`/order?${query}`);
+        console.log(data.filter);
         setOrders(data.orders);
       } catch (error) {
         console.log(error);

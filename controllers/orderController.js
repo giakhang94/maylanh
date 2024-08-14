@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { now } from "mongoose";
 import Order from "../models/orderModel.js";
 import {
   validateClientPassword,
@@ -79,7 +79,8 @@ const createOrder = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
   const user = req.user;
-  const { services, from, to, search } = req.query;
+  const { services, from, to, search, renew } = req.query;
+  console.log(renew);
   if (!user) {
     throw new UnAuthorizationError("Login first");
   }
@@ -95,22 +96,32 @@ const getAllOrders = async (req, res) => {
       { note: { $regex: search, $options: "i" } },
     ];
   }
-  if (from && !to) {
-    queryObj.createdAt = { $gte: new Date(from) };
-  }
+
   if (!from && to) {
     queryObj.createdAt = { $lte: new Date(to) };
   }
   if (from && to) {
     queryObj.createdAt = { $gte: new Date(from), $lte: new Date(to) };
   }
+  if (from && !to) {
+    queryObj.createdAt = { $gte: new Date(from) };
+  }
   // console.log(queryObj);
   const orders = await Order.find({ ...queryObj })
     .sort({ createdAt: -1 })
     .populate("createdBy")
     .exec();
-
-  res.status(200).json({ orders });
+  let filterRenew = null;
+  if (renew > 0) {
+    filterRenew = orders.filter((order) => {
+      console.log(new Date().getMonth() - new Date(order.createdAt).getMonth());
+      return (
+        new Date().getMonth() - new Date(order.createdAt).getMonth() == renew
+      );
+    });
+  }
+  let result = filterRenew ? filterRenew : orders;
+  res.status(200).json({ orders: result });
 };
 
 const getOrdersByClient = async (req, res) => {

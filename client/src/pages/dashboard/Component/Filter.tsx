@@ -12,18 +12,21 @@ export interface QueryState {
   search: string;
   from: string;
   to: string;
+  renew: number;
 }
 const initialFilter: QueryState = {
   services: "",
   search: "",
   from: "",
   to: "",
+  renew: 0,
 };
 const SERVICES = [
   { title: "Bơm gas hột quẹt", value: "Bơm gas hột quẹt" },
   { title: "Bơm dầu bạc hà", value: "Bơm dầu bạc hà" },
   { title: "Lông vịt dép đứt mủ bể", value: "Lông vịt dép đứt mủ bể" },
 ];
+const RENEW = [3, 6, 9, 12];
 const Filter = ({ handleSubmit }: Props) => {
   const [filterInput, setFilterInput] = useState<QueryState>(initialFilter);
   const handleChange = (
@@ -69,12 +72,12 @@ const Filter = ({ handleSubmit }: Props) => {
         </button>
       </div>
       <div className="flex justify-between w-full space-x-4">
-        <div className="w-1/2">
+        <div className="w-1/2 flex items-center space-x-2">
           <select
             value={filterInput.services}
             onChange={handleChange}
             name="services"
-            className="block w-full border px-2 py-2 rounded-md"
+            className="block w-1/2 border px-2 py-2 rounded-md"
           >
             <option value="">Tất cả dịch vụ</option>
             {SERVICES.map(
@@ -87,24 +90,48 @@ const Filter = ({ handleSubmit }: Props) => {
               }
             )}
           </select>
+          <select
+            value={filterInput.renew}
+            onChange={(e) => {
+              handleChange(e);
+              setFilterInput((prev) => ({ ...prev, from: "", to: "" }));
+            }}
+            name="renew"
+            className="block w-1/2 border px-2 py-2 rounded-md"
+          >
+            <option value={0}>Đơn cách đây</option>
+            {RENEW.map((month: number, index: number) => {
+              return (
+                <option key={index + "option renew"} value={month}>
+                  {month} tháng
+                </option>
+              );
+            })}
+          </select>
         </div>
         <div className="flex space-x-10 w-1/2 justify-end py-1 min-w-[150px] border px-5 rounded-md">
           <input
+            disabled={filterInput.renew > 0}
             type="date"
             placeholder="from"
             name="from"
             value={filterInput.from}
             onChange={handleChange}
-            className="w-1/2 outline-none"
+            className={`w-1/2 outline-none ${
+              filterInput.renew > 0 ? "text-gray-300" : ""
+            }`}
           />
           <div className="w-[1px] h-full bg-gray-300"></div>
           <input
+            disabled={filterInput.renew > 0}
             type="date"
             placeholder="to"
             name="to"
             value={filterInput.to}
             onChange={handleChange}
-            className="w-1/2 outline-none"
+            className={`w-1/2 outline-none ${
+              filterInput.renew > 0 ? "text-gray-300" : ""
+            }`}
             min={filterInput.from}
           />
         </div>
