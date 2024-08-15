@@ -6,6 +6,7 @@ interface Props {
   title: string;
   path: string;
   unRead: number;
+  hide: boolean;
 }
 
 const BigSidebarItem = (props: Props) => {
@@ -25,7 +26,7 @@ const BigSidebarItem = (props: Props) => {
       }
     >
       <Icon size={25} />
-      <span className="">{props.title}</span>
+      {!props.hide && <span className="">{props.title}</span>}
       {!!props.unRead && (
         <span className="text-white bg-red-500 text-sm w-5 h-5 rounded-full text-center absolute top-0 left-[90%]">
           {props.unRead ? props.unRead : ""}
