@@ -24,9 +24,9 @@ const SmallSidebarItem = (props: Props) => {
         ].join(" ")
       }
     >
-      <Icon size={25} />
+      <Icon size={19} />
       {!!props.unRead && (
-        <span className="text-white bg-red-500 text-sm w-5 h-5 rounded-full text-center absolute top-0 left-[20%]">
+        <span className="text-white bg-red-500 text-[10px] w-4 h-4 rounded-full flex justify-center items-center absolute top-0 left-[20%]">
           {props.unRead ? props.unRead : ""}
         </span>
       )}

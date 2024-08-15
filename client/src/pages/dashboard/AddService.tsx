@@ -56,7 +56,7 @@ const AddService = (props: Props): React.JSX.Element => {
         className="mt-[150px] mr-5 text-xl"
       />
       <form
-        className="flex flex-col  mx-auto w-[350px]"
+        className="flex flex-col  mx-auto Psmallmobile:w-[250px] Pmobile:w-[300px] Plaptop:w-[300px] Ptablet:[w-350px] Pdesktop:w-[350px]]"
         encType="multipart/form-data"
         method="POST"
         id="form"
@@ -110,12 +110,17 @@ const AddService = (props: Props): React.JSX.Element => {
           disabled={!input.promotion}
         />
         {/* upload image */}
-        <div className="mb-3">
+        <div className="mb-3 w-fll">
           <label htmlFor="img">Hình minh họa</label>
-          <input type="file" name="thumb" onChange={handleInputChange} />
+          <input
+            type="file"
+            name="thumb"
+            onChange={handleInputChange}
+            className="w-full"
+          />
         </div>
         <button
-          className="w-full py-2 bg-sky-500 text-white font-semibold tracking-[1px] mt-2 rounde-sm"
+          className="w-full py-2 bg-sky-500 text-white font-semibold tracking-[1px] mt-2 rounded-sm"
           type="submit"
           onClick={(e) => {
             e.preventDefault();

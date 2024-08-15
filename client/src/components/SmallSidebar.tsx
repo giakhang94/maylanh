@@ -3,6 +3,7 @@ import { sidebarItemList } from "@/Constants/Constant";
 import Logo from "./Logo";
 import { useAppContext } from "@/Context/appContext";
 import SmallSidebarItem from "./SmallSidebarItem";
+import SmallLogo from "./SmallLogo";
 
 interface Props {
   classname: string;
@@ -20,7 +21,7 @@ const SmallSidebar = (props: Props): React.JSX.Element => {
         className="flex flex-col justify-center items-start space-y-5 my-2  px-4 text-xl tracking-[1px]"
       >
         <div className="mb-5">
-          <Logo />
+          <SmallLogo />
         </div>
         {sidebarItemList.map(
           (
