@@ -3,18 +3,19 @@ import { useAppContext } from "@/Context/appContext";
 import { FaCircleChevronDown } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Logo } from "@/components";
+import SmallLogo from "@/components/SmallLogo";
 interface Props {}
 const ClientNavbar = (props: Props): React.JSX.Element => {
   const nav = useNavigate();
   const location = useLocation();
   const isServices = location.pathname === "/services";
-  console.log(location.pathname);
+  // console.log(location.pathname);
   const [showLogout, setShowLogout] = useState<boolean>(false);
   const { client, logoutClient } = useAppContext();
   return (
-    <div className="w-[100%] flex justify-between px-20 p-5 h-[20] bg-white items-center">
+    <div className="shadow-sm shadow-gray-200 w-[100%] flex justify-between Pdesktop:px-20 Plaptop:px-20 PbigTablet:px-10 Ptablet:px-5 Pmobile:px-3 Psmallmobile:px-2 p-5 h-[20] bg-white items-center">
       <div
-        className="cursor-pointer"
+        className="cursor-pointer Plaptop:block Pdesktop:block PbigTablet:block Ptablet:hidden Pmobile:hidden Psmallmobile:hidden"
         onClick={() => {
           nav("/");
         }}
@@ -22,11 +23,19 @@ const ClientNavbar = (props: Props): React.JSX.Element => {
         <Logo />
       </div>
       <div
+        className="cursor-pointer Plaptop:hidden Pdesktop:hidden PbigTablet:hidden Ptablet:block Pmobile:block Psmallmobile:block"
+        onClick={() => {
+          nav("/");
+        }}
+      >
+        <SmallLogo />
+      </div>
+      <div
         onClick={() => {
           nav(`${isServices ? "/customer/order" : "/services"}`);
         }}
       >
-        <span className="hover:text-sky-500 text-lg font-semibold tracking-[1px] cursor-pointer">
+        <span className="hover:text-sky-500 text-lg font-semibold tracking-[1px] cursor-pointer Plaptop:block Pdesktop:block PbigTablet:block Ptablet:hidden Psmallmobile:hidden Pmobile:hidden">
           {isServices ? "Xem Lịch Sử Đặt Hẹn" : "Đến Trang Đặt Hẹn"}
         </span>
       </div>

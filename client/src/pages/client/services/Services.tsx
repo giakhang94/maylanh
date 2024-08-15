@@ -68,9 +68,9 @@ const Services = (props: Props): React.JSX.Element => {
       </div>
     );
   return (
-    <div>
+    <div className="mb-20">
       <ClientNavbar />
-      <div className="ml-10 text-2xl mb-3 mt-2 block w-fit text-sky-500">
+      <div className="ml-10 text-2xl mb-3 mt-2 block w-fit text-sky-500 ">
         Trang đặt hẹn sửa chữa/vệ sinh
       </div>
       <ToastContainer
@@ -95,7 +95,7 @@ const Services = (props: Props): React.JSX.Element => {
         </CommonModal>
       )}
       <div
-        className={`grid grid-cols-3 w-full h-full space-x-10 p-10 relative ${
+        className={`grid Pdesktop:grid-cols-3 Plaptop:grid-cols-3 PbigTablet:grid-cols-2 Ptablet:grid-cols-2 Pmobile:grid-cols-1 Psmallmobile:grid-cols-1 w-full h-full gap-y-10 p-10 relative ${
           selectedService.selected ? "blur-sm" : ""
         }`}
       >

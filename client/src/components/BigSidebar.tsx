@@ -9,6 +9,7 @@ import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarRightCollapse,
 } from "react-icons/tb";
+import { Link } from "react-router-dom";
 interface Props {
   classname: string;
 }
@@ -21,7 +22,7 @@ const BigSideBar = (props: Props): React.JSX.Element => {
   sidebarItemList[2].unRead = unread;
   return (
     <div
-      className={`sticky top-0 flex flex-col justify-start items-start space-y-5 my-2 h-[100vh] bg-white ${
+      className={`sticky top-0 shadow-sm  flex flex-col justify-start items-start space-y-5  h-[100vh] bg-white ${
         props.classname
       } ${hide ? "w-[80px]" : "w-[200px]"}`}
     >
@@ -29,9 +30,9 @@ const BigSideBar = (props: Props): React.JSX.Element => {
         id="sidebar_item"
         className="flex flex-col justify-center items-start space-y-5 my-2  px-4 text-xl tracking-[1px]"
       >
-        <div className="mb-5">
+        <Link to="/" className="mb-5">
           <Logo hide={hide} />
-        </div>
+        </Link>
         {sidebarItemList.map(
           (
             item: {

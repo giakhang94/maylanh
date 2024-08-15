@@ -30,7 +30,7 @@ const PurchaseForm = ({
   };
   return (
     <form
-      className=" flex flex-col justify-center w-[350px] mx-auto my-10 bg-white px-5 py-10 rounded-md shadow-md text-md relative transition-all"
+      className=" flex flex-col justify-center w-[350px] mx-auto my-10 bg-white px-5 py-10 rounded-md shadow-md text-md relative transition-all MERN/maylanh/client/src/pages/client/Login.tsx"
       id="purchase-form"
     >
       <MdClose
