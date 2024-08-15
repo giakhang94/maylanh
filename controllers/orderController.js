@@ -9,6 +9,7 @@ import ClientModel from "../models/clientModel.js";
 import UnAuthorizationError from "../errors/UnAuthorizationError.js";
 import { adminPermision } from "../utils/adminPermison.js";
 import NotFoundError from "../errors/NotFoundError.js";
+import ServiceModel from "../models/service.js";
 
 const createOrder = async (req, res) => {
   const {
@@ -190,8 +191,65 @@ const countUnReadOrders = async (req, res) => {
   const count = await Order.countDocuments({ isRead: false });
   res.status(200).json({ unread: count });
 };
+//for charts
+const getOrderStats = async (req, res) => {
+  const user = req.user;
+  adminPermision(user.role);
+  //for pie chart
+  const pie = await Order.aggregate([
+    {
+      // Group by serviceId and count the number of orders per serviceId
+      $group: {
+        _id: "$serviceName", // Group by serviceId
+        totalOrders: { $sum: 1 }, // Count orders
+      },
+    },
+  ]);
+  const statsPie = pie.reduce((accum, current) => {
+    accum.push({ name: current._id, value: current.totalOrders });
+    return accum;
+  }, []);
+
+  //for bar chart
+  const allOrder = await Order.find();
+  const cancelOrder = await Order.find({ clientCancel: true });
+  const pieCancel = [
+    { name: "Hủy", value: cancelOrder.length },
+    { name: "Tổng đơn", value: allOrder.length },
+  ];
+
+  //for line chart
+
+  const result = await Order.aggregate([
+    {
+      // Project only the date part (year-month-day) of createdAt
+      $project: {
+        date: {
+          $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+        },
+      },
+    },
+    {
+      // Group by the formatted date and count orders
+      $group: {
+        _id: "$date",
+        count: { $sum: 1 },
+      },
+    },
+    {
+      // Optionally sort by date
+      $sort: { _id: 1 },
+    },
+  ]);
+  const lineChart = result.reduce((accum, current) => {
+    accum.push({ name: current._id, orders: current.count });
+    return accum;
+  }, []);
+  res.status(200).json({ statsPie, pieCancel, lineChart });
+};
 
 export {
+  getOrderStats,
   createOrder,
   getAllOrders,
   getOrdersByClient,

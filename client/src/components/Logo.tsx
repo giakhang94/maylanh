@@ -1,5 +1,6 @@
 interface Props {
   size?: "xl" | "2xl";
+  hide?: boolean;
 }
 const Logo = (prop: Props): React.JSX.Element => {
   return (
@@ -9,7 +10,7 @@ const Logo = (prop: Props): React.JSX.Element => {
       }`}
     >
       <span className="bg-sky-500 py-1 px-2 rounded-md text-white">Hìu</span>
-      <span className="text-xl">Engineering</span>
+      {!prop.hide && <span className="text-xl">Engineering</span>}
     </div>
   );
 };

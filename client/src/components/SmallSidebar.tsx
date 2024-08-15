@@ -14,7 +14,7 @@ const SmallSidebar = (props: Props): React.JSX.Element => {
   sidebarItemList[2].unRead = unread;
   return (
     <div
-      className={`w-[70px] max-w-[300px] flex flex-col justify-start items-start space-y-5 my-2 h-screen bg-white ${props.classname}`}
+      className={`sticky top-0 w-[70px] max-w-[300px] flex flex-col justify-start items-start space-y-5 my-2 h-screen bg-white ${props.classname}`}
     >
       <div
         id="sidebar_item"

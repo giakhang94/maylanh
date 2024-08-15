@@ -1,9 +1,13 @@
 import { useEffect } from "react";
-import { useAppContext } from "../Context/appContext";
+import Stats from "./Stats";
 
 interface Props {}
 const Dashboard = (props: Props): React.JSX.Element => {
-  return <div>Dashboard</div>;
+  return (
+    <div className="w-full h-full">
+      <Stats />
+    </div>
+  );
 };
 
 export default Dashboard;

@@ -32,7 +32,7 @@ const Order = (props: Props): React.JSX.Element => {
     const getOrders = async () => {
       try {
         const { data } = await customAxios().get(`/order?${query}`);
-        console.log(data.filter);
+        // console.log(data.filter);
         setOrders(data.orders);
       } catch (error) {
         console.log(error);
@@ -41,7 +41,7 @@ const Order = (props: Props): React.JSX.Element => {
     getOrders();
   }, [query]);
   return (
-    <>
+    <div className="w-full">
       <ToastContainer
         position="top-right"
         autoClose={500}
@@ -55,7 +55,7 @@ const Order = (props: Props): React.JSX.Element => {
         theme="colored"
         className="mt-[150px] mr-5 text-xl"
       />
-      <div>
+      <div className="w-full flex justify-center">
         <Filter handleSubmit={getQuery} />
       </div>
       <p className="block mx-5 mt-5">
@@ -64,7 +64,7 @@ const Order = (props: Props): React.JSX.Element => {
           {orders && orders.length} kết quả
         </span>
       </p>
-      <div className="p-5 grid Plaptop:grid-cols-2 Pdesktop:grid-cols-2 PbigTablet:grid-cols-2 Ptablet:grid-cols-1 Pmobile:grid-cols-1 Psmallmobile:grid-cols-1">
+      <div className="p-5 w-full grid Plaptop:grid-cols-2 Pdesktop:grid-cols-2 PbigTablet:grid-cols-2 Ptablet:grid-cols-1 Pmobile:grid-cols-1 Psmallmobile:grid-cols-1">
         {orders &&
           orders.map((order: OrderType, index: number) => {
             const color = getOrderCardColor(order);
@@ -79,7 +79,7 @@ const Order = (props: Props): React.JSX.Element => {
             );
           })}
       </div>
-    </>
+    </div>
   );
 };
 

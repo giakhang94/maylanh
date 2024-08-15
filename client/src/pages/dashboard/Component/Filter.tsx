@@ -65,7 +65,7 @@ const Filter = ({ handleSubmit }: Props) => {
       )}
       {!show && (
         <span
-          className=" py-1 px-2 rounded-md flex justify-center items-center bg-sky-200 text-sky-500 font-semibold text-sm "
+          className=" py-1 px-2 rounded-md flex justify-center items-center bg-sky-200 text-sky-500 font-semibold text-sm cursor-pointer"
           onClick={() => {
             setShow(true);
           }}

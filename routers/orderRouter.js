@@ -5,6 +5,7 @@ import {
   createOrder,
   getAllOrders,
   getOrdersByClient,
+  getOrderStats,
   setFlagOrder,
 } from "../controllers/orderController.js";
 import clientAuth from "../middleware/clientAuth.js";
@@ -18,5 +19,6 @@ router.get("/order-by-client", clientAuth, getOrdersByClient);
 router.get("/unread", countUnReadOrders);
 router.patch("/set-flag/:id", auth, setFlagOrder);
 router.patch("/client-cancel/:id", clientAuth, clientCancel);
+router.get("/stats", auth, getOrderStats);
 
 export default router;
