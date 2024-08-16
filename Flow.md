@@ -1103,3 +1103,17 @@ await Promise.all(
 console.log(stats);
 res.status(200).json({ stats });
 ```
+
+### Pagination
+
+- skip và limit phải để theo thứ tự, để lộn nó sẽ không ra
+- ví dụ:
+
+```js
+const result = Order.find({ queryObject })
+  .skip(1)
+  .limit(2)
+  .sort()
+  .populate()
+  .exec();
+```

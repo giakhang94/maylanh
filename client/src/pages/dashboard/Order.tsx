@@ -4,6 +4,7 @@ import getOrderCardColor from "@/utils/getOrderCardColor";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import Filter, { QueryState } from "./Component/Filter";
+import Pagination from "./Component/Pagination";
 
 interface Props {}
 export interface OrderType {
@@ -24,21 +25,35 @@ export interface OrderType {
 
 const Order = (props: Props): React.JSX.Element => {
   const [orders, setOrders] = useState<OrderType[]>();
+  const [pagiInfo, setPagiInfo] = useState<{
+    numOfPages: number;
+    totalOrders: number;
+    pagePagi: number;
+  }>({ numOfPages: 1, totalOrders: 1, pagePagi: 1 });
   const [query, setQuery] = useState<string>("");
   const getQuery = (queryInput: string) => {
     setQuery(queryInput);
   };
+  const getOrders = async (page?: string) => {
+    try {
+      const { data } = await customAxios().get(`/order?${query}&page=${page}`);
+      // console.log(data.filter);
+      const { numOfPages, totalOrders, pagePagi } = data;
+      setPagiInfo({
+        numOfPages,
+        totalOrders,
+        pagePagi,
+      });
+      setOrders(data.orders);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleChangePage = (page: string) => {
+    getOrders(page);
+  };
   useEffect(() => {
-    const getOrders = async () => {
-      try {
-        const { data } = await customAxios().get(`/order?${query}`);
-        // console.log(data.filter);
-        setOrders(data.orders);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getOrders();
+    getOrders("1");
   }, [query]);
   return (
     <div className="w-full">
@@ -61,7 +76,7 @@ const Order = (props: Props): React.JSX.Element => {
       <p className="block mx-5 mt-5">
         Có tổng cộng{" "}
         <span className="font-bold text-sky-800">
-          {orders && orders.length} kết quả
+          {orders && orders.length > 0 ? orders.length : 0} kết quả
         </span>
       </p>
       <div className="p-5 w-full grid Plaptop:grid-cols-2 Pdesktop:grid-cols-2 PbigTablet:grid-cols-2 Ptablet:grid-cols-1 Pmobile:grid-cols-1 Psmallmobile:grid-cols-1">
@@ -79,6 +94,12 @@ const Order = (props: Props): React.JSX.Element => {
             );
           })}
       </div>
+      <Pagination
+        total={pagiInfo.totalOrders}
+        numOfPages={pagiInfo.numOfPages}
+        handleChangePage={handleChangePage}
+        page={pagiInfo.pagePagi}
+      />
     </div>
   );
 };
