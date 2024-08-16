@@ -7,3 +7,14 @@
   color: #0e91e9 !important;
   /* display: none; */
 }
+
+/* transition for all */
+* {
+  transition: all linear 0.15s;
+}
+.recharts-legend-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 36px !important;
+}

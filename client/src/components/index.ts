@@ -8,8 +8,9 @@ import Input from "./Input";
 import FlexibleInput from "./FlexibleInput";
 import CommonModal from "./CommonModal";
 import OrderCard from "./Ordercard";
-
+import Footer from "./Footer";
 export {
+  Footer,
   OrderCard,
   CommonModal,
   FlexibleInput,

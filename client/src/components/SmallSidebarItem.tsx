@@ -6,10 +6,9 @@ interface Props {
   title: string;
   path: string;
   unRead: number;
-  hide: boolean;
 }
 
-const BigSidebarItem = (props: Props) => {
+const SmallSidebarItem = (props: Props) => {
   const Icon = props.icon;
   return (
     <NavLink
@@ -25,14 +24,9 @@ const BigSidebarItem = (props: Props) => {
         ].join(" ")
       }
     >
-      <Icon size={25} />
-      {!props.hide && <span className="">{props.title}</span>}
+      <Icon size={19} />
       {!!props.unRead && (
-        <span
-          className={`text-white bg-red-500 text-sm w-5 h-5 rounded-full text-center absolute top-0  ${
-            props.hide ? "left-[8.25px]" : "left-[82.5px]"
-          }`}
-        >
+        <span className="text-white bg-red-500 text-[10px] w-4 h-4 rounded-full flex justify-center items-center absolute top-0 left-[20%]">
           {props.unRead ? props.unRead : ""}
         </span>
       )}
@@ -40,4 +34,4 @@ const BigSidebarItem = (props: Props) => {
   );
 };
 
-export default BigSidebarItem;
+export default SmallSidebarItem;

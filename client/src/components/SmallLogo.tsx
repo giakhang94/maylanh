@@ -1,17 +1,15 @@
 interface Props {
   size?: "xl" | "2xl";
-  hide?: boolean;
 }
-const Logo = (prop: Props): React.JSX.Element => {
+const SmallLogo = (prop: Props): React.JSX.Element => {
   return (
     <div
       className={`flex justify-center items-center space-x-2 font-semibold text-${
-        prop.size ? prop.size : "xl"
+        prop.size ? prop.size : "lg"
       }`}
     >
       <span className="bg-sky-500 py-1 px-2 rounded-md text-white">Hìu</span>
-      {!prop.hide && <span className="text-xl">Engineering</span>}
     </div>
   );
 };
-export default Logo;
+export default SmallLogo;

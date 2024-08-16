@@ -10,7 +10,9 @@ import Services from "./client/services/Services";
 import CustomerLogin from "./client/customer/login";
 import OrderByClient from "./client/customer/orders";
 import ShareClientLayout from "./client/customer/ShareLayout";
+import SmallLogo from "@/components/SmallLogo";
 export {
+  SmallLogo,
   ShareClientLayout,
   OrderByClient,
   CustomerLogin,

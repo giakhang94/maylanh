@@ -30,7 +30,7 @@ const CustomerLogin = (props: Props): React.JSX.Element => {
         theme="colored"
         className="mt-[150px] mr-5 text-xl"
       />
-      <form className="flex flex-col mx-auto max-w-[300px] space-y-5 my-5">
+      <form className="flex flex-col mx-auto  Psmallmobile:w-[250px] Pmobile:w-[300px] Plaptop:w-[300px] Ptablet:[w-350px] Pdesktop:w-[350px] space-y-5 my-5">
         <Logo size="xl" />
         <div>
           <label htmlFor="phone">SĐT</label>

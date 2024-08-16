@@ -17,6 +17,7 @@ import {
 } from "@/pages";
 import ProtectedLayout from "./components/protectedLayout";
 import ProtectedRoute from "./pages/client/customer/ProtectedRoute";
+import { Footer } from "./components";
 function App() {
   return (
     <BrowserRouter>

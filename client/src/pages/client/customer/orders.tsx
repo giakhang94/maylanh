@@ -40,7 +40,7 @@ const OrderByClient = (props: Props): React.JSX.Element => {
         theme="colored"
         className="mt-[150px] mr-5 text-xl"
       />
-      <div className="grid grid-cols-2 w-full  place-content-center px-20">
+      <div className="grid Plaptop:grid-cols-2 Pdesktop:grid-cols-2 PbigTablet:grid-cols-2 Ptablet:grid-cols-2 Pmobile:grid-cols-1 Psmallmobile:grid-cols-1 w-full  place-content-center px-20">
         {orders &&
           orders.map((order: OrderType, index: number) => {
             const color = getOrderCardColor(order);

@@ -1085,3 +1085,21 @@ useEffect(() => {
   };
 }, [filterInput.search]);
 ```
+
+### Promise.all khi map không return value
+
+1. các methods xử lý array như map, reduce... mà có xài async callback thì nó không return gì hết
+2. để khắc phục phải xài await Promise.all(...)
+
+```js
+//others codes
+let stats = {};
+await Promise.all(
+  allServices.map(async (service) => {
+    const count = await Order.countDocuments({ serviceId: service._id });
+    stats[service.name] = count;
+  })
+);
+console.log(stats);
+res.status(200).json({ stats });
+```

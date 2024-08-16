@@ -65,7 +65,7 @@ const Register = (props: Props): React.JSX.Element => {
         theme="colored"
         className="mt-[150px] mr-5"
       />
-      <form className="-translate-y-[50%]">
+      <form className="-translate-y-[50%]  Psmallmobile:w-[250px] Pmobile:w-[300px] Plaptop:w-[350px] Ptablet:[w-300px] Pdesktop:w-[350px]">
         <Logo />
         <div className="mt-5">
           <h1 className="text-center font-semibold text-xl tracking-[2px] ">
@@ -82,7 +82,7 @@ const Register = (props: Props): React.JSX.Element => {
                 id="email"
                 name="email"
                 placeholder="example@email.com"
-                className="border border-gray-300 py-1 px-2 min-w-[300px] w-full rounded-sm outline-none"
+                className="border border-gray-300 py-1 px-2 w-full rounded-sm outline-none"
               />
             </div>
           </div>
@@ -95,7 +95,7 @@ const Register = (props: Props): React.JSX.Element => {
                 onChange={handleInputChange}
                 value={input.password}
                 name="password"
-                className="border border-gray-300 py-1 px-2 min-w-[300px] w-full rounded-sm outline-none"
+                className="border border-gray-300 py-1 px-2 w-full rounded-sm outline-none"
                 placeholder="enter your password"
               />
             </div>

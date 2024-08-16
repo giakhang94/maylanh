@@ -11,7 +11,7 @@ const Navbar = (props: Props): React.JSX.Element => {
   const indexofAtsite = email.indexOf("@");
   email = email.slice(0, indexofAtsite);
   return (
-    <div className="w-[100%] flex justify-center p-5 h-[20] bg-white ">
+    <div className="sticky top-0 w-[100%] flex justify-center p-5 h-[20] bg-white z-50 s">
       <div className="flex items-center justify-center space-x-1 relative">
         <span className="italic font-semibold">Welcome, </span>
         <div
