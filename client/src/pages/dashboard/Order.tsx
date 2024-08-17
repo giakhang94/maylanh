@@ -104,9 +104,9 @@ const Order = (props: Props): React.JSX.Element => {
       />
       <PaginationDotDot
         // numOfPages={Number(pagiInfo.numOfPages)}
-        numOfPages={14 || Number(pagiInfo.numOfPages)}
+        numOfPages={Number(pagiInfo.numOfPages)}
         // currentPage={Number(pagiInfo.pagePagi)}
-        currentPage={4 || Number(pagiInfo.pagePagi)}
+        currentPage={Number(pagiInfo.pagePagi)}
         handleChangePage={handleChangePage}
         total={pagiInfo.totalOrders}
       />

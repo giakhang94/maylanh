@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Pagination from "./Pagination";
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 
 interface Props {
   numOfPages: number;
@@ -55,6 +56,18 @@ const PaginationDotDot = ({
     return (
       <div className="flex space-x-[1px] mb-5">
         <button
+          className="bg-sky-500 text-white font-semibold w-8 h-8 flex justify-center items-center rounded-sm hover:opacity-[82.5%]"
+          onClick={() => {
+            if (Number(currentPage) === 1) {
+              handleChangePage(numOfPages.toString());
+            } else {
+              handleChangePage((Number(currentPage) - 1).toString());
+            }
+          }}
+        >
+          <GrFormPrevious />
+        </button>
+        <button
           className={`bg-sky-${
             currentPage === 1 ? "600" : 500
           } text-white font-semibold w-8 h-8 flex justify-center items-center rounded-sm hover:opacity-[82.5%]`}
@@ -90,10 +103,34 @@ const PaginationDotDot = ({
         >
           {numOfPages}
         </button>
+        <button
+          className="bg-sky-500 text-white font-semibold w-8 h-8 flex justify-center items-center rounded-sm hover:opacity-[82.5%]"
+          onClick={() => {
+            if (Number(currentPage) === numOfPages) {
+              handleChangePage("1");
+            } else {
+              handleChangePage((Number(currentPage) + 1).toString());
+            }
+          }}
+        >
+          <GrFormNext />
+        </button>
       </div>
     );
   return (
     <div className="flex space-x-[1px] mb-5">
+      <button
+        className="bg-sky-500 text-white font-semibold w-8 h-8 flex justify-center items-center rounded-sm hover:opacity-[82.5%]"
+        onClick={() => {
+          if (Number(currentPage) === 1) {
+            handleChangePage(numOfPages.toString());
+          } else {
+            handleChangePage((Number(currentPage) - 1).toString());
+          }
+        }}
+      >
+        <GrFormPrevious />
+      </button>
       <button
         className={`bg-sky-${
           currentPage === 1 ? "600" : 500
@@ -127,6 +164,18 @@ const PaginationDotDot = ({
         } text-white font-semibold w-8 h-8 flex justify-center items-center rounded-sm hover:opacity-[82.5%]`}
       >
         {numOfPages}
+      </button>
+      <button
+        className="bg-sky-500 text-white font-semibold w-8 h-8 flex justify-center items-center rounded-sm hover:opacity-[82.5%]"
+        onClick={() => {
+          if (Number(currentPage) === numOfPages) {
+            handleChangePage("1");
+          } else {
+            handleChangePage((Number(currentPage) + 1).toString());
+          }
+        }}
+      >
+        <GrFormNext />
       </button>
     </div>
   );
