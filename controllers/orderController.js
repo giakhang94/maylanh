@@ -132,14 +132,12 @@ const getAllOrders = async (req, res) => {
   }
   let result = filterRenew ? filterRenew : orders;
 
-  res
-    .status(200)
-    .json({
-      orders: result,
-      totalOrders,
-      numOfPages,
-      pagePagi: req.query.page || 1,
-    });
+  res.status(200).json({
+    orders: result,
+    totalOrders,
+    numOfPages,
+    pagePagi: req.query.page || 1,
+  });
 };
 
 const getOrdersByClient = async (req, res) => {
@@ -209,6 +207,7 @@ const countUnReadOrders = async (req, res) => {
   const count = await Order.countDocuments({ isRead: false });
   res.status(200).json({ unread: count });
 };
+
 //for charts
 const getOrderStats = async (req, res) => {
   const user = req.user;
@@ -264,7 +263,7 @@ const getOrderStats = async (req, res) => {
     return accum;
   }, []);
 
-  res.status(200).json({ statsPie, pieCancel, lineChart, page });
+  res.status(200).json({ statsPie, pieCancel, lineChart });
 };
 
 export {

@@ -26,9 +26,9 @@ const LineChart2 = ({ data }: any) => {
         >
           <CartesianGrid strokeDasharray="2 2" />
           <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
+          <YAxis allowDecimals={false} />
           <Legend />
+          <Tooltip />
           <Line
             type="monotone"
             dataKey="orders"

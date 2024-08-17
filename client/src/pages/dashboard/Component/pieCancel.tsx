@@ -11,6 +11,7 @@ import {
   Label,
   Tooltip,
   Legend,
+  LabelList,
 } from "recharts";
 
 const COLORS = ["red", "#00ED64"];
@@ -56,12 +57,13 @@ const PieCancel = ({ data }: any) => {
               data={data}
               cx="50%"
               cy="50%"
-              labelLine={false}
+              labelLine={true}
               label={renderCustomizedLabel}
               outerRadius={80}
               fill="#8884d8"
               dataKey="value"
             >
+              <LabelList dataKey="value" position={"outside"} />
               {data &&
                 data.map((entry: any, index: any) => (
                   <Cell

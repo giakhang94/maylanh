@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import Filter, { QueryState } from "./Component/Filter";
 import Pagination from "./Component/Pagination";
+import PaginationDotDot from "./Component/PaginationDotDot";
 
 interface Props {}
 export interface OrderType {
@@ -30,6 +31,7 @@ const Order = (props: Props): React.JSX.Element => {
     totalOrders: number;
     pagePagi: number;
   }>({ numOfPages: 1, totalOrders: 1, pagePagi: 1 });
+
   const [query, setQuery] = useState<string>("");
   const getQuery = (queryInput: string) => {
     setQuery(queryInput);
@@ -99,6 +101,14 @@ const Order = (props: Props): React.JSX.Element => {
         numOfPages={pagiInfo.numOfPages}
         handleChangePage={handleChangePage}
         page={pagiInfo.pagePagi}
+      />
+      <PaginationDotDot
+        // numOfPages={Number(pagiInfo.numOfPages)}
+        numOfPages={14 || Number(pagiInfo.numOfPages)}
+        // currentPage={Number(pagiInfo.pagePagi)}
+        currentPage={4 || Number(pagiInfo.pagePagi)}
+        handleChangePage={handleChangePage}
+        total={pagiInfo.totalOrders}
       />
     </div>
   );
