@@ -8,7 +8,7 @@ const SmallLogo = (prop: Props): React.JSX.Element => {
         prop.size ? prop.size : "lg"
       }`}
     >
-      <span className="bg-sky-500 py-1 px-2 rounded-md text-white">Hìu</span>
+      <span className="bg-sky-500 py-1 px-2 rounded-md text-white">Huy RT</span>
     </div>
   );
 };

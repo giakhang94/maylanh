@@ -62,6 +62,9 @@ app.use("/service", serviceRouter);
 app.use("/order", orderRouter);
 app.use("/client", clientRouter);
 app.use(ErrorHandlerMiddleware);
+app.use("*", (req, res) => {
+  res.send("Rounter này không tồn tại bạn ơi. From Huy with Love");
+});
 const PORT = process.env.PORT || 5000;
 const start = () => {
   try {

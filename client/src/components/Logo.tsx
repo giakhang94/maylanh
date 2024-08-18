@@ -9,8 +9,8 @@ const Logo = (prop: Props): React.JSX.Element => {
         prop.size ? prop.size : "xl"
       }`}
     >
-      <span className="bg-sky-500 py-1 px-2 rounded-md text-white">Hìu</span>
-      {!prop.hide && <span className="text-xl">Engineering</span>}
+      <span className="bg-sky-500 py-1 px-2 rounded-md text-white">Huy</span>
+      {!prop.hide && <span className="text-xl">RT</span>}
     </div>
   );
 };

@@ -8,6 +8,7 @@ import {
   Dashboard,
   Home,
   Login,
+  NotFoundPage,
   Order,
   OrderByClient,
   Register,
@@ -50,6 +51,7 @@ function App() {
           <Route element={<OrderByClient />} path="/customer/order" />
         </Route>
         <Route element={<CustomerLogin />} path="/customer/login" />
+        <Route element={<NotFoundPage />} path="*" />
       </Routes>
     </BrowserRouter>
   );

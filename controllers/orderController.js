@@ -86,8 +86,8 @@ const getAllOrders = async (req, res) => {
   const limit = Number(req.query.limit) || 2;
   const skip = (page - 1) * limit;
 
-  const totalOrders = await Order.countDocuments();
-  const numOfPages = Math.ceil(totalOrders / limit);
+  let totalOrders = await Order.countDocuments();
+  let numOfPages = Math.ceil(totalOrders / limit);
 
   if (!user) {
     throw new UnAuthorizationError("Login first");
@@ -124,6 +124,7 @@ const getAllOrders = async (req, res) => {
 
   let filterRenew = null;
   if (renew > 0) {
+    console.log("tao");
     filterRenew = orders.filter((order) => {
       return (
         new Date().getMonth() - new Date(order.updatedAt).getMonth() == renew
