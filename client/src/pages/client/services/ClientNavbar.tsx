@@ -13,14 +13,14 @@ const ClientNavbar = (props: Props): React.JSX.Element => {
   const [showLogout, setShowLogout] = useState<boolean>(false);
   const { client, logoutClient } = useAppContext();
   return (
-    <div className="shadow-sm shadow-gray-200 w-[100%] flex justify-between Pdesktop:px-20 Plaptop:px-20 PbigTablet:px-10 Ptablet:px-5 Pmobile:px-3 Psmallmobile:px-2 p-5 h-[20] bg-white items-center">
+    <div className="shadow-sm shadow-gray-200 w-[100%] flex justify-between Pdesktop:px-10 Plaptop:px-10 PbigTablet:px-10 Ptablet:px-5 Pmobile:px-3 Psmallmobile:px-2  h-[20] bg-white items-center">
       <div
         className="cursor-pointer Plaptop:block Pdesktop:block PbigTablet:block Ptablet:hidden Pmobile:hidden Psmallmobile:hidden"
         onClick={() => {
           nav("/");
         }}
       >
-        <Logo />
+        <Logo type="2" />
       </div>
       <div
         className="cursor-pointer Plaptop:hidden Pdesktop:hidden PbigTablet:hidden Ptablet:block Pmobile:block Psmallmobile:block"

@@ -1,4 +1,5 @@
 import image from "@/assets/image/repair_lading.svg";
+import { Logo } from "@/components";
 import { Link } from "react-router-dom";
 const HomeBig = () => {
   return (
@@ -6,7 +7,10 @@ const HomeBig = () => {
       <div className="w-1/2 -scale-x-100 min-w-[450px]">
         <img src={image} alt="landing pag w-full" />
       </div>
-      <div className="text-xl flex-1 flex-col justify-center mt-5 space-x-2">
+      <div className="text-xl flex-1 flex-col items-center justify-center mt-5 space-x-2">
+        <div className="w-full flex justify-center">
+          <Logo type="2" />
+        </div>
         <div className="flex Plaptop:flex-row Pdesktop:flex-row PbigTablet:flex-col Ptablet:flex-col justify-center items-center space-x-1">
           <span>
             <div className="relative group bg-sky-500 text-white font-bold p-1 mr-1 rounded-md inline-block cursor-pointer">
