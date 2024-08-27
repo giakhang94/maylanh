@@ -25,8 +25,9 @@ module.exports = {
 
       Pmobile: "480px",
       // => @media (min-width: 400px) { ... }
+      PbigMobile: "500px",
 
-      Ptablet: "768px",
+      Ptablet: "700px",
       // => @media (min-width: 640px) { ... }
       PbigTablet: "1024",
       //=> @media (min-width: 1024px) { ... }

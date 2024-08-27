@@ -95,14 +95,14 @@ const Services = (props: Props): React.JSX.Element => {
         </CommonModal>
       )}
       <div
-        className={`grid Pdesktop:grid-cols-3 Plaptop:grid-cols-3 PbigTablet:grid-cols-2 Ptablet:grid-cols-2 Pmobile:grid-cols-1 Psmallmobile:grid-cols-1 w-full h-full gap-y-10 p-10 relative ${
+        className={`grid Pdesktop:grid-cols-3 Plaptop:grid-cols-3 PbigTablet:grid-cols-2 Ptablet:grid-cols-2 PbigMobile:grid-cols-1  Pmobile:grid-cols-1 Psmallmobile:grid-cols-1 Pdesktop:w-full Plaptop:w-full PbigTablet:w-full Ptablet:w-full PbigMobile:w-[90%] Pmobile:w-full Psmallmobile:w-full h-full gap-y-10 gap-x-5 p-10 relative mx-auto ${
           selectedService.selected ? "blur-sm" : ""
         }`}
       >
         {services.map((service: StateProps, index: number) => {
           return (
             <div
-              className="group w-1/4 max-w-[360px] min-w-[320px] rounded-md shadow-md pb-3 hover:scale-105 transition-all cursor-pointer relative"
+              className="group min-w-[300px] w-full h-fit rounded-md shadow-md pb-3 hover:scale-105 transition-all cursor-pointer relative"
               key={index + "service-card-client"}
             >
               <div
