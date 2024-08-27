@@ -117,7 +117,7 @@ const Services = (props: Props): React.JSX.Element => {
               </div>
               <div className="w-full h-[200px] rounded-md relative">
                 <img
-                  src={`https://maylanh.onrender.com/image/${service._id}`}
+                  src={`https://maylanh.onrender.com/service/image/${service._id}`}
                   //khong xai .toString() cung dc :)
                   className="w-full h-full rounded-tl-md rounded-tr-md"
                   alt="tao"
