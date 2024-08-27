@@ -1,7 +1,7 @@
 import axios from "axios";
 const customAxios = () => {
   const authFetch = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: "https://maylanh.onrender.com/",
     withCredentials: true,
     headers: {
       // Authorization: `Bearer ${token}`,
@@ -16,7 +16,7 @@ const customAxios = () => {
       console.log("interceptoer", error);
       if (error.response.data.statusCode === 401) {
         console.log("Auth error");
-        await axios.get("http://localhost:5000/auth/logout");
+        await axios.get("https://maylanh.onrender.com//auth/logout");
       }
       return Promise.reject(error.response);
     }
