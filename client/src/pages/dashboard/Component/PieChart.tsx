@@ -13,11 +13,13 @@ import {
   XAxis,
   YAxis,
   Legend,
+  LabelList,
 } from "recharts";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
+  data,
   cx,
   cy,
   midAngle,
@@ -59,12 +61,13 @@ const StatsPie = ({ data }: any) => {
               data={data}
               cx="50%"
               cy="50%"
-              labelLine={false}
+              labelLine={true}
               label={renderCustomizedLabel}
               outerRadius={90}
               fill="#8884d8"
               dataKey="value"
             >
+              <LabelList dataKey="value" position="outside" id="labelList" />
               {data &&
                 data.map((entry: any, index: any) => (
                   <Cell

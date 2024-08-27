@@ -100,7 +100,7 @@ const Filter = ({ handleSubmit }: Props) => {
                 value={filterInput.services}
                 onChange={handleChange}
                 name="services"
-                className="block Plaptop:w-1/2 Pdesktop:w-1/2 Ptablet:w-1/2 PbigTablet:w-1/2 Pmobile:w-full Psmallmobile:w-full border px-2 py-2 rounded-md"
+                className="block Plaptop:w-full Pdesktop:w-full Ptablet:w-full PbigTablet:w-full Pmobile:w-full Psmallmobile:w-full border px-2 py-2 rounded-md"
               >
                 <option value="">Tất cả dịch vụ</option>
                 {SERVICES.map(
@@ -119,7 +119,7 @@ const Filter = ({ handleSubmit }: Props) => {
                   }
                 )}
               </select>
-              <select
+              {/* <select
                 value={filterInput.renew}
                 disabled={filterInput.from !== "" || filterInput.to !== ""}
                 onChange={(e) => {
@@ -141,7 +141,7 @@ const Filter = ({ handleSubmit }: Props) => {
                     </option>
                   );
                 })}
-              </select>
+              </select> */}
             </div>
             <div className="flex w-1/2 justify-end py-1 min-w-[150px] border px-5 rounded-md  Plaptop:w-1/2 Pdesktop:w-1/2 Ptablet:w-1/2 PbigTablet:w-1/2 Pmobile:w-full Psmallmobile:w-full Platop:flex Pdesktop:flex Ptablet:flex Ptablet:flex-row PbigTablet:flex-row Pdesktop:flex-row Plaptop:flex-row PbigTablet:flex Pmobile:flex Pmobile:flex-col Psmallmobile:flex Psmallmobile:flex-col Plaptop:space-x-10 Pdesktop:space-x-10 Ptablet:space-x-10 PbigTablet:space-x-10 Pmobile:space-y-1 Psmallmobile:space-y-1">
               <input

@@ -81,7 +81,14 @@ const createOrder = async (req, res) => {
 const getAllOrders = async (req, res) => {
   const user = req.user;
   const { services, from, to, search, renew } = req.query;
-  console.log(renew);
+  // setup Pagination
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 2;
+  const skip = (page - 1) * limit;
+
+  let totalOrders = await Order.countDocuments();
+  let numOfPages = Math.ceil(totalOrders / limit);
+
   if (!user) {
     throw new UnAuthorizationError("Login first");
   }
@@ -109,11 +116,15 @@ const getAllOrders = async (req, res) => {
   }
   // console.log(queryObj);
   const orders = await Order.find({ ...queryObj })
+    .skip(skip)
+    .limit(limit)
     .sort({ createdAt: -1 })
     .populate("createdBy")
     .exec();
+
   let filterRenew = null;
   if (renew > 0) {
+    console.log("tao");
     filterRenew = orders.filter((order) => {
       return (
         new Date().getMonth() - new Date(order.updatedAt).getMonth() == renew
@@ -121,7 +132,13 @@ const getAllOrders = async (req, res) => {
     });
   }
   let result = filterRenew ? filterRenew : orders;
-  res.status(200).json({ orders: result });
+
+  res.status(200).json({
+    orders: result,
+    totalOrders,
+    numOfPages,
+    pagePagi: req.query.page || 1,
+  });
 };
 
 const getOrdersByClient = async (req, res) => {
@@ -191,6 +208,7 @@ const countUnReadOrders = async (req, res) => {
   const count = await Order.countDocuments({ isRead: false });
   res.status(200).json({ unread: count });
 };
+
 //for charts
 const getOrderStats = async (req, res) => {
   const user = req.user;
@@ -245,6 +263,7 @@ const getOrderStats = async (req, res) => {
     accum.push({ name: current._id, orders: current.count });
     return accum;
   }, []);
+
   res.status(200).json({ statsPie, pieCancel, lineChart });
 };
 

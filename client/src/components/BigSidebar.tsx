@@ -31,7 +31,7 @@ const BigSideBar = (props: Props): React.JSX.Element => {
         className="flex flex-col justify-center items-start space-y-5 my-2  px-4 text-xl tracking-[1px]"
       >
         <Link to="/" className="mb-5">
-          <Logo hide={hide} />
+          <Logo hide={hide} type="2" />
         </Link>
         {sidebarItemList.map(
           (
