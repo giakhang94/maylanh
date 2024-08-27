@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import customAxios from "./authFecth";
-import { StateType } from "../pages/AddService";
+import { StateType } from "../pages/dashboard/AddService";
 const handleSubmit = async (input: StateType) => {
   const authFetch = customAxios();
   const formData = new FormData();
