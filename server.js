@@ -71,8 +71,9 @@ app.use("/service", serviceRouter);
 app.use("/order", orderRouter);
 app.use("/client", clientRouter);
 app.use(ErrorHandlerMiddleware);
-
 app.get("*", (req, res) => {
+  console.log(path.resolve(__dirname, "./client/dist", "index.html"));
+
   res.sendFile(path.resolve(__dirname, "./client/dist", "index.html"));
 });
 
