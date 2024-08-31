@@ -12,7 +12,7 @@ const router = new express.Router();
 router.post("/add", auth, fileUpload.single("thumb"), createService);
 router.get("/", getAllService);
 router.get("/image/:id", getThumb);
-router.patch("/:id", auth, updateService);
+router.patch("/:id", auth, fileUpload.single("image"), updateService);
 router.delete("/:id", auth, updateService);
 
 export default router;

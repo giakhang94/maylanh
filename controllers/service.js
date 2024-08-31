@@ -36,7 +36,9 @@ const getThumb = async (req, res) => {
 };
 
 const updateService = async (req, res) => {
+  const file = req.file ? req.file.buffer : null;
   let { name, price, description, promotion, promotionPrice } = req.body;
+
   const serviceId = req.params.id;
   adminPermision(req.user.role);
 
@@ -47,10 +49,11 @@ const updateService = async (req, res) => {
   }
 
   if (name) serviceToUpdate.name = name;
-  if (price) {
+  if (price > 0) {
     serviceToUpdate.price = price;
   } else {
     price = serviceToUpdate.price;
+    console.log(price);
   }
   if (description) serviceToUpdate.description = description;
   if (promotionPrice) serviceToUpdate.promotionPrice = promotionPrice;
@@ -61,6 +64,9 @@ const updateService = async (req, res) => {
   }
   if (promotionPrice >= price) {
     throw new BadRequestError("Đặt giá khuyến mãi ngu vcl");
+  }
+  if (file) {
+    serviceToUpdate.image = file;
   }
 
   await serviceToUpdate.save();

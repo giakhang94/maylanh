@@ -8,6 +8,8 @@ import { IoSaveSharp } from "react-icons/io5";
 import { MdCancel, MdDeleteForever } from "react-icons/md";
 import handleDeleteService from "@/utils/deleteService";
 import updateServiceObj from "@/utils/updateServiceObj";
+import { baseurl } from "@/constants";
+
 interface Props {}
 interface StateProps {
   _id: string;
@@ -33,6 +35,7 @@ const AllService = (props: Props): React.JSX.Element => {
     name: "",
     description: "",
     price: 0,
+    image: null,
   };
   const [input, setInput] = useState<{
     promotion: boolean;
@@ -41,6 +44,7 @@ const AllService = (props: Props): React.JSX.Element => {
     name: string;
     description: string;
     price: number;
+    image?: File | null;
   }>(inputInitState);
 
   const handleCloseEdit = () => {
@@ -73,9 +77,8 @@ const AllService = (props: Props): React.JSX.Element => {
     try {
       const updatedService = await customAxios().patch(
         `/service/${serviceId}`,
-        {
-          ...input,
-        }
+        input,
+        { headers: { "content-type": "multipart/form-data" } }
       );
       console.log(updatedService);
       const tempServices = [...services!];
@@ -119,10 +122,41 @@ const AllService = (props: Props): React.JSX.Element => {
               >
                 <div className="h-[220px] w-full rounded-md relative">
                   <img
-                    src={`https://maylanh.onrender.com/service/image/${service._id}`}
+                    src={`${baseurl(true)}service/image/${service._id}`}
                     className="h-full object-cover rounded-md w-full"
                     alt=""
                   />
+                  {/* change thumbnail */}
+                  {isEditing.edit && isEditing.id === service._id && (
+                    <div className="absolute bg-gray-300 bg-opacity-80 top-2/4 w-[90%] left-2/4 -translate-x-[50%] text-sm p-2 rounded-sm">
+                      <label
+                        htmlFor="image"
+                        className="text-center block font-semibold cursor-pointer"
+                      >
+                        Đổi hình ảnh
+                      </label>
+                      <input
+                        name="image"
+                        id="image"
+                        type="file"
+                        className=" top-2/4 right-2/4  cursor-pointer hidden"
+                        onChange={(e) => {
+                          const validate = e.target.files![0].name.match(
+                            /\.(jpg|jpeg|png|gif)$/
+                          );
+
+                          if (!validate) {
+                            toast.error("chỉ úp hình ảnh");
+                          } else {
+                            setInput((prev) => ({
+                              ...prev,
+                              image: e.target.files![0],
+                            }));
+                          }
+                        }}
+                      />
+                    </div>
+                  )}
                   {/* giá khuyến mãi ở đây */}
                   <div>
                     {service.promotion && (
@@ -136,7 +170,7 @@ const AllService = (props: Props): React.JSX.Element => {
                       </span>
                     )}
                     {isEditing.edit && isEditing.id === service._id && (
-                      <div className="absolute bottom-1 right-1 text-gray-300 font-semibold bg-[#f15a16]  py-1 px-2 rounded-md flex items-center space-x-2">
+                      <div className="absolute bottom-1 right-1 text-gray-400 font-semibold bg-[#f15a16]  py-1 px-2 rounded-md flex items-center space-x-2">
                         <label htmlFor="">nhập giá KM</label>
                         <input
                           value={input.promotionPrice || service.promotionPrice}

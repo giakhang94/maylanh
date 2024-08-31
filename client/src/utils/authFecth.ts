@@ -1,7 +1,8 @@
+import { baseurl } from "@/constants";
 import axios from "axios";
 const customAxios = () => {
   const authFetch = axios.create({
-    baseURL: "https://maylanh.onrender.com/",
+    baseURL: baseurl(true),
     withCredentials: true,
     headers: {
       // Authorization: `Bearer ${token}`,

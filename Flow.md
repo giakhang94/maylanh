@@ -465,15 +465,22 @@ export default Input;
    7.2. input file onChange có 2 hướng làm:
    -add file vào state của useState
    -hoặc tạo formData = new FomrData() => formData.append('img', file)
+   - Nếu xài formDate thì phải append cả 2, là input state, và thằng image như sau
 
-   7.3. xử lý gởi data qua BE
+```js
+  const formData = new FormData();
+  formData.append("thumb", input.thumb as File);
+  formData.append("input", JSON.stringify(input));
+```
+
+7.3. xử lý gởi data qua BE
 
 ### Cần lưu ý 2 chỗ xử lý data này, khi gởi file qua BE
 
 1. BE: Xài multer. Tạo multer config, filter...
    => sau dó dùng làm middleware `router.post('/upload/,auth, multer({...}.single("tênfile")), controller)`
    => ` tênfile` chính là `key` của thằng formdata
-   => ví dụ fomr.append("img", flie) => single("img")
+   => ví dụ form.append("img", flie) => single("img")
    => up file lên local disk thì xài destination. up binary lên cloud thì bỏ destination là được
 2. ở FE
    => fetch data headers phải có `content-type: multipart/form-data`
@@ -1117,3 +1124,15 @@ const result = Order.find({ queryObject })
   .populate()
   .exec();
 ```
+
+### lưu ý lại phần upload image
+
+bước 1. input này kia, setStae(prev => ({...prev, image: e.target.files[0]}))
+bước 2. bên BE phải tạo middleware uploadimge bằng multer
+bước 3. Bên Be sau đó phải vô router bỏ middleware vô
+=> router.patch('url', auth, upload.singele('image'))
+=> upload là tên middleware
+=> 'image' là key của file ở state input ngoài BE
+bước 4. fetch API phải có conten-type: multipart/form-data
+bước 5. bắt file ở BE => req.body.buffer (nếu xài file buffer). Hoặc console.log ra là được
+Chỉ cần nhiêu đó thì xài setState hay xài formdata.append() đều được
