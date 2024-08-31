@@ -122,7 +122,7 @@ const AllService = (props: Props): React.JSX.Element => {
               >
                 <div className="h-[220px] w-full rounded-md relative">
                   <img
-                    src={`${baseurl(true)}service/image/${service._id}`}
+                    src={`${baseurl(false)}service/image/${service._id}`}
                     className="h-full object-cover rounded-md w-full"
                     alt=""
                   />
