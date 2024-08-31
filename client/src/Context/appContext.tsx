@@ -82,7 +82,7 @@ const AppProvider = ({ children }: any): React.JSX.Element => {
   useEffect(() => {
     getCurrentUser();
     getCurrentClient();
-    getUnread();
+    // getUnread();
   }, []);
   useEffect(() => {
     getUnread();
