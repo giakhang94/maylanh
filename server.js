@@ -28,7 +28,7 @@ app.use(
 
 const corsConfig = {
   // Configures the Access-Control-Allow-Origin
-  origin: "http://localhost:3000",
+  // origin: "http://localhost:3000",
 
   // Configures the Access-Control-Allow-Methods
   methods: "GET, POST, OPTIONS, PUT, PATCH, DELETE",
@@ -65,14 +65,14 @@ app.use(cookieParser());
 
 //deploy
 const __dirname = dirname(fileURLToPath(import.meta.url));
-app.use(express.static(path.resolve(__dirname, "./client/dist")));
+app.use(express.static(path.resolve(__dirname, "/client/dist")));
 app.use("/auth", userRouter);
 app.use("/service", serviceRouter);
 app.use("/order", orderRouter);
 app.use("/client", clientRouter);
 app.use(ErrorHandlerMiddleware);
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "./client/dist", "index.html"));
+  res.sendFile(path.resolve(__dirname, "/client/dist", "index.html"));
 });
 
 app.use("*", (req, res) => {
