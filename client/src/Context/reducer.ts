@@ -31,6 +31,26 @@ const reducer = (state: InitStateProps, action: Action) => {
       unread: action.payload.unread,
     };
   }
+  if (action.type === "GET_SERVICES_BEGIN") {
+    return {
+      ...state,
+      isLoadingService: true,
+    };
+  }
+  if (action.type === "GET_SERVICES_DONE") {
+    console.log(action.payload);
+    return {
+      ...state,
+      services: action.payload,
+      isLoadingService: false,
+    };
+  }
+  if (action.type === "GET_SERVICES_ERROR") {
+    return {
+      ...state,
+      isLoadingService: false,
+    };
+  }
   return state;
   //khởi tạo phải có return, hông thôi bên appContext sẽ báo lỗi chỗ thằng useReducer
 };

@@ -1,3 +1,6 @@
+import { Loading } from "@/components";
+import { useAppContext } from "@/Context/appContext";
+import customAxios from "@/utils/authFecth";
 import callSubmitFilter from "@/utils/callSubmitFilter";
 import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
@@ -20,13 +23,13 @@ const initialFilter: QueryState = {
   to: "",
   renew: 0,
 };
-const SERVICES = [
-  { title: "Bơm gas hột quẹt", value: "Bơm gas hột quẹt" },
-  { title: "Bơm dầu bạc hà", value: "Bơm dầu bạc hà" },
-  { title: "Lông vịt dép đứt mủ bể", value: "Lông vịt dép đứt mủ bể" },
-];
+
 const RENEW = [3, 6, 9, 12];
 const Filter = ({ handleSubmit }: Props) => {
+  const [service, setService] = useState<{ service: []; isloading: boolean }>({
+    service: [],
+    isloading: true,
+  });
   const [show, setShow] = useState<boolean>(true);
   const [filterInput, setFilterInput] = useState<QueryState>(initialFilter);
   const handleChange = (
@@ -51,6 +54,24 @@ const Filter = ({ handleSubmit }: Props) => {
       clearTimeout(timeout);
     };
   }, [filterInput.search]);
+  useEffect(() => {
+    const getService = async () => {
+      const { data } = await customAxios().get("/service");
+      setService((prev) => ({
+        ...prev,
+        service: data.services,
+        isloading: false,
+      }));
+    };
+    getService();
+  }, []);
+  let serviceArray = [];
+  serviceArray =
+    service &&
+    service.service.reduce((accum: any, current: any) => {
+      accum.push({ title: current.name, value: current.name });
+      return accum;
+    }, []);
   return (
     <form className="relative flex flex-col justify-around mx-5 bg-white mt-5 border border-gray-300 rounded-md p-5 space-y-3 Ptablet:w-[100%] PbigTablet:w-[100%] Plaptop:w-[100%] Pdesktop:w-[100%] Pmobile:w-[350px] Psmallmobile:w-[280px]">
       {show && (
@@ -96,29 +117,33 @@ const Filter = ({ handleSubmit }: Props) => {
           </div>
           <div className="Platop:flex Pdesktop:flex Ptablet:flex Ptablet:flex-row PbigTablet:flex-row Pdesktop:flex-row Plaptop:flex-row PbigTablet:flex Pmobile:flex Pmobile:flex-col Psmallmobile:flex Psmallmobile:flex-col justify-between w-full Plaptop:space-x-4 Pdesktop:space-x-4 Ptablet:space-x-4 PbigTablet:space-x-4 Pmobile:space-y-1 Psmallmobile:space-y-1">
             <div className=" Ptablet:flex-row PbigTablet:flex-row Pdesktop:flex-row Plaptop:flex-row Plaptop:w-1/2 Pdesktop:w-1/2 Ptablet:w-1/2 PbigTablet:w-1/2 Pmobile:w-full Psmallmobile:w-full Platop:flex Pdesktop:flex Ptablet:flex PbigTablet:flex Pmobile:flex Pmobile:flex-col Psmallmobile:flex Psmallmobile:flex-col items-center Plaptop:space-x-2 Pdesktop:space-x-2 Ptablet:space-x-2 PbigTablet:space-x-2 Pmobile:space-y-1 Psmallmobile:space-y-1">
-              <select
-                value={filterInput.services}
-                onChange={handleChange}
-                name="services"
-                className="block Plaptop:w-full Pdesktop:w-full Ptablet:w-full PbigTablet:w-full Pmobile:w-full Psmallmobile:w-full border px-2 py-2 rounded-md"
-              >
-                <option value="">Tất cả dịch vụ</option>
-                {SERVICES.map(
-                  (
-                    service: { title: string; value: string },
-                    index: number
-                  ) => {
-                    return (
-                      <option
-                        key={index + "option service"}
-                        value={service.value}
-                      >
-                        {service.title}
-                      </option>
-                    );
-                  }
-                )}
-              </select>
+              {service?.isloading ? (
+                <Loading classname="" />
+              ) : (
+                <select
+                  value={filterInput.services}
+                  onChange={handleChange}
+                  name="services"
+                  className="block Plaptop:w-full Pdesktop:w-full Ptablet:w-full PbigTablet:w-full Pmobile:w-full Psmallmobile:w-full border px-2 py-2 rounded-md"
+                >
+                  <option value="">Tất cả dịch vụ</option>
+                  {serviceArray.map(
+                    (
+                      service: { title: string; value: string },
+                      index: number
+                    ) => {
+                      return (
+                        <option
+                          key={index + "option service"}
+                          value={service.value}
+                        >
+                          {service.title}
+                        </option>
+                      );
+                    }
+                  )}
+                </select>
+              )}
               {/* <select
                 value={filterInput.renew}
                 disabled={filterInput.from !== "" || filterInput.to !== ""}

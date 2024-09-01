@@ -3,7 +3,6 @@ import { useAppContext } from "@/Context/appContext";
 import customAxios from "@/utils/authFecth";
 import { useEffect, useState } from "react";
 import { OrderType } from "@/pages/dashboard/Order";
-import getOrderCardColor from "@/utils/getOrderCardColor";
 import { ToastContainer } from "react-toastify";
 interface Props {}
 
@@ -43,14 +42,13 @@ const OrderByClient = (props: Props): React.JSX.Element => {
       <div className="grid Plaptop:grid-cols-2 Pdesktop:grid-cols-2 PbigTablet:grid-cols-2 Ptablet:grid-cols-2 Pmobile:grid-cols-1 Psmallmobile:grid-cols-1 w-full  place-content-center px-20">
         {orders &&
           orders.map((order: OrderType, index: number) => {
-            const color = getOrderCardColor(order);
             return (
               <OrderCard
                 forWho="client"
                 order={order}
                 index={index}
                 key={index + "order card client"}
-                color={color}
+                color={"bg-sky-100"}
               />
             );
           })}

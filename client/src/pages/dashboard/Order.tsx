@@ -1,11 +1,11 @@
 import { OrderCard } from "@/components";
 import customAxios from "@/utils/authFecth";
-import getOrderCardColor from "@/utils/getOrderCardColor";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import Filter, { QueryState } from "./Component/Filter";
 import Pagination from "./Component/Pagination";
 import PaginationDotDot from "./Component/PaginationDotDot";
+import { useAppContext } from "@/Context/appContext";
 
 interface Props {}
 export interface OrderType {
@@ -54,9 +54,11 @@ const Order = (props: Props): React.JSX.Element => {
   const handleChangePage = (page: string) => {
     getOrders(page);
   };
+
   useEffect(() => {
     getOrders("1");
   }, [query]);
+
   return (
     <div className="w-full">
       <ToastContainer
@@ -84,12 +86,11 @@ const Order = (props: Props): React.JSX.Element => {
       <div className="p-5 w-full grid Plaptop:grid-cols-2 Pdesktop:grid-cols-2 PbigTablet:grid-cols-2 Ptablet:grid-cols-1 Pmobile:grid-cols-1 Psmallmobile:grid-cols-1">
         {orders &&
           orders.map((order: OrderType, index: number) => {
-            const color = getOrderCardColor(order);
             return (
               <OrderCard
                 forWho="admin"
                 order={order}
-                color={color}
+                color={"bg-sky-100"}
                 index={index}
                 key={index + "orderCardParent"}
               />

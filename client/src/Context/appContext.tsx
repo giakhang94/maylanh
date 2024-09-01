@@ -1,13 +1,14 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import reducer from "./reducer";
 import customAxios from "../utils/authFecth";
-import { useNavigate } from "react-router-dom";
+
 export interface InitStateProps {
   user: any;
   cart: {};
   client: any;
   isLoadingUser: boolean;
   isLoadingClient: boolean;
+  isLoadingService: boolean;
   getCurrentUser: () => void;
   logout: () => void;
   getCurrentClient: () => void;
@@ -15,6 +16,7 @@ export interface InitStateProps {
   isChangeRead: boolean;
   getUnread: () => void;
   unread: number;
+  services: any;
 }
 const initState: InitStateProps = {
   user: null,
@@ -22,6 +24,7 @@ const initState: InitStateProps = {
   cart: {},
   isLoadingClient: true,
   isLoadingUser: true,
+  isLoadingService: true,
   getCurrentUser() {},
   logout() {},
   getCurrentClient() {},
@@ -29,6 +32,7 @@ const initState: InitStateProps = {
   isChangeRead: false,
   getUnread() {},
   unread: 0,
+  services: null,
 };
 const AppContext = createContext(initState);
 const AppProvider = ({ children }: any): React.JSX.Element => {
@@ -78,12 +82,23 @@ const AppProvider = ({ children }: any): React.JSX.Element => {
       console.log(error);
     }
   };
+  const getAllServices = async () => {
+    dispatch({ type: "GET_SERVICES_BEGIN", payload: {} });
+    try {
+      const { data } = await authFetch.get("/service");
+      dispatch({ type: "GET_SERVICES_DONE", payload: data.services });
+    } catch (err) {
+      console.log(err);
+      dispatch({ type: "GET_SERVICES_ERROR", payload: {} });
+    }
+  };
 
   useEffect(() => {
     getCurrentUser();
     getCurrentClient();
     // getUnread();
   }, []);
+
   useEffect(() => {
     getUnread();
   }, [state.isChangeRead]);
