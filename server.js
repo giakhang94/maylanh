@@ -65,14 +65,14 @@ app.use(cookieParser());
 
 //deploy
 const __dirname = dirname(fileURLToPath(import.meta.url));
-app.use(express.static(path.resolve(__dirname, "/client/dist")));
+app.use(express.static(path.resolve(__dirname, "./client/dist")));
 app.use("/auth", userRouter);
 app.use("/service", serviceRouter);
 app.use("/order", orderRouter);
 app.use("/client", clientRouter);
 app.use(ErrorHandlerMiddleware);
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "/client/dist", "index.html"));
+  res.sendFile(path.resolve(__dirname, "./client/dist", "index.html"));
 });
 
 app.use("*", (req, res) => {
