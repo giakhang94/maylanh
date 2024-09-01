@@ -2,7 +2,7 @@ import { baseurl } from "@/constants";
 import axios from "axios";
 const customAxios = () => {
   const authFetch = axios.create({
-    baseURL: baseurl(false),
+    baseURL: baseurl(true),
     withCredentials: true,
     headers: {
       // Authorization: `Bearer ${token}`,

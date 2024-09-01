@@ -22,10 +22,12 @@ export interface OrderType {
   done: boolean;
   isRead: boolean;
   clientCancel: boolean;
+  color: string;
 }
 
 const Order = (props: Props): React.JSX.Element => {
   const [orders, setOrders] = useState<OrderType[]>();
+  console.log(orders);
   const [pagiInfo, setPagiInfo] = useState<{
     numOfPages: number;
     totalOrders: number;

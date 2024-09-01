@@ -44,6 +44,10 @@ const OrderSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    color: {
+      type: String,
+      default: "#0284C7",
+    },
   },
   { timestamps: true }
 );

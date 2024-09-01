@@ -20,7 +20,7 @@ const Logo = (prop: Props): React.JSX.Element => {
   else
     return (
       <div
-        className={`flex justify-center items-center space-x-2 font-semibold h-[80px] w-fit`}
+        className={`flex justify-center items-center space-x-2 font-semibold w-fit h-fit max-w-[82.5px]`}
       >
         <img src={logoImg} alt="logo" className="h-full w-full" />
       </div>

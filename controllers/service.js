@@ -7,9 +7,8 @@ import {
 } from "../utils/Validator.js";
 
 const createService = async (req, res, next) => {
-  const { name, description, price, promotion, promotionPrice } = JSON.parse(
-    req.body.input
-  );
+  const { name, description, price, promotion, promotionPrice, color } =
+    JSON.parse(req.body.input);
   const file = req.file.buffer;
   const service = await Service.create({
     name,
@@ -18,6 +17,7 @@ const createService = async (req, res, next) => {
     promotion,
     promotionPrice,
     image: file,
+    color,
   });
   res.status(200).json({ message: "Đã tạo dịch vụ xong", service });
 };

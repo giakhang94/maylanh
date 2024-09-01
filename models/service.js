@@ -30,6 +30,10 @@ const ServiceSchema = new mongoose.Schema({
   promotionPrice: {
     type: Number,
   },
+  color: {
+    type: String,
+    required: [true, "chọn cho dễ phân biệt"],
+  },
 });
 
 const Service = mongoose.model("Service", ServiceSchema);

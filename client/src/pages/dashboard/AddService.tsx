@@ -11,6 +11,7 @@ export interface StateType {
   promotion: boolean;
   promotionPrice: number;
   thumb?: File | null;
+  color: string;
 }
 const AddService = (props: Props): React.JSX.Element => {
   const [input, setInput] = useState<StateType>({
@@ -20,6 +21,7 @@ const AddService = (props: Props): React.JSX.Element => {
     promotion: false,
     promotionPrice: 0,
     thumb: null,
+    color: "#FBB731",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,14 +83,29 @@ const AddService = (props: Props): React.JSX.Element => {
           name="description"
           label="Mô tả DV"
         />
-        <Input
-          handleInputChange={handleInputChange}
-          value={input.price}
-          type="number"
-          placeholder="vd: 100.000"
-          name="price"
-          label="Giá"
-        />
+        <div className="flex justify-between items-center">
+          <Input
+            handleInputChange={handleInputChange}
+            value={input.price}
+            type="number"
+            placeholder="vd: 100.000"
+            name="price"
+            label="Giá"
+          />
+          <div className="w-2/4 ml-5">
+            <label htmlFor="color">Màu hiển thị</label>
+            <input
+              className="w-[90%] border-none outline-none rounded-md cursor-pointer"
+              id="color"
+              name="color"
+              type="color"
+              value={input.color}
+              onChange={(e) => {
+                setInput((prev) => ({ ...prev, color: e.target.value }));
+              }}
+            />
+          </div>
+        </div>
 
         <div className="flex items-center space-x-3">
           <label htmlFor="">Khuyến mãi</label>

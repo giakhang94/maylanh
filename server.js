@@ -28,7 +28,8 @@ app.use(
 
 const corsConfig = {
   // Configures the Access-Control-Allow-Origin
-  // origin: "http://localhost:3000",
+  origin: "http://localhost:3000",
+  //origin này mà thiếu là không chạy được đâu. Nó connect từ local 3000 của react về Server
 
   // Configures the Access-Control-Allow-Methods
   methods: "GET, POST, OPTIONS, PUT, PATCH, DELETE",

@@ -38,6 +38,7 @@ const OrderCard = ({
       isRead: order.isRead,
     }));
   }, []);
+
   return (
     <div
       key={index + "orderAdmin"}
@@ -46,7 +47,8 @@ const OrderCard = ({
       } flex items-center space-x-3 h-full mb-8`}
     >
       <div
-        className={`relative Ptablet:w-[150px] PbigTablet:w-[150px] Plaptop:w-[150px] Pdesktop:w-[150px] Pmobile:w-[100px] Psmallmobile:w-[80px] Ptablet:h-[150px] PbigTablet:h-[120px] Plaptop:h-[150px] Pdesktop:h-[150px] Pmobile:h-[110px] Psmallmobile:h-[120px] ${color} text-sky-600 rounded-md font-semibold Ptablet:text-xl PbigTablet:text-xl Plaptop:text-xl Pdesktop:text-xl Pmobile:text-sm Psmallmobile:text-sm p-5 text-center flex justify-center items-center`}
+        className={`relative Ptablet:w-[150px] PbigTablet:w-[150px] Plaptop:w-[150px] Pdesktop:w-[150px] Pmobile:w-[100px] Psmallmobile:w-[80px] Ptablet:h-[150px] PbigTablet:h-[120px] Plaptop:h-[150px] Pdesktop:h-[150px] Pmobile:h-[110px] Psmallmobile:h-[120px] ${color} text-sky-500 rounded-md font-semibold Ptablet:text-xl PbigTablet:text-xl Plaptop:text-xl Pdesktop:text-xl Pmobile:text-sm Psmallmobile:text-sm p-5 text-center flex justify-center items-center`}
+        id={order._id}
       >
         {order.serviceName}
 

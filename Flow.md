@@ -1136,3 +1136,31 @@ bước 3. Bên Be sau đó phải vô router bỏ middleware vô
 bước 4. fetch API phải có conten-type: multipart/form-data
 bước 5. bắt file ở BE => req.body.buffer (nếu xài file buffer). Hoặc console.log ra là được
 Chỉ cần nhiêu đó thì xài setState hay xài formdata.append() đều được
+
+### Lưu ý về Cor config
+
+phải có origin (chưa base url của front-end, ví dụ hay xài react là localhost:3000)
+
+```js
+const corsConfig = {
+  // Configures the Access-Control-Allow-Origin
+  origin: "http://localhost:3000",
+  //origin này mà thiếu là không chạy được đâu. Nó connect từ local 3000 của react về Server
+
+  // Configures the Access-Control-Allow-Methods
+  methods: "GET, POST, OPTIONS, PUT, PATCH, DELETE",
+
+  //Configures the Access-Control-Allow-Headers
+  allowedHeaders:
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Authorization",
+
+  // Configures the Access-Control-Allow-Credentials
+  credentials: true,
+
+  //Configures the Access-Control-Expose-Headers
+  exposedHeaders: "Content-Range,X-Content-Range,Authorization",
+
+  // Provides a status code to use for successful OPTIONS requests
+  optionsSuccessStatus: 200,
+};
+```

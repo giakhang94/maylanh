@@ -118,7 +118,9 @@ const Filter = ({ handleSubmit }: Props) => {
           <div className="Platop:flex Pdesktop:flex Ptablet:flex Ptablet:flex-row PbigTablet:flex-row Pdesktop:flex-row Plaptop:flex-row PbigTablet:flex Pmobile:flex Pmobile:flex-col Psmallmobile:flex Psmallmobile:flex-col justify-between w-full Plaptop:space-x-4 Pdesktop:space-x-4 Ptablet:space-x-4 PbigTablet:space-x-4 Pmobile:space-y-1 Psmallmobile:space-y-1">
             <div className=" Ptablet:flex-row PbigTablet:flex-row Pdesktop:flex-row Plaptop:flex-row Plaptop:w-1/2 Pdesktop:w-1/2 Ptablet:w-1/2 PbigTablet:w-1/2 Pmobile:w-full Psmallmobile:w-full Platop:flex Pdesktop:flex Ptablet:flex PbigTablet:flex Pmobile:flex Pmobile:flex-col Psmallmobile:flex Psmallmobile:flex-col items-center Plaptop:space-x-2 Pdesktop:space-x-2 Ptablet:space-x-2 PbigTablet:space-x-2 Pmobile:space-y-1 Psmallmobile:space-y-1">
               {service?.isloading ? (
-                <Loading classname="" />
+                <div className="text-lg font-semibold tracking-[1px]">
+                  loading....
+                </div>
               ) : (
                 <select
                   value={filterInput.services}
