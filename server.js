@@ -66,6 +66,7 @@ app.use(cookieParser());
 //deploy
 const __dirname = dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.resolve(__dirname, "./client/dist")));
+app.use("/admin", express.static(path.resolve(__dirname, "../client/dist")));
 app.use("/auth", userRouter);
 app.use("/service", serviceRouter);
 app.use("/order", orderRouter);
