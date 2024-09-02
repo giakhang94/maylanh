@@ -17,7 +17,7 @@ const customAxios = () => {
       console.log("interceptoer", error);
       if (error.response.data.statusCode === 401) {
         console.log("Auth error");
-        await axios.get("https://maylanh.onrender.com//auth/logout");
+        await axios.get("https://maylanh.onrender.com/auth/logout");
       }
       return Promise.reject(error.response);
     }
