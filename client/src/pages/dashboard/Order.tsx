@@ -27,7 +27,6 @@ export interface OrderType {
 
 const Order = (props: Props): React.JSX.Element => {
   const [orders, setOrders] = useState<OrderType[]>();
-  console.log(orders);
   const [pagiInfo, setPagiInfo] = useState<{
     numOfPages: number;
     totalOrders: number;

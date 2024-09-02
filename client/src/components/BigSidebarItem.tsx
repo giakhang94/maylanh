@@ -29,11 +29,15 @@ const BigSidebarItem = (props: Props) => {
       {!props.hide && <span className="">{props.title}</span>}
       {!!props.unRead && (
         <span
-          className={`text-white bg-red-500 text-sm w-5 h-5 rounded-full text-center absolute top-0  ${
+          className={`text-red-500 text-lg font-bold w-fit rounded-full text-center  absolute -top-2  ${
             props.hide ? "left-[8.25px]" : "left-[82.5px]"
           }`}
         >
-          {props.unRead ? props.unRead : ""}
+          {props.unRead && props.unRead <= 500
+            ? props.unRead
+            : props.unRead
+            ? "500+"
+            : ""}
         </span>
       )}
     </NavLink>
