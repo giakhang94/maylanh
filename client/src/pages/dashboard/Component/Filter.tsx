@@ -115,8 +115,8 @@ const Filter = ({ handleSubmit }: Props) => {
               <MdClose className="text-gray-300 hover:text-sky-500 hover:scale-110 transition-all-0.5s" />
             </button>
           </div>
-          <div className="Platop:flex Pdesktop:flex Ptablet:flex Ptablet:flex-row PbigTablet:flex-row Pdesktop:flex-row Plaptop:flex-row PbigTablet:flex Pmobile:flex Pmobile:flex-col Psmallmobile:flex Psmallmobile:flex-col justify-between w-full Plaptop:space-x-4 Pdesktop:space-x-4 Ptablet:space-x-4 PbigTablet:space-x-4 Pmobile:space-y-1 Psmallmobile:space-y-1">
-            <div className=" Ptablet:flex-row PbigTablet:flex-row Pdesktop:flex-row Plaptop:flex-row Plaptop:w-1/2 Pdesktop:w-1/2 Ptablet:w-1/2 PbigTablet:w-1/2 Pmobile:w-full Psmallmobile:w-full Platop:flex Pdesktop:flex Ptablet:flex PbigTablet:flex Pmobile:flex Pmobile:flex-col Psmallmobile:flex Psmallmobile:flex-col items-center Plaptop:space-x-2 Pdesktop:space-x-2 Ptablet:space-x-2 PbigTablet:space-x-2 Pmobile:space-y-1 Psmallmobile:space-y-1">
+          <div className="flex Ptablet:flex-col PbigTablet:flex-row Pdesktop:flex-row Plaptop:flex-row  Pmobile:flex-col  Psmallmobile:flex-col  justify-between w-full Plaptop:space-x-4 Pdesktop:space-x-4 Ptablet:space-x-0 PbigTablet:space-x-4 Pmobile:space-y-1 Pmobile:space-x-0 Psmallmobile:space-y-1">
+            <div className="  Plaptop:w-1/2 Pdesktop:w-1/2 Ptablet:w-full PbigTablet:w-1/2 Pmobile:w-full Psmallmobile:w-full Platop:flex Pdesktop:flex Ptablet:flex PbigTablet:flex Pmobile:flex Pmobile:flex-col Psmallmobile:flex Psmallmobile:flex-col items-center Plaptop:space-x-2 Pdesktop:space-x-2 Ptablet:space-x-2 PbigTablet:space-x-2 Pmobile:space-y-1 Psmallmobile:space-y-1">
               {service?.isloading ? (
                 <div className="text-lg font-semibold tracking-[1px]">
                   loading....
@@ -126,7 +126,7 @@ const Filter = ({ handleSubmit }: Props) => {
                   value={filterInput.services}
                   onChange={handleChange}
                   name="services"
-                  className="block Plaptop:w-full Pdesktop:w-full Ptablet:w-full PbigTablet:w-full Pmobile:w-full Psmallmobile:w-full border px-2 py-2 rounded-md"
+                  className="block w-full border px-2 py-2 rounded-md"
                 >
                   <option value="">Tất cả dịch vụ</option>
                   {serviceArray.map(
@@ -170,7 +170,7 @@ const Filter = ({ handleSubmit }: Props) => {
                 })}
               </select> */}
             </div>
-            <div className="flex w-1/2 justify-end py-1 min-w-[150px] border px-5 rounded-md  Plaptop:w-1/2 Pdesktop:w-1/2 Ptablet:w-1/2 PbigTablet:w-1/2 Pmobile:w-full Psmallmobile:w-full Platop:flex Pdesktop:flex Ptablet:flex Ptablet:flex-row PbigTablet:flex-row Pdesktop:flex-row Plaptop:flex-row PbigTablet:flex Pmobile:flex Pmobile:flex-col Psmallmobile:flex Psmallmobile:flex-col Plaptop:space-x-10 Pdesktop:space-x-10 Ptablet:space-x-10 PbigTablet:space-x-10 Pmobile:space-y-1 Psmallmobile:space-y-1">
+            <div className="flex justify-end py-1 min-w-[150px] border px-5 rounded-md  Plaptop:w-1/2 Pdesktop:w-1/2 Ptablet:w-full PbigTablet:w-1/2 Pmobile:w-full Psmallmobile:w-full Platop:flex Pdesktop:flex Ptablet:flex Ptablet:flex-row PbigTablet:flex-row Pdesktop:flex-row Plaptop:flex-row PbigTablet:flex Pmobile:flex Pmobile:flex-col Psmallmobile:flex Psmallmobile:flex-col Plaptop:space-x-10 Pdesktop:space-x-10 Ptablet:space-x-10 PbigTablet:space-x-10 Pmobile:space-y-1 Psmallmobile:space-y-1">
               <input
                 disabled={filterInput.renew > 0}
                 type="date"
