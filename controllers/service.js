@@ -73,7 +73,7 @@ const updateService = async (req, res) => {
   res.status(201).json({ message: "update thành công!", serviceToUpdate });
 };
 
-const deleteService = async () => {
+const deleteService = async (req, res) => {
   const serviceId = req.params.id;
   adminPermision(req.user.role);
   const result = await Service.findByIdAndDelete({ _id: serviceId });

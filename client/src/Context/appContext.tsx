@@ -15,6 +15,8 @@ export interface InitStateProps {
   logoutClient: () => void;
   isChangeRead: boolean;
   getUnread: () => void;
+  unRead: () => void;
+  read: () => void;
   unread: number;
   services: any;
 }
@@ -26,6 +28,8 @@ const initState: InitStateProps = {
   isLoadingUser: true,
   isLoadingService: true,
   getCurrentUser() {},
+  read() {},
+  unRead() {},
   logout() {},
   getCurrentClient() {},
   logoutClient() {},
@@ -77,10 +81,16 @@ const AppProvider = ({ children }: any): React.JSX.Element => {
   const getUnread = async () => {
     try {
       const { data } = await authFetch.get("/order/unread");
-      dispatch({ type: "CHANGE_READ", payload: { unread: data.unread } });
+      dispatch({ type: "GET_UNREAD", payload: { unread: data.unread } });
     } catch (error) {
       console.log(error);
     }
+  };
+  const read = () => {
+    dispatch({ type: "READ", payload: {} });
+  };
+  const unRead = () => {
+    dispatch({ type: "UNREAD", payload: {} });
   };
   const getAllServices = async () => {
     dispatch({ type: "GET_SERVICES_BEGIN", payload: {} });
@@ -96,12 +106,8 @@ const AppProvider = ({ children }: any): React.JSX.Element => {
   useEffect(() => {
     getCurrentUser();
     getCurrentClient();
-    // getUnread();
   }, []);
 
-  useEffect(() => {
-    getUnread();
-  }, [state.isChangeRead]);
   return (
     <AppContext.Provider
       value={{
@@ -110,6 +116,8 @@ const AppProvider = ({ children }: any): React.JSX.Element => {
         logout,
         getCurrentClient,
         logoutClient,
+        read,
+        unRead,
         getUnread,
       }}
     >

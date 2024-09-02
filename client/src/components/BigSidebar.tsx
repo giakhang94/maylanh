@@ -4,7 +4,7 @@ import Logo from "./Logo";
 import BigSidebarItem from "./BigSidebarItem";
 
 import { useAppContext } from "@/Context/appContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   TbLayoutSidebarLeftCollapse,
   TbLayoutSidebarRightCollapse,
@@ -15,7 +15,10 @@ interface Props {
 }
 
 const BigSideBar = (props: Props): React.JSX.Element => {
-  const { unread } = useAppContext();
+  const { unread, getUnread } = useAppContext();
+  useEffect(() => {
+    getUnread();
+  }, [unread]);
   const [hide, setHide] = useState<boolean>(false);
 
   //0: dashobard; 1: all service;  2: order;  3: Add service;   4: User

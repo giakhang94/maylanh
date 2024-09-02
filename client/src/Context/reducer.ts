@@ -24,12 +24,17 @@ const reducer = (state: InitStateProps, action: Action) => {
   if (action.type === "GET_CURRENT_CLIENT_ERROR") {
     return { ...state, isLoadingClient: false };
   }
-  if (action.type === "CHANGE_READ") {
+  if (action.type === "GET_UNREAD") {
     return {
       ...state,
-      isChangeRead: !state.isChangeRead,
       unread: action.payload.unread,
     };
+  }
+  if (action.type === "READ") {
+    return { ...state, unread: state.unread + 1 };
+  }
+  if (action.type === "UNREAD") {
+    return { ...state, unread: state.unread - 1 };
   }
   if (action.type === "GET_SERVICES_BEGIN") {
     return {

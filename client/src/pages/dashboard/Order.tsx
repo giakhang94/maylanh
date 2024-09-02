@@ -6,7 +6,6 @@ import Filter, { QueryState } from "./Component/Filter";
 import Pagination from "./Component/Pagination";
 import PaginationDotDot from "./Component/PaginationDotDot";
 import { useAppContext } from "@/Context/appContext";
-
 interface Props {}
 export interface OrderType {
   _id: string;

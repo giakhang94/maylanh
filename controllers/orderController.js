@@ -69,7 +69,7 @@ const createOrder = async (req, res) => {
       address,
       note,
       serviceName,
-      color: `bg-[${color}]`,
+      color,
     });
     await order.save({ session: sess });
     await sess.commitTransaction();
