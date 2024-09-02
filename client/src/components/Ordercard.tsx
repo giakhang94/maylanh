@@ -65,6 +65,7 @@ const OrderCard = ({
                 if (forWho === "admin") {
                   handleSetFlagOrder({ type: "cancel", id: order._id });
                   handleSetFlagOrder({ type: "read", id: order._id });
+                  !flag.isRead && flag.cancel === false && unRead();
 
                   if (flag.cancel === true) {
                     setFlag((prev) => ({ ...prev, cancel: false }));
@@ -101,6 +102,7 @@ const OrderCard = ({
                   if (forWho === "admin") {
                     handleSetFlagOrder({ type: "done", id: order._id });
                     handleSetFlagOrder({ type: "read", id: order._id });
+                    !flag.isRead && flag.done === false && unRead();
 
                     if (flag.done === true) {
                       setFlag((prev) => ({ ...prev, done: false }));
@@ -117,7 +119,7 @@ const OrderCard = ({
               />
             </button>
           )}
-          {flag.isRead && forWho === "admin" && (
+          {!flag.cancel && !flag.done && flag.isRead && forWho === "admin" && (
             <button
               className="group"
               onClick={() => {
@@ -127,8 +129,9 @@ const OrderCard = ({
               }}
             >
               <div className="w-2 h-2 bg-white rounded-full absolute bottom-1 right-1"></div>
-              <span className="text-sm absolute right-0 bottom-0  w-[120px] hidden group-hover:block">
-                Mark as read
+
+              <span className="text-sm  absolute right-1 bottom-0  w-[120px] hidden group-hover:block">
+                Mark as unread
               </span>
             </button>
           )}
