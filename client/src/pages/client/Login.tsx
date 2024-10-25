@@ -66,6 +66,8 @@ const Login = (props: Props): React.JSX.Element => {
           <h1 className="text-center font-semibold text-xl tracking-[2px] ">
             Login
           </h1>
+          <p className = "text-sm">demo user: ngk.khang94@gmail.com </p>
+          <p className = "text-sm">demo password: 123456abc</p>
           <div className="mb-3">
             <label htmlFor="">Email</label>
             <div>
