@@ -66,8 +66,8 @@ const Login = (props: Props): React.JSX.Element => {
           <h1 className="text-center font-semibold text-xl tracking-[2px] ">
             Login
           </h1>
-          <p className = "text-sm">demo user: ngk.khang94@gmail.com </p>
-          <p className = "text-sm">demo password: 123456abc</p>
+          <p className="text-sm">demo user: ngk.khang94@gmail.com </p>
+          <p className="text-sm">demo password: 123456abc</p>
           <div className="mb-3">
             <label htmlFor="">Email</label>
             <div>
@@ -77,7 +77,7 @@ const Login = (props: Props): React.JSX.Element => {
                 value={input.email}
                 id="email"
                 name="email"
-                placeholder="ngk.khang94@email.com"
+                placeholder="demo email: ngk.khang94@email.com"
                 className="border border-gray-300 py-1 px-2  w-full rounded-sm outline-none"
               />
             </div>
@@ -92,7 +92,7 @@ const Login = (props: Props): React.JSX.Element => {
                 value={input.password}
                 name="password"
                 className="border border-gray-300 py-1 px-2 w-full rounded-sm outline-none"
-                placeholder="123456abc"
+                placeholder="demo pw: 123456abc"
               />
             </div>
           </div>

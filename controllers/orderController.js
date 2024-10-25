@@ -239,7 +239,7 @@ const getOrderStats = async (req, res) => {
   const cancelOrder = await Order.find({ clientCancel: true });
   const pieCancel = [
     { name: "Hủy", value: cancelOrder.length },
-    { name: "Tổng đơn", value: allOrder.length },
+    { name: "Đơn active", value: allOrder.length - cancelOrder.length },
   ];
 
   //for line chart
