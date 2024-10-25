@@ -75,7 +75,7 @@ const Login = (props: Props): React.JSX.Element => {
                 value={input.email}
                 id="email"
                 name="email"
-                placeholder="example@email.com"
+                placeholder="ngk.khang94@email.com"
                 className="border border-gray-300 py-1 px-2  w-full rounded-sm outline-none"
               />
             </div>
@@ -90,7 +90,7 @@ const Login = (props: Props): React.JSX.Element => {
                 value={input.password}
                 name="password"
                 className="border border-gray-300 py-1 px-2 w-full rounded-sm outline-none"
-                placeholder="enter your password"
+                placeholder="123456abc"
               />
             </div>
           </div>
