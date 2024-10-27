@@ -6,6 +6,7 @@ password: 123456abc
 
 Web đặt hẹn sửa máy lạnh sử dụng NodeJS, Express, Mongodb, ReactJS/Typescript và các package liên quan
 các package liên quan: tailwindcss, react-router-dom, context API, jwt, bcrypt, mongooose, cors, dotenv...
+
 Chức năng chính
 1. Admin
 - Admin đăng nhập, thêm/xóa/sửa user (nhân viên), thêm xóa sửa sản phẩm dịch vụ
