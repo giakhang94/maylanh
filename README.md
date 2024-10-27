@@ -1,8 +1,9 @@
+Link demo dự án:  https://maylanh.onrender.com
 link login vào admin dashboard: https://maylanh.onrender.com/login
 tài khoản demo:
 email: ngk.khang94@gmail.com
 password: 123456abc
-Link demo dự án:  https://maylanh.onrender.com
+
 Web đặt hẹn sửa máy lạnh sử dụng NodeJS, Express, Mongodb, ReactJS/Typescript và các package liên quan
 các package liên quan: tailwindcss, react-router-dom, context API, jwt, bcrypt, mongooose, cors, dotenv...
 Chức năng chính
